@@ -764,9 +764,9 @@ code, kbd, pre, samp {
 code {
     border-radius: 2px;
     white-space: nowrap;
-    color: #5e5e5e;
-    background: #FFF7DD;
-    border: 1px solid #fbf0cb;
+    color: #404040;
+    background: #e8e8e8;
+    border: 1px solid #e2e2e2;
     padding: 0px 2px;
 }
 code + .copy-to-clipboard {
@@ -1203,7 +1203,7 @@ td {
     width: 27px;
     height: 1.45rem;
     top: -1px;
-    display: inline-block;
+    display: none;
     vertical-align: middle;
     position: relative;
     color: #5e5e5e;
