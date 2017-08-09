@@ -32,7 +32,6 @@
 }
 
 body {
-/*    font-size: 12px !important; */
     color: #323232 !important;
     max-width: 900pt;
 }
@@ -673,12 +672,10 @@ textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[typ
     margin: 0;
 }
 body {
-    /*font-family: "Lato", "Work Sans", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;*/
     font-family: sans-serif;
     text-rendering: optimizeLegibility;
     font-weight: normal;
     line-height: 1.6;
-/*    font-size: 18px !important; */
 }
 h2, h3, h4, h5, h6 {
     font-family: sans-serif;
@@ -688,11 +685,7 @@ h2, h3, h4, h5, h6 {
     letter-spacing: -1px;
 }
 h1 {
-    /*font-family: "Novacento Sans Wide", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;*/
     font-family: sans-serif;
-/*    text-align: center;
-    text-transform: uppercase;
-    */
     color: #222;
     letter-spacing: -1px;
     font-weight: 200;

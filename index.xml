@@ -28,9 +28,7 @@ It is structured by sections roughly corresponding to zrepl subcommands:
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/snapshots/</guid>
-      <description> When running a zrepl command, the job name is passed as a positional argument:
-``
-Pruning Policy: grid </description>
+      <description>TBD </description>
     </item>
     
     <item>
@@ -39,7 +37,7 @@ Pruning Policy: grid </description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/replication/</guid>
-      <description>Remotes The remotes section specifies remote zrepl instances from which to pull from / push backups to:
+      <description>Under Construction Remotes The remotes section specifies remote zrepl instances from which to pull from / push backups to:
 remotes: offsite_backups: transport: ssh: host: 192.168.122.6 user: root port: 22 identity_file: /etc/zrepl/identities/offsite_backups  SSH Transport The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
 However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.</description>
     </item>
@@ -59,7 +57,8 @@ However, instead of a traditional interactive SSH session, zrepl expects another
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/example_pull_backup/</guid>
-      <description>Pull Backup is a thing</description>
+      <description>Example configuration for a typical pull-backup scenario, e.g. server to server
+TBD </description>
     </item>
     
     <item>
@@ -68,7 +67,8 @@ However, instead of a traditional interactive SSH session, zrepl expects another
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/example_push_backup/</guid>
-      <description></description>
+      <description>Example configuration for a typical push-backup scenario, e.g. laptop to NAS
+TBD </description>
     </item>
     
   </channel>
