@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/snapshots/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/replication/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/_header/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/example_pull_backup/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/example_push_backup/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/impl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on zrepl - ZFS replication</title>
+    <link>https://zrepl.github.io/</link>
+    <description>Recent content in Home on zrepl - ZFS replication</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://zrepl.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Overview</title>
+      <link>https://zrepl.github.io/configuration/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/configuration/overview/</guid>
+      <description>Recommendation Keep the sample configuration file open on the side while reading this document!
+  All configuration is managed in a single YAML file.
+It is structured by sections roughly corresponding to zrepl subcommands:
+# REPLICATION # Remote zrepl instances where pull and push jobs connect to remotes: name_of_remote: #... # Push jobs (replication from local to remote) pushs: name_of_push_job: #... name_of_other_push_job: #... # pull jobs (replication from remote to local &amp;amp; local to local) pulls: name_of_pull_job: #.</description>
+    </item>
+    
+    <item>
+      <title>Snapshot Management</title>
+      <link>https://zrepl.github.io/configuration/snapshots/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/configuration/snapshots/</guid>
+      <description> When running a zrepl command, the job name is passed as a positional argument:
+``
+Pruning Policy: grid </description>
+    </item>
+    
+    <item>
+      <title>Filesystem Replication</title>
+      <link>https://zrepl.github.io/configuration/replication/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/configuration/replication/</guid>
+      <description>Remotes The remotes section specifies remote zrepl instances from which to pull from / push backups to:
+remotes: offsite_backups: transport: ssh: host: 192.168.122.6 user: root port: 22 identity_file: /etc/zrepl/identities/offsite_backups  SSH Transport The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
+However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://zrepl.github.io/_header/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/_header/</guid>
+      <description>zrepl Documentation</description>
+    </item>
+    
+    <item>
+      <title>Example: Pull Backup</title>
+      <link>https://zrepl.github.io/configuration/example_pull_backup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/configuration/example_pull_backup/</guid>
+      <description>Pull Backup is a thing</description>
+    </item>
+    
+    <item>
+      <title>Example: Push Backup</title>
+      <link>https://zrepl.github.io/configuration/example_push_backup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/configuration/example_push_backup/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
