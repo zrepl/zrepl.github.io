@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="generator" content="Hugo 0.26" />
-    <meta name="description" content="Configuration format, SSH authentication, etc.">
+    <meta name="description" content="">
 
 
-    <title>Overview :: zrepl - ZFS replication</title>
+    <title>Installation :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/github.css" rel="stylesheet">
     <link href="/css/featherlight.min.css" rel="stylesheet">
     <link href="/css/horsey.css" rel="stylesheet">
     
@@ -31,7 +31,7 @@
     
 
   </head>
-  <body class="" data-url="/configuration/overview/">
+  <body class="" data-url="/install/">
     <nav id="sidebar" class="">
 
 
@@ -66,7 +66,7 @@
   
     <ul class="topics">
         
-            <li data-nav-id="/" class="dd-item">
+            <li data-nav-id="/" class="dd-item ">
             <a href="/"><i class="fa fa-fw fa-home"></i> zrepl - ZFS replication</a>
             </li>
         
@@ -79,8 +79,58 @@
  
   
     
-    <li data-nav-id="/configuration/" class="dd-item 
+    <li data-nav-id="/tutorial/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/tutorial/">
+        <span>Tutorial</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/install/" class="dd-item 
         parent
+        active
+        
+        ">
+      <a href="/install/">
+        <span>Installation</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/configuration/" class="dd-item 
+        
         
         parent
         ">
@@ -113,11 +163,11 @@
  
   
     
-      <li data-nav-id="/configuration/overview/" class="dd-item
-     active
+      <li data-nav-id="/configuration/jobs/" class="dd-item
+     
       ">
-        <a href="/configuration/overview/">
-        <span>Overview</span> 
+        <a href="/configuration/jobs/">
+        <span>Job Types</span> 
         
         </a></li>
      
@@ -133,11 +183,11 @@
  
   
     
-      <li data-nav-id="/configuration/snapshots/" class="dd-item
+      <li data-nav-id="/configuration/map_filter_syntax/" class="dd-item
      
       ">
-        <a href="/configuration/snapshots/">
-        <span>Snapshot Management</span> 
+        <a href="/configuration/map_filter_syntax/">
+        <span>Mapping &amp; Filter Syntax</span> 
         
         </a></li>
      
@@ -153,11 +203,11 @@
  
   
     
-      <li data-nav-id="/configuration/replication/" class="dd-item
+      <li data-nav-id="/configuration/prune/" class="dd-item
      
       ">
-        <a href="/configuration/replication/">
-        <span>Filesystem Replication</span> 
+        <a href="/configuration/prune/">
+        <span>Pruning</span> 
         
         </a></li>
      
@@ -173,31 +223,11 @@
  
   
     
-      <li data-nav-id="/configuration/example_pull_backup/" class="dd-item
+      <li data-nav-id="/configuration/transports/" class="dd-item
      
       ">
-        <a href="/configuration/example_pull_backup/">
-        <span>Example: Pull Backup</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_push_backup/" class="dd-item
-     
-      ">
-        <a href="/configuration/example_push_backup/">
-        <span>Example: Push Backup</span> 
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
         
         </a></li>
      
@@ -293,12 +323,7 @@
 
 
 
-
-
-
- <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Overview
-
- 
+ <a href='/'>zrepl - ZFS replication</a> > Installation
 
  
 
@@ -311,19 +336,17 @@
 <ul>
 <li>
 <ul>
-<li><a href="#mapping-filter-syntax">Mapping &amp; Filter Syntax</a>
+<li><a href="#user-privileges">User Privileges</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#configuration-runtime-directories">Configuration &amp; Runtime Directories</a>
 <ul>
-<li>
+<li><a href="#main-configuration-file">Main Configuration File</a></li>
+<li><a href="#runtime-directories">Runtime Directories</a></li>
+</ul></li>
+<li><a href="#running-the-daemon">Running the Daemon</a>
 <ul>
-<li><a href="#pattern-syntax">Pattern Syntax</a>
-<ul>
-<li><a href="#example">Example</a></li>
+<li><a href="#restarting">Restarting</a></li>
 </ul></li>
-<li><a href="#mappings">Mappings</a></li>
-<li><a href="#filters">Filters</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#next-up">Next up</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -335,7 +358,7 @@
         
         <div id="body-inner">
           
-            <h1>Overview</h1>
+            <h1>Installation</h1>
           
 
 
@@ -343,159 +366,98 @@
 
 
 
-<div class="panel panel-primary">
-	<div class="panel-heading">Recommendation</div>
-	<div class="panel-body"><p>Keep the <a href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/zrepl.yml">sample configuration file</a> open on the side while reading this document!</p>
-</div>
-	
+<div class="notices note" ><p>Note: check out the <a href="/tutorial/">tutorial</a> if you want a first impression of zrepl.</p>
 </div>
 
 
-<p>All configuration is managed in a single YAML file.<br />
-It is structured by sections roughly corresponding to <code>zrepl</code> subcommands:</p>
+<h2 id="user-privileges">User Privileges</h2>
 
-<pre><code class="language-yaml"># REPLICATION
-# Remote zrepl instances where pull and push jobs connect to
-remotes: 
-  name_of_remote: #...
-# Push jobs (replication from local to remote)
-pushs: 
-  name_of_push_job: #...
-  name_of_other_push_job: #...
-# pull jobs (replication from remote to local &amp; local to local)
-pulls: 
-  name_of_pull_job: #...
-# mapping incoming pushs to local datasets
-sinks: 
-  client_identity: #...
-# access control for remote pull jobs
-pull_acls: 
-  client_identity: #...
+<p>It is possible to run zrepl as an unprivileged user in combination with
+<a href="https://www.freebsd.org/doc/handbook/zfs-zfs-allow.html">ZFS delegation</a>.</p>
 
-# SNAPSHOT MANAGEMENT
-# Automatic snapshotting of filesystems
-autosnap:
-  name_of_autosnap_job: #... 
-# Automatic pruning of snapshots based on creation date
-prune:
-  name_of_prune_job: #... 
+<p>Also, there is the possibility to run it in a jail on FreeBSD by delegating a dataset to the jail.</p>
+
+<p>However, until we get around documenting those setups, you will have to run zrepl as root or experiment yourself :)</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>zrepl is currently not packaged on any operating system. Signed &amp; versioned releases are planned but not available yet.</p>
+
+<p>Check out the sources yourself, compile and install to the zrepl user&rsquo;s <code>$PATH</code>.<br />
+<strong>Note</strong>: if the zrepl binary is not in <code>$PATH</code>, you will have to adjust the examples in the <a href="/tutorial/">tutorial</a>.</p>
+
+<pre><code class="language-bash"># NOTE: you may want to checkout &amp; build as an unprivileged user
+cd /root
+git clone https://github.com/zrepl/zrepl.git
+cd zrepl
+go build -o zrepl
+cp zrepl /usr/local/bin/zrepl
+rehash
+# see if it worked
+zrepl help
 </code></pre>
 
-<p>When using <code>zrepl(8)</code>, a <em>subcommand</em> is passed the <em>job name</em> as a positional argument:</p>
+<h2 id="configuration-runtime-directories">Configuration &amp; Runtime Directories</h2>
 
-<pre><code class="language-yaml">autosnap: # subcommand
-  db: # job name
-    prefix: zrepl_ 
-    interval: 10m
-    dataset_filter: {
-      &quot;tank/db&lt;&quot;: ok
-    }
-</code></pre>
+<h3 id="main-configuration-file">Main Configuration File</h3>
 
-<pre><code class="language-bash">$ zrepl autosnap --config zrepl.yml db
-</code></pre>
-
-<p>Run <code>zrepl --help</code> for a list of subcommands and options.</p>
-
-<h2 id="mapping-filter-syntax">Mapping &amp; Filter Syntax</h2>
-
-<p>For various job types, a filesystem <code>mapping</code> or <code>filter</code> needs to be
-specified.</p>
-
-<p>Both have in common that they return a result for a given filesystem path (in
-the ZFS filesystem hierarchy): mappings return a <em>target filesystem</em>, filters
-return a <em>filter result</em> (<code>omit</code>, <code>ok</code>).</p>
-
-<p>The pattern syntax is the same for mappings and filters and is documented in
-the following section.</p>
-
-<h4 id="pattern-syntax">Pattern Syntax</h4>
-
-<p>A mapping / filter is specified as a <strong>YAML dictionary</strong> with patterns as keys and
-results as values.<br />
-The following rules determine which result is chosen for a given filesystem path:</p>
+<p>The main configuration file lives in either</p>
 
 <ul>
-<li>More specific path patterns win over less specific ones</li>
-<li>Non-wildcard patterns (full path patterns) win over <em>subtree wildcards</em> (<code>&lt;</code> at end of pattern)</li>
+<li><code>/etc/zrepl/zrepl.yml</code></li>
+<li><code>/usr/local/etc/zrepl/zrepl.yml</code></li>
 </ul>
 
-<div class="panel panel-primary">
-	
-	<div class="panel-body"><p>The <strong>subtree wildcard</strong> <code>&lt;</code> means &ldquo;<em>the dataset left of <code>&lt;</code> and all its children</em>&rdquo;.</p>
+<p>The file locations are check in that order. Alternative locations must be specified using a command line flag.</p>
+
+<h3 id="runtime-directories">Runtime Directories</h3>
+
+<p><strong>Source jobs</strong> with <code>serve.type = stdinserver</code> require a private runtime directory. (<a href="/configuration/transports/#stdinserver">Why?</a>)</p>
+
+<p>The default is <code>/var/run/zrepl/stdinserver</code> and it must only be accessible by the user
+that runs <code>zrepl daemon</code> and <code>zrepl stdinserver</code>:</p>
+
+<pre><code class="language-bash">mkdir -p /var/run/zrepl/stdinserver
+chmod -R 0700 /var/run/zrepl
+</code></pre>
+
+<h2 id="running-the-daemon">Running the Daemon</h2>
+
+<p>All work zrepl done is performed by a daemon process.</p>
+
+<p>There are no <em>rc(8)</em> or <em>systemd.service(5)</em> service definitions yet.</p>
+
+<p>The daemon does not fork and writes all log output to stderr.</p>
+
+<pre><code class="language-bash">zrepl --config /etc/zrepl/zrepl.yml daemon
+</code></pre>
+
+<p>FreeBSD ships with the <em>daemon(8)</em> utility which is also a good start for writing an <em>rc(8)</em> file:</p>
+
+<pre><code class="language-bash">daemon -o /var/log/zrepl.log \
+       -p /var/run/zrepl/daemon.pid \
+       zrepl --config /usr/local/etc/zrepl/zrepl.yml daemon
+</code></pre>
+
+<div class="notices info" ><p>Make sure to read the first lines of log output after the daemon starts: if the daemon cannot create the <a href="/configuration/transports/#stdinserver">stdinserver</a> sockets
+in the runtime directory, it will complain but not terminate as other tasks such as taking periodic snapshots might still work.</p>
 </div>
-	
-</div>
 
 
-<h5 id="example">Example</h5>
+<h3 id="restarting">Restarting</h3>
 
-<pre><code># Rule number and its pattern
-1: tank&lt;            # tank and all its children
-2: tank/foo/bar     # full path pattern (no wildcard)
-3: tank/foo&lt;        # tank/foo and all its children
+<p>The daemon handles SIGINT and SIGTERM for graceful shutdown.</p>
 
-# Which rule applies to given path?
-tank/foo/bar/loo =&gt; 3
-tank/bar         =&gt; 1
-tank/foo/bar     =&gt; 2
-zroot            =&gt; NO MATCH
-tank/var/log     =&gt; 1
-</code></pre>
+<p>Graceful shutdown means at worst that a job will not be rescheduled for the next interval.</p>
 
-<h4 id="mappings">Mappings</h4>
-
-<p>The example below shows a pull job that would pull remote datasets to the given local paths.<br />
-If there exists no mapping (<code>NO MATCH</code>), the filesystem will not be pulled.</p>
-
-<pre><code class="language-yaml">pull:
-  app01.example.com: # client identity
-    from: app01.example.com
-    mapping: { 
-      &quot;tank/var/db&lt;&quot;:    &quot;zroot/backups/app01/tank/var/db&quot;,
-      &quot;tank/var/www&lt;&quot;:   &quot;zroot/backups/app01/tank/var/www&quot;,
-      &quot;tank/var/log&quot;:    &quot;zroot/logbackup/app01&quot;,
-    }
-</code></pre>
-
-<pre><code>tank/var/db`          =&gt; zroot/backups/app01/tank/var/db
-tank/var/db/a/child   =&gt; zroot/backups/app01/tank/var/db/a/child
-...
-tank/var/www          =&gt; zroot/backups/app01/tank/var/www
-tank/var/www/a/child  =&gt; zroot/backups/app01/tank/var/www/a/child
-...
-tank/var/log          =&gt; zroot/logbackup/app01
-tank/var/log/foo      =&gt; NOT MAPPED
-</code></pre>
-
-<h4 id="filters">Filters</h4>
-
-<p>Valid filter results: <code>ok</code> or <code>omit</code>.</p>
-
-<p>The example below shows a pull ACL that allows access to the user homes but not
-to the rest of the system&rsquo;s datasets.</p>
-
-<pre><code># Example for filter syntax
-pull_acls:
-  backups.example.com: # client identity
-    filter: {
-      &quot;&lt;&quot;:              omit,
-      &quot;tank/usr/home&lt;&quot;: ok,
-    }
-</code></pre>
-
-<h2 id="next-up">Next up</h2>
-
-<ul>
-<li><p><a href="https://zrepl.github.io/configuration/snapshots/">Automating snapshot creation &amp; pruning</a></p></li>
-
-<li><p><a href="https://zrepl.github.io/configuration/replication/">Replicating filesystems</a></p></li>
-</ul>
+<p>The daemon exits as soon as all jobs have reported shut down.</p>
 
 
 <footer class=" footline" >
 	
 </footer>
+
+
 
 
 
@@ -531,6 +493,8 @@ pull_acls:
             
                 
                     
+                        
+                        
                     
                 
                 
@@ -539,6 +503,9 @@ pull_acls:
                     
                     
 
+                    
+            
+        
                     
                         
             
@@ -564,6 +531,19 @@ pull_acls:
                     
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
                     
                 
                 
@@ -674,4 +654,3 @@ pull_acls:
 
   </body>
 </html>
-

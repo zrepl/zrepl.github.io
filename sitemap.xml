@@ -3,15 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://zrepl.github.io/configuration/overview/</loc>
+    <loc>https://zrepl.github.io/tutorial/</loc>
   </url>
   
   <url>
-    <loc>https://zrepl.github.io/configuration/snapshots/</loc>
+    <loc>https://zrepl.github.io/configuration/jobs/</loc>
   </url>
   
   <url>
-    <loc>https://zrepl.github.io/configuration/replication/</loc>
+    <loc>https://zrepl.github.io/install/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/map_filter_syntax/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/prune/</loc>
   </url>
   
   <url>
@@ -28,20 +36,16 @@
   </url>
   
   <url>
-    <loc>https://zrepl.github.io/configuration/example_pull_backup/</loc>
-  </url>
-  
-  <url>
-    <loc>https://zrepl.github.io/configuration/example_push_backup/</loc>
-  </url>
-  
-  <url>
     <loc>https://zrepl.github.io/impl/</loc>
   </url>
   
   <url>
     <loc>https://zrepl.github.io/tags/</loc>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/transports/</loc>
   </url>
   
   <url>

@@ -11,35 +11,33 @@
     
     
     <item>
-      <title>Overview</title>
-      <link>https://zrepl.github.io/configuration/overview/</link>
+      <title>Job Types</title>
+      <link>https://zrepl.github.io/configuration/jobs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://zrepl.github.io/configuration/overview/</guid>
-      <description>Recommendation Keep the sample configuration file open on the side while reading this document!
-  All configuration is managed in a single YAML file.
-It is structured by sections roughly corresponding to zrepl subcommands:
-# REPLICATION # Remote zrepl instances where pull and push jobs connect to remotes: name_of_remote: #... # Push jobs (replication from local to remote) pushs: name_of_push_job: #... name_of_other_push_job: #... # pull jobs (replication from remote to local &amp;amp; local to local) pulls: name_of_pull_job: #.</description>
+      <guid>https://zrepl.github.io/configuration/jobs/</guid>
+      <description> Under Construction Source Pull Local </description>
     </item>
     
     <item>
-      <title>Snapshot Management</title>
-      <link>https://zrepl.github.io/configuration/snapshots/</link>
+      <title>Mapping &amp; Filter Syntax</title>
+      <link>https://zrepl.github.io/configuration/map_filter_syntax/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://zrepl.github.io/configuration/snapshots/</guid>
-      <description> TBD Retention Grid </description>
+      <guid>https://zrepl.github.io/configuration/map_filter_syntax/</guid>
+      <description>Under Construction Mapping &amp;amp; Filter Syntax For various job types, a filesystem mapping or filter needs to be specified.
+Both have in common that they return a result for a given filesystem path (in the ZFS filesystem hierarchy): mappings return a target filesystem, filters return a filter result (omit, ok).
+The pattern syntax is the same for mappings and filters and is documented in the following section.
+Pattern Syntax A mapping / filter is specified as a YAML dictionary with patterns as keys and results as values.</description>
     </item>
     
     <item>
-      <title>Filesystem Replication</title>
-      <link>https://zrepl.github.io/configuration/replication/</link>
+      <title>Pruning</title>
+      <link>https://zrepl.github.io/configuration/prune/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://zrepl.github.io/configuration/replication/</guid>
-      <description>Under Construction Remotes The remotes section specifies remote zrepl instances from which to pull from / push backups to:
-remotes: offsite_backups: transport: ssh: host: 192.168.122.6 user: root port: 22 identity_file: /etc/zrepl/identities/offsite_backups  SSH Transport The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
-However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.</description>
+      <guid>https://zrepl.github.io/configuration/prune/</guid>
+      <description> Under Construction Retention Grid </description>
     </item>
     
     <item>
@@ -52,23 +50,14 @@ However, instead of a traditional interactive SSH session, zrepl expects another
     </item>
     
     <item>
-      <title>Example: Pull Backup</title>
-      <link>https://zrepl.github.io/configuration/example_pull_backup/</link>
+      <title>Transports</title>
+      <link>https://zrepl.github.io/configuration/transports/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://zrepl.github.io/configuration/example_pull_backup/</guid>
-      <description>Example configuration for a typical pull-backup scenario, e.g. server to server
-TBD </description>
-    </item>
-    
-    <item>
-      <title>Example: Push Backup</title>
-      <link>https://zrepl.github.io/configuration/example_push_backup/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://zrepl.github.io/configuration/example_push_backup/</guid>
-      <description>Example configuration for a typical push-backup scenario, e.g. laptop to NAS
-TBD </description>
+      <guid>https://zrepl.github.io/configuration/transports/</guid>
+      <description>Under Construction Stdinserver The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
+However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.
+Check the examples for instructions on how to set this up on your machines!</description>
     </item>
     
   </channel>

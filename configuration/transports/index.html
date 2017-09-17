@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="generator" content="Hugo 0.26" />
-    <meta name="description" content="Replicating filesystems with existing bookmarks &amp; snapshots">
+    <meta name="description" content="">
 
 
-    <title>Filesystem Replication :: zrepl - ZFS replication</title>
+    <title>Transports :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/github.css" rel="stylesheet">
     <link href="/css/featherlight.min.css" rel="stylesheet">
     <link href="/css/horsey.css" rel="stylesheet">
     
@@ -31,7 +31,7 @@
     
 
   </head>
-  <body class="" data-url="/configuration/replication/">
+  <body class="" data-url="/configuration/transports/">
     <nav id="sidebar" class="">
 
 
@@ -66,12 +66,62 @@
   
     <ul class="topics">
         
-            <li data-nav-id="/" class="dd-item">
+            <li data-nav-id="/" class="dd-item ">
             <a href="/"><i class="fa fa-fw fa-home"></i> zrepl - ZFS replication</a>
             </li>
         
         
         
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/tutorial/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/tutorial/">
+        <span>Tutorial</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/install/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/install/">
+        <span>Installation</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
           
           
 
@@ -113,11 +163,11 @@
  
   
     
-      <li data-nav-id="/configuration/overview/" class="dd-item
+      <li data-nav-id="/configuration/jobs/" class="dd-item
      
       ">
-        <a href="/configuration/overview/">
-        <span>Overview</span> 
+        <a href="/configuration/jobs/">
+        <span>Job Types</span> 
         
         </a></li>
      
@@ -133,11 +183,11 @@
  
   
     
-      <li data-nav-id="/configuration/snapshots/" class="dd-item
+      <li data-nav-id="/configuration/map_filter_syntax/" class="dd-item
      
       ">
-        <a href="/configuration/snapshots/">
-        <span>Snapshot Management</span> 
+        <a href="/configuration/map_filter_syntax/">
+        <span>Mapping &amp; Filter Syntax</span> 
         
         </a></li>
      
@@ -153,51 +203,31 @@
  
   
     
-      <li data-nav-id="/configuration/replication/" class="dd-item
+      <li data-nav-id="/configuration/prune/" class="dd-item
+     
+      ">
+        <a href="/configuration/prune/">
+        <span>Pruning</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/transports/" class="dd-item
      active
       ">
-        <a href="/configuration/replication/">
-        <span>Filesystem Replication</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_pull_backup/" class="dd-item
-     
-      ">
-        <a href="/configuration/example_pull_backup/">
-        <span>Example: Pull Backup</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_push_backup/" class="dd-item
-     
-      ">
-        <a href="/configuration/example_push_backup/">
-        <span>Example: Push Backup</span> 
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
         
         </a></li>
      
@@ -296,7 +326,7 @@
 
 
 
- <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Filesystem Replication
+ <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Transports
 
  
 
@@ -311,13 +341,7 @@
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#remotes">Remotes</a>
-<ul>
-<li><a href="#ssh-transport">SSH Transport</a></li>
-</ul></li>
-</ul></li>
+<li><a href="#stdinserver">Stdinserver</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -329,7 +353,7 @@
         
         <div id="body-inner">
           
-            <h1>Filesystem Replication</h1>
+            <h1>Transports</h1>
           
 
 
@@ -343,21 +367,7 @@ alert-warning"
 role="alert">Under Construction</div>
 
 
-<h3 id="remotes">Remotes</h3>
-
-<p>The <code>remotes</code> section specifies remote <code>zrepl</code> instances from which to pull from / push backups to:</p>
-
-<pre><code class="language-yaml">remotes:
-  offsite_backups:
-    transport:
-      ssh:
-        host: 192.168.122.6
-        user: root
-        port: 22
-        identity_file: /etc/zrepl/identities/offsite_backups
-</code></pre>
-
-<h4 id="ssh-transport">SSH Transport</h4>
+<h2 id="stdinserver">Stdinserver</h2>
 
 <p>The SSH transport connects to the remote server using the SSH binary in
 <code>$PATH</code> and the parameters specified in the <code>zrepl</code> config file.</p>
@@ -416,6 +426,41 @@ or <a href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Ba
             
                 
                     
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -465,7 +510,6 @@ or <a href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Ba
             
                 
                     
-                    
                 
                 
 
@@ -482,24 +526,6 @@ or <a href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Ba
             
                 
                     
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -519,6 +545,9 @@ or <a href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Ba
             
             
                 
+                    
+                        
+                        
                     
                 
                 

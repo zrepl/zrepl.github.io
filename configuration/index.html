@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/github.css" rel="stylesheet">
     <link href="/css/featherlight.min.css" rel="stylesheet">
     <link href="/css/horsey.css" rel="stylesheet">
     
@@ -66,12 +66,62 @@
   
     <ul class="topics">
         
-            <li data-nav-id="/" class="dd-item">
+            <li data-nav-id="/" class="dd-item ">
             <a href="/"><i class="fa fa-fw fa-home"></i> zrepl - ZFS replication</a>
             </li>
         
         
         
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/tutorial/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/tutorial/">
+        <span>Tutorial</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/install/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/install/">
+        <span>Installation</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
           
           
 
@@ -113,11 +163,11 @@
  
   
     
-      <li data-nav-id="/configuration/overview/" class="dd-item
+      <li data-nav-id="/configuration/jobs/" class="dd-item
      
       ">
-        <a href="/configuration/overview/">
-        <span>Overview</span> 
+        <a href="/configuration/jobs/">
+        <span>Job Types</span> 
         
         </a></li>
      
@@ -133,11 +183,11 @@
  
   
     
-      <li data-nav-id="/configuration/snapshots/" class="dd-item
+      <li data-nav-id="/configuration/map_filter_syntax/" class="dd-item
      
       ">
-        <a href="/configuration/snapshots/">
-        <span>Snapshot Management</span> 
+        <a href="/configuration/map_filter_syntax/">
+        <span>Mapping &amp; Filter Syntax</span> 
         
         </a></li>
      
@@ -153,11 +203,11 @@
  
   
     
-      <li data-nav-id="/configuration/replication/" class="dd-item
+      <li data-nav-id="/configuration/prune/" class="dd-item
      
       ">
-        <a href="/configuration/replication/">
-        <span>Filesystem Replication</span> 
+        <a href="/configuration/prune/">
+        <span>Pruning</span> 
         
         </a></li>
      
@@ -173,31 +223,11 @@
  
   
     
-      <li data-nav-id="/configuration/example_pull_backup/" class="dd-item
+      <li data-nav-id="/configuration/transports/" class="dd-item
      
       ">
-        <a href="/configuration/example_pull_backup/">
-        <span>Example: Pull Backup</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_push_backup/" class="dd-item
-     
-      ">
-        <a href="/configuration/example_push_backup/">
-        <span>Example: Push Backup</span> 
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
         
         </a></li>
      
@@ -317,7 +347,13 @@
 
 
 
+<div class="alert 
+alert-warning"
+ 
+role="alert">Under Construction</div>
 
+
+<p>
 
 
 
@@ -342,7 +378,7 @@
 
 
 <li>
-<a href="/configuration/overview/" >Overview</a>
+<a href="/configuration/jobs/" >Job Types</a>
 </li>
 
 
@@ -352,7 +388,7 @@
 
 			
 				
-<p>Configuration format, SSH authentication, etc.</p>
+<p> Under Construction Source Pull Local </p>
 				
 			
 		
@@ -367,7 +403,7 @@
 
 
 <li>
-<a href="/configuration/snapshots/" >Snapshot Management</a>
+<a href="/configuration/map_filter_syntax/" >Mapping &amp; Filter Syntax</a>
 </li>
 
 
@@ -377,7 +413,7 @@
 
 			
 				
-<p>Automated snapshot creation &amp; pruning</p>
+<p>How to specify mappings &amp; filters</p>
 				
 			
 		
@@ -392,7 +428,7 @@
 
 
 <li>
-<a href="/configuration/replication/" >Filesystem Replication</a>
+<a href="/configuration/prune/" >Pruning</a>
 </li>
 
 
@@ -402,7 +438,7 @@
 
 			
 				
-<p>Replicating filesystems with existing bookmarks &amp; snapshots</p>
+<p>Automated pruning of snapshots</p>
 				
 			
 		
@@ -417,7 +453,7 @@
 
 
 <li>
-<a href="/configuration/example_pull_backup/" >Example: Pull Backup</a>
+<a href="/configuration/transports/" >Transports</a>
 </li>
 
 
@@ -427,32 +463,7 @@
 
 			
 				
-<p>Example configuration for a typical pull-backup scenario, e.g. server to server</p>
-				
-			
-		
-
-		
-			
-
-		
-	
-		
-  
-
-
-<li>
-<a href="/configuration/example_push_backup/" >Example: Push Backup</a>
-</li>
-
-
-
-
-
-
-			
-				
-<p>Example configuration for a typical push-backup scenario, e.g. laptop to NAS</p>
+<p></p>
 				
 			
 		
@@ -468,7 +479,7 @@
 
 
 
-
+</p>
 
 
 <footer class=" footline" >
@@ -511,20 +522,6 @@
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
                         
                         
                     
@@ -543,6 +540,39 @@
             
             
                 
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
                     
                 
                 

@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="generator" content="Hugo 0.26" />
-    <meta name="description" content="Example configuration for a typical pull-backup scenario, e.g. server to server">
+    <meta name="description" content="Automated pruning of snapshots">
 
 
-    <title>Example: Pull Backup :: zrepl - ZFS replication</title>
+    <title>Pruning :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/github.css" rel="stylesheet">
     <link href="/css/featherlight.min.css" rel="stylesheet">
     <link href="/css/horsey.css" rel="stylesheet">
     
@@ -31,7 +31,7 @@
     
 
   </head>
-  <body class="" data-url="/configuration/example_pull_backup/">
+  <body class="" data-url="/configuration/prune/">
     <nav id="sidebar" class="">
 
 
@@ -66,12 +66,62 @@
   
     <ul class="topics">
         
-            <li data-nav-id="/" class="dd-item">
+            <li data-nav-id="/" class="dd-item ">
             <a href="/"><i class="fa fa-fw fa-home"></i> zrepl - ZFS replication</a>
             </li>
         
         
         
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/tutorial/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/tutorial/">
+        <span>Tutorial</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/install/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/install/">
+        <span>Installation</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
           
           
 
@@ -113,11 +163,11 @@
  
   
     
-      <li data-nav-id="/configuration/overview/" class="dd-item
+      <li data-nav-id="/configuration/jobs/" class="dd-item
      
       ">
-        <a href="/configuration/overview/">
-        <span>Overview</span> 
+        <a href="/configuration/jobs/">
+        <span>Job Types</span> 
         
         </a></li>
      
@@ -133,11 +183,11 @@
  
   
     
-      <li data-nav-id="/configuration/snapshots/" class="dd-item
+      <li data-nav-id="/configuration/map_filter_syntax/" class="dd-item
      
       ">
-        <a href="/configuration/snapshots/">
-        <span>Snapshot Management</span> 
+        <a href="/configuration/map_filter_syntax/">
+        <span>Mapping &amp; Filter Syntax</span> 
         
         </a></li>
      
@@ -153,31 +203,11 @@
  
   
     
-      <li data-nav-id="/configuration/replication/" class="dd-item
-     
-      ">
-        <a href="/configuration/replication/">
-        <span>Filesystem Replication</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_pull_backup/" class="dd-item
+      <li data-nav-id="/configuration/prune/" class="dd-item
      active
       ">
-        <a href="/configuration/example_pull_backup/">
-        <span>Example: Pull Backup</span> 
+        <a href="/configuration/prune/">
+        <span>Pruning</span> 
         
         </a></li>
      
@@ -193,11 +223,11 @@
  
   
     
-      <li data-nav-id="/configuration/example_push_backup/" class="dd-item
+      <li data-nav-id="/configuration/transports/" class="dd-item
      
       ">
-        <a href="/configuration/example_push_backup/">
-        <span>Example: Push Backup</span> 
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
         
         </a></li>
      
@@ -296,7 +326,7 @@
 
 
 
- <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Example: Pull Backup
+ <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Pruning
 
  
 
@@ -307,7 +337,14 @@
             </div>
             <div class="progress">
     <div class="wrapper">
-
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#retention-grid">Retention Grid</a></li>
+</ul></li>
+</ul>
+</nav>
     </div>
 </div>
 
@@ -316,19 +353,21 @@
         
         <div id="body-inner">
           
-            <h1>Example: Pull Backup</h1>
+            <h1>Pruning</h1>
           
 
 
 
 
-<p>Example configuration for a typical pull-backup scenario, e.g. server to server</p>
+
 
 <div class="alert 
 alert-warning"
  
-role="alert">TBD</div>
+role="alert">Under Construction</div>
 
+
+<h2 id="retention-grid">Retention Grid</h2>
 
 
 <footer class=" footline" >
@@ -369,20 +408,6 @@ role="alert">TBD</div>
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
                         
                         
                     
@@ -401,6 +426,39 @@ role="alert">TBD</div>
             
             
                 
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
                     
                 
                 

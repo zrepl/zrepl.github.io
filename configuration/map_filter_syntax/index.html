@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="generator" content="Hugo 0.26" />
-    <meta name="description" content="Example configuration for a typical push-backup scenario, e.g. laptop to NAS">
+    <meta name="description" content="How to specify mappings &amp; filters">
 
 
-    <title>Example: Push Backup :: zrepl - ZFS replication</title>
+    <title>Mapping &amp; Filter Syntax :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/github.css" rel="stylesheet">
     <link href="/css/featherlight.min.css" rel="stylesheet">
     <link href="/css/horsey.css" rel="stylesheet">
     
@@ -31,7 +31,7 @@
     
 
   </head>
-  <body class="" data-url="/configuration/example_push_backup/">
+  <body class="" data-url="/configuration/map_filter_syntax/">
     <nav id="sidebar" class="">
 
 
@@ -66,12 +66,62 @@
   
     <ul class="topics">
         
-            <li data-nav-id="/" class="dd-item">
+            <li data-nav-id="/" class="dd-item ">
             <a href="/"><i class="fa fa-fw fa-home"></i> zrepl - ZFS replication</a>
             </li>
         
         
         
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/tutorial/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/tutorial/">
+        <span>Tutorial</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/install/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/install/">
+        <span>Installation</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
           
           
 
@@ -113,11 +163,11 @@
  
   
     
-      <li data-nav-id="/configuration/overview/" class="dd-item
+      <li data-nav-id="/configuration/jobs/" class="dd-item
      
       ">
-        <a href="/configuration/overview/">
-        <span>Overview</span> 
+        <a href="/configuration/jobs/">
+        <span>Job Types</span> 
         
         </a></li>
      
@@ -133,71 +183,51 @@
  
   
     
-      <li data-nav-id="/configuration/snapshots/" class="dd-item
-     
-      ">
-        <a href="/configuration/snapshots/">
-        <span>Snapshot Management</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/replication/" class="dd-item
-     
-      ">
-        <a href="/configuration/replication/">
-        <span>Filesystem Replication</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_pull_backup/" class="dd-item
-     
-      ">
-        <a href="/configuration/example_pull_backup/">
-        <span>Example: Pull Backup</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_push_backup/" class="dd-item
+      <li data-nav-id="/configuration/map_filter_syntax/" class="dd-item
      active
       ">
-        <a href="/configuration/example_push_backup/">
-        <span>Example: Push Backup</span> 
+        <a href="/configuration/map_filter_syntax/">
+        <span>Mapping &amp; Filter Syntax</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/prune/" class="dd-item
+     
+      ">
+        <a href="/configuration/prune/">
+        <span>Pruning</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/transports/" class="dd-item
+     
+      ">
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
         
         </a></li>
      
@@ -296,7 +326,7 @@
 
 
 
- <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Example: Push Backup
+ <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Mapping & Filter Syntax
 
  
 
@@ -307,7 +337,25 @@
             </div>
             <div class="progress">
     <div class="wrapper">
-
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#mapping-filter-syntax">Mapping &amp; Filter Syntax</a>
+<ul>
+<li>
+<ul>
+<li><a href="#pattern-syntax">Pattern Syntax</a>
+<ul>
+<li><a href="#example">Example</a></li>
+</ul></li>
+<li><a href="#mappings">Mappings</a></li>
+<li><a href="#filters">Filters</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
     </div>
 </div>
 
@@ -316,19 +364,106 @@
         
         <div id="body-inner">
           
-            <h1>Example: Push Backup</h1>
+            <h1>Mapping &amp; Filter Syntax</h1>
           
 
 
 
 
-<p>Example configuration for a typical push-backup scenario, e.g. laptop to NAS</p>
+
 
 <div class="alert 
 alert-warning"
  
-role="alert">TBD</div>
+role="alert">Under Construction</div>
 
+
+<h2 id="mapping-filter-syntax">Mapping &amp; Filter Syntax</h2>
+
+<p>For various job types, a filesystem <code>mapping</code> or <code>filter</code> needs to be
+specified.</p>
+
+<p>Both have in common that they return a result for a given filesystem path (in
+the ZFS filesystem hierarchy): mappings return a <em>target filesystem</em>, filters
+return a <em>filter result</em> (<code>omit</code>, <code>ok</code>).</p>
+
+<p>The pattern syntax is the same for mappings and filters and is documented in
+the following section.</p>
+
+<h4 id="pattern-syntax">Pattern Syntax</h4>
+
+<p>A mapping / filter is specified as a <strong>YAML dictionary</strong> with patterns as keys and
+results as values.<br />
+The following rules determine which result is chosen for a given filesystem path:</p>
+
+<ul>
+<li>More specific path patterns win over less specific ones</li>
+<li>Non-wildcard patterns (full path patterns) win over <em>subtree wildcards</em> (<code>&lt;</code> at end of pattern)</li>
+</ul>
+
+<div class="panel panel-primary">
+	
+	<div class="panel-body"><p>The <strong>subtree wildcard</strong> <code>&lt;</code> means &ldquo;<em>the dataset left of <code>&lt;</code> and all its children</em>&rdquo;.</p>
+</div>
+	
+</div>
+
+
+<h5 id="example">Example</h5>
+
+<pre><code># Rule number and its pattern
+1: tank&lt;            # tank and all its children
+2: tank/foo/bar     # full path pattern (no wildcard)
+3: tank/foo&lt;        # tank/foo and all its children
+
+# Which rule applies to given path?
+tank/foo/bar/loo =&gt; 3
+tank/bar         =&gt; 1
+tank/foo/bar     =&gt; 2
+zroot            =&gt; NO MATCH
+tank/var/log     =&gt; 1
+</code></pre>
+
+<h4 id="mappings">Mappings</h4>
+
+<p>The example below shows a pull job that would pull remote datasets to the given local paths.<br />
+If there exists no mapping (<code>NO MATCH</code>), the filesystem will not be pulled.</p>
+
+<pre><code class="language-yaml">pull:
+  app01.example.com: # client identity
+    from: app01.example.com
+    mapping: { 
+      &quot;tank/var/db&lt;&quot;:    &quot;zroot/backups/app01/tank/var/db&quot;,
+      &quot;tank/var/www&lt;&quot;:   &quot;zroot/backups/app01/tank/var/www&quot;,
+      &quot;tank/var/log&quot;:    &quot;zroot/logbackup/app01&quot;,
+    }
+</code></pre>
+
+<pre><code>tank/var/db`          =&gt; zroot/backups/app01/tank/var/db
+tank/var/db/a/child   =&gt; zroot/backups/app01/tank/var/db/a/child
+...
+tank/var/www          =&gt; zroot/backups/app01/tank/var/www
+tank/var/www/a/child  =&gt; zroot/backups/app01/tank/var/www/a/child
+...
+tank/var/log          =&gt; zroot/logbackup/app01
+tank/var/log/foo      =&gt; NOT MAPPED
+</code></pre>
+
+<h4 id="filters">Filters</h4>
+
+<p>Valid filter results: <code>ok</code> or <code>omit</code>.</p>
+
+<p>The example below shows a pull ACL that allows access to the user homes but not
+to the rest of the system&rsquo;s datasets.</p>
+
+<pre><code># Example for filter syntax
+pull_acls:
+  backups.example.com: # client identity
+    filter: {
+      &quot;&lt;&quot;:              omit,
+      &quot;tank/usr/home&lt;&quot;: ok,
+    }
+</code></pre>
 
 
 <footer class=" footline" >
@@ -369,6 +504,8 @@ role="alert">TBD</div>
             
                 
                     
+                        
+                        
                     
                 
                 
@@ -377,6 +514,75 @@ role="alert">TBD</div>
                     
                     
 
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
                     
                         
             
@@ -413,19 +619,6 @@ role="alert">TBD</div>
             
         
                     
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
             
         
                     
@@ -433,45 +626,6 @@ role="alert">TBD</div>
             
             
                 
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
                     
                 
                 

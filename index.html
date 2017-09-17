@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/hybrid.css" rel="stylesheet">
+    <link href="/css/github.css" rel="stylesheet">
     <link href="/css/featherlight.min.css" rel="stylesheet">
     <link href="/css/horsey.css" rel="stylesheet">
     
@@ -66,12 +66,62 @@
   
     <ul class="topics">
         
-            <li data-nav-id="/" class="dd-item">
+            <li data-nav-id="/" class="dd-item active">
             <a href="/"><i class="fa fa-fw fa-home"></i> zrepl - ZFS replication</a>
             </li>
         
         
         
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/tutorial/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/tutorial/">
+        <span>Tutorial</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/install/" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/install/">
+        <span>Installation</span>
+
+        
+        
+
+        
+      </a>
+              
+    </li>
+  
+ 
+
           
           
 
@@ -113,11 +163,11 @@
  
   
     
-      <li data-nav-id="/configuration/overview/" class="dd-item
+      <li data-nav-id="/configuration/jobs/" class="dd-item
      
       ">
-        <a href="/configuration/overview/">
-        <span>Overview</span> 
+        <a href="/configuration/jobs/">
+        <span>Job Types</span> 
         
         </a></li>
      
@@ -133,11 +183,11 @@
  
   
     
-      <li data-nav-id="/configuration/snapshots/" class="dd-item
+      <li data-nav-id="/configuration/map_filter_syntax/" class="dd-item
      
       ">
-        <a href="/configuration/snapshots/">
-        <span>Snapshot Management</span> 
+        <a href="/configuration/map_filter_syntax/">
+        <span>Mapping &amp; Filter Syntax</span> 
         
         </a></li>
      
@@ -153,11 +203,11 @@
  
   
     
-      <li data-nav-id="/configuration/replication/" class="dd-item
+      <li data-nav-id="/configuration/prune/" class="dd-item
      
       ">
-        <a href="/configuration/replication/">
-        <span>Filesystem Replication</span> 
+        <a href="/configuration/prune/">
+        <span>Pruning</span> 
         
         </a></li>
      
@@ -173,31 +223,11 @@
  
   
     
-      <li data-nav-id="/configuration/example_pull_backup/" class="dd-item
+      <li data-nav-id="/configuration/transports/" class="dd-item
      
       ">
-        <a href="/configuration/example_pull_backup/">
-        <span>Example: Pull Backup</span> 
-        
-        </a></li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
-      <li data-nav-id="/configuration/example_push_backup/" class="dd-item
-     
-      ">
-        <a href="/configuration/example_push_backup/">
-        <span>Example: Push Backup</span> 
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
         
         </a></li>
      
@@ -292,53 +322,58 @@
 
 <h1 id="zrepl-zfs-replication">zrepl - ZFS replication</h1>
 
-<p><code>zrepl</code> is a tool for replicating ZFS filesystems.</p>
+<p>zrepl is a tool for replicating ZFS filesystems.</p>
 
-<div class="panel panel-danger">
-	<div class="panel-heading">Important</div>
-	<div class="panel-body"><p><code>zrepl</code> as well as this documentation is still under active
-development. Some of the features below are not implemented yet. Use &amp; test at your own risk ;)</p>
-</div>
-	
+<div class="notices info" ><p><code>zrepl</code> as well as this documentation is still under active development.
+Use &amp; test at your own risk ;)</p>
 </div>
 
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>The <a href="/tutorial/">5 minute tutorial setup</a> gives you a first impression.</p>
 
 <h2 id="main-features">Main Features</h2>
 
-<ul>
-<li>filesystem replication
+<ul class="task-list">
+<li>Filesystem Replication
+
+<ul class="task-list">
+<li><input type="checkbox" checked disabled class="task-list-item"> Local &amp; Remote</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> Pull mode</li>
+<li><input type="checkbox" disabled class="task-list-item"> Push mode</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> Access control checks when pulling datasets</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> <a href="https://zrepl.github.io/configuration/map_filter_syntax/">Flexible mapping</a> rules</li>
+<li><input type="checkbox" disabled class="task-list-item"> Bookmarks support</li>
+<li><input type="checkbox" disabled class="task-list-item"> Feature-negotiation for
 
 <ul>
-<li>local &amp; over network (SSH)</li>
-<li>push &amp; pull mode</li>
-<li>snapshots &amp; bookmarks support</li>
-<li>feature-negotiation for
-
-<ul>
-<li>resumable <code>send &amp; receive</code></li>
-<li>compressed <code>send &amp; receive</code></li>
-<li>raw encrypted <code>send &amp; receive</code> (as soon as it is available)</li>
+<li>Resumable <code>send &amp; receive</code></li>
+<li>Compressed <code>send &amp; receive</code></li>
+<li>Raw encrypted <code>send &amp; receive</code> (as soon as it is available)</li>
 </ul></li>
-<li>access control checks when pulling datasets</li>
-<li><a href="https://zrepl.github.io/configuration/overview/#mapping-filter-syntax">flexible mappings</a> for filesystems</li>
 </ul></li>
-<li>automatic snapshot creation
+<li>Automatic snapshot creation
 
-<ul>
-<li>periodic interval</li>
+<ul class="task-list">
+<li><input type="checkbox" checked disabled class="task-list-item"> Ensure fixed time interval between snapshots</li>
 </ul></li>
-<li>automatic snapshot pruning
+<li>Automatic snapshot pruning
 
-<ul>
-<li><a href="https://zrepl.github.io/configuration/snapshots/#retention-grid">Retention Grid</a>
-<br /></li>
+<ul class="task-list">
+<li><input type="checkbox" checked disabled class="task-list-item"> <i class="fa fa-arrow-right" aria-hidden="true"></i> <a href="https://zrepl.github.io/configuration/prune/#retention-grid">Retention Grid</a></li>
+</ul></li>
+<li>Maintainable implementation in Go
+
+<ul class="task-list">
+<li><input type="checkbox" checked disabled class="task-list-item"> Cross platform</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> Type safe &amp; testable code</li>
 </ul></li>
 </ul>
 
 <h2 id="contributing">Contributing</h2>
 
-<p><code>zrepl</code> is usable but nowhere near a stable release right now -  we are happy
-about contributors!</p>
+<p>zrepl is usable but nowhere near a stable release right now -  we are happy about contributors!</p>
 
 <ul>
 <li>Explore the codebase
@@ -346,8 +381,8 @@ about contributors!</p>
 <ul>
 <li>These docs live in the <code>docs/</code> subdirectory</li>
 </ul></li>
-<li>Document non-obvious / confusing / plain broken things you encounter when using <code>zrepl</code> for the first time</li>
-<li>Check the <em>Issues</em> and <em>Projects</em> sections for things to do ;)</li>
+<li>Document any non-obvious / confusing / plain broken behavior you encounter when setting up zrepl for the first time</li>
+<li>Check the <em>Issues</em> and <em>Projects</em> sections for things to do</li>
 </ul>
 
 <div class="panel panel-primary">
@@ -404,6 +439,9 @@ Open your issue / PR there.</p>
                     
 
                     
+            
+        
+                    
                         
             
             
@@ -419,6 +457,19 @@ Open your issue / PR there.</p>
                     
             
         
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
                     
                         
             

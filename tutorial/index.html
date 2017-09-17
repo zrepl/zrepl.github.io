@@ -7,7 +7,7 @@
     <meta name="description" content="">
 
 
-    <title>Implementation Overview :: zrepl - ZFS replication</title>
+    <title>Tutorial :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
     
 
   </head>
-  <body class="" data-url="/impl/">
+  <body class="" data-url="/tutorial/">
     <nav id="sidebar" class="">
 
 
@@ -80,8 +80,8 @@
   
     
     <li data-nav-id="/tutorial/" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/tutorial/">
@@ -251,8 +251,8 @@
   
     
     <li data-nav-id="/impl/" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/impl/">
@@ -323,7 +323,7 @@
 
 
 
- <a href='/'>zrepl - ZFS replication</a> > Implementation Overview
+ <a href='/'>zrepl - ZFS replication</a> > Tutorial
 
  
 
@@ -336,8 +336,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#language">Language</a></li>
-<li><a href="#rpc-protocol">RPC protocol</a></li>
+<li><a href="#analysis">Analysis</a></li>
+<li><a href="#install-zrepl">Install zrepl</a></li>
+<li><a href="#configure-backups">Configure <code>backups</code></a></li>
+<li><a href="#configure-prod1">Configure <code>prod1</code></a></li>
+<li><a href="#apply-configuration-changes">Apply Configuration Changes</a></li>
+<li><a href="#watch-it-work">Watch it Work</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -349,7 +354,7 @@
         
         <div id="body-inner">
           
-            <h1>Implementation Overview</h1>
+            <h1>Tutorial</h1>
           
 
 
@@ -357,65 +362,202 @@
 
 
 
-<div class="alert 
-alert-warning"
- 
-role="alert">Under Construction</div>
+<p>This tutorial shows how zrepl can be used to implement a ZFS-based pull backup.</p>
 
-
-<p>The following design aspects may convince you that <code>zrepl</code> is superior to a hacked-together shell script solution.</p>
-
-<h2 id="language">Language</h2>
-
-<p><code>zrepl</code> is written in Go, a real programming language with type safety,
-reasonable performance, testing infrastructure and an (opinionated) idea of
-software engineering.</p>
+<p>We assume the following scenario</p>
 
 <ul>
-<li>key parts &amp; algorithms of <code>zrepl</code> are covered by unit tests</li>
-<li>zrepl is noticably faster than comparable shell scripts</li>
-</ul>
-
-<h2 id="rpc-protocol">RPC protocol</h2>
-
-<p>While it is tempting to just issue a few <code>ssh remote 'zfs send ...' | zfs recv</code>, this has a number of drawbacks:</p>
+<li>Production server <code>prod1</code> with filesystems to back up
 
 <ul>
-<li>The snapshot streams need to be compatible.</li>
-<li>Communication is still unidirectional. Thus, you will most likely
-
-<ul>
-<li>either not take advantage of features such as <em>compressed send &amp; recv</em></li>
-<li>or issue additional <code>ssh</code> commands in advance to figure out what features are supported on the other side.</li>
+<li><code>zroot/var/db</code></li>
+<li><code>zroot/usr/home</code> and all its child filesystems</li>
+<li><strong>except</strong> <code>zroot/usr/home/paranoid</code> belonging to a user doing backups themselves</li>
 </ul></li>
-<li>Advanced logic in shell scripts is ugly to read, poorly testable and a pain to maintain.</li>
-</ul>
-
-<p><code>zrepl</code> takes a different approach:</p>
+<li>Backup server <code>backups</code> with
 
 <ul>
-<li>Define an RPC protocol.</li>
-<li>Establish an encrypted, authenticated, bidirectional communication channel&hellip;</li>
-<li>&hellip; with <code>zrepl</code> running at both ends of it.</li>
+<li>Filesystem <code>storage/zrepl/pull/prod1</code> + children dedicated to backups of <code>prod1</code></li>
+</ul></li>
 </ul>
 
-<p>This has several obvious benefits:</p>
+<p>Our backup solution should fulfill the following requirements:</p>
 
 <ul>
-<li>No blank root shell access is given to the other side.</li>
-<li>Instead, access control lists (ACLs) are used to grant permissions to <em>authenticated</em> peers.</li>
-<li>The transport mechanism is decoupled from the remaining logic, keeping it extensible (e.g. TCP+TLS)</li>
+<li>Periodically snapshot the filesystems on <code>prod1</code> <em>every 10 minutes</em></li>
+<li>Incrementally replicate these snapshots to <code>storage/zrepl/pull/prod1/*</code> on <code>backups</code></li>
+<li>Keep only very few snapshots on <code>prod1</code> to save disk space</li>
+<li>Keep a fading history (24 hourly, 30 daily, 6 monthly) of snapshots on <code>backups</code></li>
 </ul>
 
-<p><div class="panel panel-primary">
-	
-	<div class="panel-body"><p>Currently, the bidirectional communication channel is multiplexed on top of a single SSH connection.
-Local replication is of course handled efficiently via simple method calls
-See TODO for details.</p>
+<h2 id="analysis">Analysis</h2>
+
+<p>We can model this situation as two jobs:</p>
+
+<ul>
+<li>A <strong>source job</strong> on <code>prod1</code>
+
+<ul>
+<li>Creates the snapshots</li>
+<li>Keeps a few snapshots that are also on <code>prod1</code> to enable incremental replication</li>
+</ul></li>
+<li>A <strong>pull job</strong> on <code>prod1</code>
+
+<ul>
+<li>Pulls the snapshots</li>
+<li>Fades out snapshots as they age</li>
+</ul></li>
+</ul>
+
+<div class="expand">
+    <div class="expand-label" style="cursor: pointer;" onclick="$h = $(this);$h.next('div').slideToggle(100,function () {$h.children('i').attr('class',function () {return $h.next('div').is(':visible') ? 'fa fa-chevron-down' : 'fa fa-chevron-right';});});">
+    	<i style="font-size:x-small;" class="fa fa-chevron-right"></i>
+    	<span>
+    	
+    	Side note: why doesn&#39;t `backups` take the snapshots right before replication?
+    	
+    	</span>
+    </div>
+    <div class="expand-content" style="display: none;">
+<p>After all, a little <code>ssh prod1 'zfs snapshot...'</code> wouldn&rsquo;t be so bad, right?</p>
+
+<p>As is the case with all distributed systems, the link between <code>prod1</code> and <code>backups</code> might be down for an hour or two.
+We do not want to sacrifice our required backup resolution of 10 minute intervals for a temporary connection outage.</p>
+
+<p>When the link comes up again, <code>backups</code> will happily catch up the 12 snapshots taken by <code>prod1</code> in the meantime, without
+a gap in our backup history.</p>
+
+    </div>
 </div>
-	
-</div>
-</p>
+
+
+
+<h2 id="install-zrepl">Install zrepl</h2>
+
+<p>Follow the <a href="/install/">OS-specific installation instructions</a> and come back here.</p>
+
+<h2 id="configure-backups">Configure <code>backups</code></h2>
+
+<p>We define a <strong>pull job</strong> named <code>pull_prod1</code> in the <a href="/install/#main-configuration-file">main configuration file</a>:</p>
+
+<pre><code class="language-yaml">jobs:
+- name: pull_prod1
+  type: pull
+  connect:
+    type: ssh+stdinserver
+    host: prod1.example.com
+    user: root
+    port: 22
+    identity_file: /etc/zrepl/ssh/prod1
+  interval: 10m
+  mapping: {
+    &quot;&lt;&quot;:&quot;storage/zrepl/pull/prod1&quot;
+  }
+  initial_repl_policy: most_recent
+  snapshot_prefix: zrepl_pull_backup_
+  prune:
+    policy: grid
+    grid: 1x1h(keep=all) | 24x1h | 35x1d | 6x30d
+</code></pre>
+
+<p>The <code>connect</code> section instructs zrepl to use the <code>stdinserver</code> transport: instead of directly exposing zrepl on <code>prod1</code>
+to the internet, <code>backups</code> starts the <code>zrepl stdinserver</code> on <code>prod1</code> via SSH.
+(You can learn more about what happens <a href="/configuration/transports/#stdinserver">here</a>, or just continue following this tutorial.)</p>
+
+<p>Thus, we need to create the SSH key pair <code>/etc/zrepl/ssh/prod1{,.pub}</code> and later pass the public part to <code>prod1</code>
+which will use it to authenticate <code>backups</code>. Execute the following commands on <code>backups</code> as the root user:</p>
+
+<pre><code class="language-bash">cd /etc/zrepl
+mkdir -p ssh
+chmod 0700 ssh
+ssh-keygen -t ed25519 -N '' -f /etc/zrepl/ssh/prod1
+</code></pre>
+
+<p>You can learn more about the <a href="/configuration/jobs/#pull"><strong>pull job</strong> format here</a> but for now we are good to go.</p>
+
+<h2 id="configure-prod1">Configure <code>prod1</code></h2>
+
+<p>We define a corresponding <strong>source job</strong> named <code>pull_backup</code> in the <a href="/install/#main-configuration-file">main configuration file</a>
+<code>zrepl.yml</code>:</p>
+
+<pre><code class="language-yaml">jobs:
+
+- name: pull_backup
+  type: source
+  serve:
+    type: stdinserver
+    client_identity: backups.example.com
+  datasets: {
+    &quot;zroot/var/db&quot;: &quot;ok&quot;,
+    &quot;zroot/usr/home&lt;&quot;: &quot;ok&quot;,
+    &quot;zroot/usr/home/paranoid&quot;: &quot;!&quot;,
+  }
+  snapshot_prefix: zrepl_pull_backup_
+  interval: 10m
+  prune:
+    policy: grid
+    grid: 1x1d(keep=all)
+
+</code></pre>
+
+<p>The <code>serve</code> section corresponds to the <code>connect</code> section in the configuration of <code>backups</code>.</p>
+
+<p>We need to allow the SSH key on <code>backups</code> to execute <code>zrepl stdinserver backups.example.com</code> on
+<code>prod1</code>. For good measure, we will in fact enforce that only this command can be executed.</p>
+
+<p>Open <code>/root/.ssh/authorized_keys</code> and add either of the the following lines, replacing BACKUPS_SSH_PUBKEY at the end
+of the line with the contents of <code>/etc/zrepl/ssh/prod1.pub</code> (note the <strong>.pub</strong> !) from <code>backups</code>.</p>
+
+<pre><code># for OpenSSH &gt;= 7.2
+command=&quot;zrepl stdinserver backups.example.com&quot;,restrict BACKUPS_SSH_PUBKEY
+# for older OpenSSH versions
+command=&quot;zrepl stdinserver backups.example.com&quot;,no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc  BACKUPS_SSH_PUBKEY
+</code></pre>
+
+<div class="alert 
+alert-info"
+ 
+role="alert">The entries <strong>must</strong> be on a single line, including the replaced BACKUPS_SSH_PUBKEY</div>
+
+
+<p>Again, you can learn more about the <a href="https://zrepl.github.io/configuration/jobs/#source"><strong>source job</strong> format here</a>.</p>
+
+<h2 id="apply-configuration-changes">Apply Configuration Changes</h2>
+
+<p>We need to restart the zrepl daemon on <strong>both</strong> <code>prod1</code> and <code>backups</code>.</p>
+
+<p>This is <a href="/install/#restarting">OS-specific</a>.</p>
+
+<h2 id="watch-it-work">Watch it Work</h2>
+
+<p>A common setup is to watch the log output and zfs list of snapshots on both machines.</p>
+
+<p>If you like tmux, here is a handy script that works on FreeBSD:</p>
+
+<pre><code class="language-bash">pkg install gnu-watch tmux
+tmux new-window
+tmux split-window &quot;tail -f /var/log/zrepl.log&quot;
+tmux split-window &quot;gnu-watch 'zfs list -t snapshot -o name,creation -s creation | grep zrepl_pull_backup_'&quot;
+tmux select-layout tiled
+</code></pre>
+
+<p>The Linux equivalent might look like this</p>
+
+<pre><code class="language-bash"># make sure tmux is installed &amp; let's assume you use systemd + journald
+tmux new-window
+tmux split-window &quot;journalctl -f -u zrepl.service&quot;
+tmux split-window &quot;watch 'zfs list -t snapshot -o name,creation -s creation | grep zrepl_pull_backup_'&quot;
+tmux select-layout tiled
+</code></pre>
+
+<h2 id="summary">Summary</h2>
+
+<p>Congratulations, you have a working pull backup. Where to go next?</p>
+
+<ul>
+<li>Read more about <a href="/configuration/">configuration format, options &amp; job types</a></li>
+<li>Learn about <a href="/impl/">implementation details</a> of zrepl.</li>
+</ul>
 
 
 <footer class=" footline" >
@@ -458,8 +600,54 @@ See TODO for details.</p>
             
                 
                     
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
                     
                 
                 
@@ -501,51 +689,6 @@ See TODO for details.</p>
                     
 
                     
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
             
         
                     
@@ -572,7 +715,6 @@ See TODO for details.</p>
             
             
                 
-                    
                     
                 
                 
