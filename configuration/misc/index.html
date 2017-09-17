@@ -7,7 +7,7 @@
     <meta name="description" content="">
 
 
-    <title>Implementation Overview :: zrepl - ZFS replication</title>
+    <title>Miscellaneous :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
     
 
   </head>
-  <body class="" data-url="/impl/">
+  <body class="" data-url="/configuration/misc/">
     <nav id="sidebar" class="">
 
 
@@ -130,7 +130,7 @@
   
     
     <li data-nav-id="/configuration/" class="dd-item 
-        
+        parent
         
         parent
         ">
@@ -156,6 +156,106 @@
           
         
           
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/jobs/" class="dd-item
+     
+      ">
+        <a href="/configuration/jobs/">
+        <span>Job Types</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/map_filter_syntax/" class="dd-item
+     
+      ">
+        <a href="/configuration/map_filter_syntax/">
+        <span>Mapping &amp; Filter Syntax</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/transports/" class="dd-item
+     
+      ">
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/prune/" class="dd-item
+     
+      ">
+        <a href="/configuration/prune/">
+        <span>Pruning</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/configuration/misc/" class="dd-item
+     active
+      ">
+        <a href="/configuration/misc/">
+        <span>Miscellaneous</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
         
         </ul>
               
@@ -171,8 +271,8 @@
   
     
     <li data-nav-id="/impl/" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/impl/">
@@ -243,7 +343,12 @@
 
 
 
- <a href='/'>zrepl - ZFS replication</a> > Implementation Overview
+
+
+
+ <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Miscellaneous
+
+ 
 
  
 
@@ -256,8 +361,8 @@
 <ul>
 <li>
 <ul>
-<li><a href="#language">Language</a></li>
-<li><a href="#rpc-protocol">RPC protocol</a></li>
+<li><a href="#runtime-directories-unix-sockets">Runtime Directories &amp; UNIX Sockets</a></li>
+<li><a href="#super-verbose-job-debugging">Super-Verbose Job Debugging</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -269,7 +374,7 @@
         
         <div id="body-inner">
           
-            <h1>Implementation Overview</h1>
+            <h1>Miscellaneous</h1>
           
 
 
@@ -277,72 +382,57 @@
 
 
 
-<div class="alert 
-alert-warning"
- 
-role="alert">Under Construction</div>
+<h2 id="runtime-directories-unix-sockets">Runtime Directories &amp; UNIX Sockets</h2>
 
-
-<p>The following design aspects may convince you that <code>zrepl</code> is superior to a hacked-together shell script solution.</p>
-
-<h2 id="language">Language</h2>
-
-<p><code>zrepl</code> is written in Go, a real programming language with type safety,
-reasonable performance, testing infrastructure and an (opinionated) idea of
-software engineering.</p>
+<p>zrepl daemon creates various UNIX sockets to allow communicating with it:</p>
 
 <ul>
-<li>key parts &amp; algorithms of <code>zrepl</code> are covered by unit tests</li>
-<li>zrepl is noticably faster than comparable shell scripts</li>
+<li>the <code>stdinserver</code> transport connects to a socket named after <code>client_identity</code> parameter</li>
+<li>the <code>control</code> subcommand connects to a defined control socket</li>
 </ul>
 
-<h2 id="rpc-protocol">RPC protocol</h2>
+<p>There is no further authentication on these sockets.
+Therefore we have to make sure they can only be created and accessed by <code>zrepl daemon</code>.</p>
 
-<p>While it is tempting to just issue a few <code>ssh remote 'zfs send ...' | zfs recv</code>, this has a number of drawbacks:</p>
+<p>In fact, <code>zrepl daemon</code> will not bind a socket to a path in a directory that is world-accessible.</p>
 
-<ul>
-<li>The snapshot streams need to be compatible.</li>
-<li>Communication is still unidirectional. Thus, you will most likely
+<p>The directories can be configured in the main configuration file:</p>
 
-<ul>
-<li>either not take advantage of features such as <em>compressed send &amp; recv</em></li>
-<li>or issue additional <code>ssh</code> commands in advance to figure out what features are supported on the other side.</li>
-</ul></li>
-<li>Advanced logic in shell scripts is ugly to read, poorly testable and a pain to maintain.</li>
-</ul>
+<pre><code class="language-yaml">global:
+  control:
+    sockpath: /var/run/zrepl/control
+  serve:
+    stdinserver:
+      sockdir: /var/run/zrepl/stdinserver
+</code></pre>
 
-<p><code>zrepl</code> takes a different approach:</p>
+<h2 id="super-verbose-job-debugging">Super-Verbose Job Debugging</h2>
 
-<ul>
-<li>Define an RPC protocol.</li>
-<li>Establish an encrypted, authenticated, bidirectional communication channel&hellip;</li>
-<li>&hellip; with <code>zrepl</code> running at both ends of it.</li>
-</ul>
+<p>You have probably landed here because you opened an issue on GitHub and some developer told you to do this&hellip;
+So just read the annotated comments ;)</p>
 
-<p>This has several obvious benefits:</p>
+<pre><code class="language-yaml">
+job:
+- name: ...
+  ...
+ # JOB DEBUGGING OPTIONS
+  # should be equal for all job types, but each job implements the debugging itself
+  debug:
+    conn: # debug the io.ReadWriteCloser connection
+      read_dump: /tmp/connlog_read   # dump results of Read() invocations to this file
+      write_dump: /tmp/connlog_write # dump results of Write() invocations to this file
+    rpc: # debug the RPC protocol implementation
+      log: true # log output from rpc layer to the job log
+</code></pre>
 
-<ul>
-<li>No blank root shell access is given to the other side.</li>
-<li>Instead, access control lists (ACLs) are used to grant permissions to <em>authenticated</em> peers.</li>
-<li>The transport mechanism is decoupled from the remaining logic, keeping it extensible (e.g. TCP+TLS)</li>
-</ul>
-
-<p><div class="panel panel-primary">
-	
-	<div class="panel-body"><p>Currently, the bidirectional communication channel is multiplexed on top of a single SSH connection.
-Local replication is of course handled efficiently via simple method calls
-See TODO for details.</p>
+<div class="notices info" ><p>Connection dumps will almost certainly contain your or other&rsquo;s private data. Do not share it in a bug report.</p>
 </div>
-	
-</div>
-</p>
+
 
 
 <footer class=" footline" >
 	
 </footer>
-
-
 
 
 
@@ -413,6 +503,7 @@ See TODO for details.</p>
             
                 
                     
+                    
                 
                 
 
@@ -425,6 +516,9 @@ See TODO for details.</p>
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -490,6 +584,7 @@ See TODO for details.</p>
             
                 
                     
+                    
                 
                 
 
@@ -509,6 +604,8 @@ See TODO for details.</p>
             
                 
                     
+                        
+                        
                     
                 
                 
@@ -552,3 +649,4 @@ See TODO for details.</p>
 
   </body>
 </html>
+

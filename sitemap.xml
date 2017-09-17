@@ -19,7 +19,15 @@
   </url>
   
   <url>
+    <loc>https://zrepl.github.io/configuration/transports/</loc>
+  </url>
+  
+  <url>
     <loc>https://zrepl.github.io/configuration/prune/</loc>
+  </url>
+  
+  <url>
+    <loc>https://zrepl.github.io/configuration/misc/</loc>
   </url>
   
   <url>
@@ -42,10 +50,6 @@
   <url>
     <loc>https://zrepl.github.io/tags/</loc>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://zrepl.github.io/configuration/transports/</loc>
   </url>
   
   <url>

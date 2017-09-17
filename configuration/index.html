@@ -203,6 +203,26 @@
  
   
     
+      <li data-nav-id="/configuration/transports/" class="dd-item
+     
+      ">
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
       <li data-nav-id="/configuration/prune/" class="dd-item
      
       ">
@@ -223,11 +243,11 @@
  
   
     
-      <li data-nav-id="/configuration/transports/" class="dd-item
+      <li data-nav-id="/configuration/misc/" class="dd-item
      
       ">
-        <a href="/configuration/transports/">
-        <span>Transports</span> 
+        <a href="/configuration/misc/">
+        <span>Miscellaneous</span> 
         
         </a></li>
      
@@ -388,7 +408,7 @@ role="alert">Under Construction</div>
 
 			
 				
-<p> Under Construction Source Pull Local </p>
+<p></p>
 				
 			
 		
@@ -428,6 +448,33 @@ role="alert">Under Construction</div>
 
 
 <li>
+<a href="/configuration/transports/" >Transports</a>
+</li>
+
+
+
+
+
+
+			
+				
+<p>Under Construction Stdinserver The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
+However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.
+Check the examples for instructions on how to set this up on your machines!</p>
+				
+			
+		
+
+		
+			
+
+		
+	
+		
+  
+
+
+<li>
 <a href="/configuration/prune/" >Pruning</a>
 </li>
 
@@ -453,7 +500,7 @@ role="alert">Under Construction</div>
 
 
 <li>
-<a href="/configuration/transports/" >Transports</a>
+<a href="/configuration/misc/" >Miscellaneous</a>
 </li>
 
 
@@ -463,7 +510,9 @@ role="alert">Under Construction</div>
 
 			
 				
-<p></p>
+<p>Runtime Directories &amp; UNIX Sockets zrepl daemon creates various UNIX sockets to allow communicating with it:
+ the stdinserver transport connects to a socket named after client_identity parameter the control subcommand connects to a defined control socket  There is no further authentication on these sockets. Therefore we have to make sure they can only be created and accessed by zrepl daemon.
+In fact, zrepl daemon will not bind a socket to a path in a directory that is world-accessible.</p>
 				
 			
 		
@@ -573,6 +622,22 @@ role="alert">Under Construction</div>
                     
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
                     
                 
                 

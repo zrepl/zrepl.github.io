@@ -203,6 +203,26 @@
  
   
     
+      <li data-nav-id="/configuration/transports/" class="dd-item
+     
+      ">
+        <a href="/configuration/transports/">
+        <span>Transports</span> 
+        
+        </a></li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
       <li data-nav-id="/configuration/prune/" class="dd-item
      
       ">
@@ -223,11 +243,11 @@
  
   
     
-      <li data-nav-id="/configuration/transports/" class="dd-item
+      <li data-nav-id="/configuration/misc/" class="dd-item
      
       ">
-        <a href="/configuration/transports/">
-        <span>Transports</span> 
+        <a href="/configuration/misc/">
+        <span>Miscellaneous</span> 
         
         </a></li>
      
@@ -338,11 +358,8 @@
 <ul>
 <li><a href="#user-privileges">User Privileges</a></li>
 <li><a href="#installation">Installation</a></li>
-<li><a href="#configuration-runtime-directories">Configuration &amp; Runtime Directories</a>
-<ul>
-<li><a href="#main-configuration-file">Main Configuration File</a></li>
+<li><a href="#configuration-files">Configuration Files</a></li>
 <li><a href="#runtime-directories">Runtime Directories</a></li>
-</ul></li>
 <li><a href="#running-the-daemon">Running the Daemon</a>
 <ul>
 <li><a href="#restarting">Restarting</a></li>
@@ -397,25 +414,21 @@ rehash
 zrepl help
 </code></pre>
 
-<h2 id="configuration-runtime-directories">Configuration &amp; Runtime Directories</h2>
+<h2 id="configuration-files">Configuration Files</h2>
 
-<h3 id="main-configuration-file">Main Configuration File</h3>
-
-<p>The main configuration file lives in either</p>
+<p>zrepl searches for its main configuration file in the following locations (in that order):</p>
 
 <ul>
 <li><code>/etc/zrepl/zrepl.yml</code></li>
 <li><code>/usr/local/etc/zrepl/zrepl.yml</code></li>
 </ul>
 
-<p>The file locations are check in that order. Alternative locations must be specified using a command line flag.</p>
+<p>Copy a config from the <a href="/tutorial">tutorial</a> or the <code>cmd/sampleconf</code> directory to one of these locations and customize it to your setup.</p>
 
-<h3 id="runtime-directories">Runtime Directories</h3>
+<h2 id="runtime-directories">Runtime Directories</h2>
 
-<p><strong>Source jobs</strong> with <code>serve.type = stdinserver</code> require a private runtime directory. (<a href="/configuration/transports/#stdinserver">Why?</a>)</p>
-
-<p>The default is <code>/var/run/zrepl/stdinserver</code> and it must only be accessible by the user
-that runs <code>zrepl daemon</code> and <code>zrepl stdinserver</code>:</p>
+<p>For default settings, the following should to the trick.
+Check out the <a href="/configuration/misc/#runtime-directories-unix-sockets">configuration documentation</a> for more information.</p>
 
 <pre><code class="language-bash">mkdir -p /var/run/zrepl/stdinserver
 chmod -R 0700 /var/run/zrepl
@@ -429,7 +442,7 @@ chmod -R 0700 /var/run/zrepl
 
 <p>The daemon does not fork and writes all log output to stderr.</p>
 
-<pre><code class="language-bash">zrepl --config /etc/zrepl/zrepl.yml daemon
+<pre><code class="language-bash">zrepl daemon
 </code></pre>
 
 <p>FreeBSD ships with the <em>daemon(8)</em> utility which is also a good start for writing an <em>rc(8)</em> file:</p>
@@ -440,7 +453,7 @@ chmod -R 0700 /var/run/zrepl
 </code></pre>
 
 <div class="notices info" ><p>Make sure to read the first lines of log output after the daemon starts: if the daemon cannot create the <a href="/configuration/transports/#stdinserver">stdinserver</a> sockets
-in the runtime directory, it will complain but not terminate as other tasks such as taking periodic snapshots might still work.</p>
+in the runtime directory, it will complain but not terminate as other tasks such as taking periodic snapshots might still work and are equally important.</p>
 </div>
 
 
@@ -539,6 +552,22 @@ in the runtime directory, it will complain but not terminate as other tasks such
                     
                     
 
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
                     
                         
             

@@ -32,6 +32,17 @@ Pattern Syntax A mapping / filter is specified as a YAML dictionary with pattern
     </item>
     
     <item>
+      <title>Transports</title>
+      <link>https://zrepl.github.io/configuration/transports/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/configuration/transports/</guid>
+      <description>Under Construction Stdinserver The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
+However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.
+Check the examples for instructions on how to set this up on your machines!</description>
+    </item>
+    
+    <item>
       <title>Pruning</title>
       <link>https://zrepl.github.io/configuration/prune/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -41,14 +52,14 @@ Pattern Syntax A mapping / filter is specified as a YAML dictionary with pattern
     </item>
     
     <item>
-      <title>Transports</title>
-      <link>https://zrepl.github.io/configuration/transports/</link>
+      <title>Miscellaneous</title>
+      <link>https://zrepl.github.io/configuration/misc/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://zrepl.github.io/configuration/transports/</guid>
-      <description>Under Construction Stdinserver The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
-However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.
-Check the examples for instructions on how to set this up on your machines!</description>
+      <guid>https://zrepl.github.io/configuration/misc/</guid>
+      <description>Runtime Directories &amp;amp; UNIX Sockets zrepl daemon creates various UNIX sockets to allow communicating with it:
+ the stdinserver transport connects to a socket named after client_identity parameter the control subcommand connects to a defined control socket  There is no further authentication on these sockets. Therefore we have to make sure they can only be created and accessed by zrepl daemon.
+In fact, zrepl daemon will not bind a socket to a path in a directory that is world-accessible.</description>
     </item>
     
   </channel>
