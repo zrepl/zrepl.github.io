@@ -16,7 +16,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/jobs/</guid>
-      <description> Under Construction Source Pull Local </description>
+      <description> Under Construction See sampleconf/*/*.yml for examples.
+Source Pull Local </description>
     </item>
     
     <item>
@@ -49,6 +50,15 @@ Check the examples for instructions on how to set this up on your machines!</des
       
       <guid>https://zrepl.github.io/configuration/prune/</guid>
       <description> Under Construction Retention Grid </description>
+    </item>
+    
+    <item>
+      <title>Logging</title>
+      <link>https://zrepl.github.io/configuration/logging/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zrepl.github.io/configuration/logging/</guid>
+      <description>Under Construction See cmd/sampleconf/random/logging.yml.</description>
     </item>
     
     <item>

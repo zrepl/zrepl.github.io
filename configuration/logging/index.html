@@ -7,7 +7,7 @@
     <meta name="description" content="">
 
 
-    <title>Installation :: zrepl - ZFS replication</title>
+    <title>Logging :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
     
 
   </head>
-  <body class="" data-url="/install/">
+  <body class="" data-url="/configuration/logging/">
     <nav id="sidebar" class="">
 
 
@@ -105,8 +105,8 @@
   
     
     <li data-nav-id="/install/" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/install/">
@@ -130,7 +130,7 @@
   
     
     <li data-nav-id="/configuration/" class="dd-item 
-        
+        parent
         
         parent
         ">
@@ -244,7 +244,7 @@
   
     
       <li data-nav-id="/configuration/logging/" class="dd-item
-     
+     active
       ">
         <a href="/configuration/logging/">
         <span>Logging</span> 
@@ -363,7 +363,12 @@
 
 
 
- <a href='/'>zrepl - ZFS replication</a> > Installation
+
+
+
+ <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Logging
+
+ 
 
  
 
@@ -372,21 +377,7 @@
             </div>
             <div class="progress">
     <div class="wrapper">
-<nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#user-privileges">User Privileges</a></li>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#configuration-files">Configuration Files</a></li>
-<li><a href="#runtime-directories">Runtime Directories</a></li>
-<li><a href="#running-the-daemon">Running the Daemon</a>
-<ul>
-<li><a href="#restarting">Restarting</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
+
     </div>
 </div>
 
@@ -395,102 +386,24 @@
         
         <div id="body-inner">
           
-            <h1>Installation</h1>
+            <h1>Logging</h1>
           
 
 
 
 
+<div class="alert 
+alert-warning"
+ 
+role="alert">Under Construction</div>
 
 
-<div class="notices note" ><p>Note: check out the <a href="/tutorial/">tutorial</a> if you want a first impression of zrepl.</p>
-</div>
-
-
-<h2 id="user-privileges">User Privileges</h2>
-
-<p>It is possible to run zrepl as an unprivileged user in combination with
-<a href="https://www.freebsd.org/doc/handbook/zfs-zfs-allow.html">ZFS delegation</a>.</p>
-
-<p>Also, there is the possibility to run it in a jail on FreeBSD by delegating a dataset to the jail.</p>
-
-<p>However, until we get around documenting those setups, you will have to run zrepl as root or experiment yourself :)</p>
-
-<h2 id="installation">Installation</h2>
-
-<p>zrepl is currently not packaged on any operating system. Signed &amp; versioned releases are planned but not available yet.</p>
-
-<p>Check out the sources yourself, compile and install to the zrepl user&rsquo;s <code>$PATH</code>.<br />
-<strong>Note</strong>: if the zrepl binary is not in <code>$PATH</code>, you will have to adjust the examples in the <a href="/tutorial/">tutorial</a>.</p>
-
-<pre><code class="language-bash"># NOTE: you may want to checkout &amp; build as an unprivileged user
-cd /root
-git clone https://github.com/zrepl/zrepl.git
-cd zrepl
-go build -o zrepl
-cp zrepl /usr/local/bin/zrepl
-rehash
-# see if it worked
-zrepl help
-</code></pre>
-
-<h2 id="configuration-files">Configuration Files</h2>
-
-<p>zrepl searches for its main configuration file in the following locations (in that order):</p>
-
-<ul>
-<li><code>/etc/zrepl/zrepl.yml</code></li>
-<li><code>/usr/local/etc/zrepl/zrepl.yml</code></li>
-</ul>
-
-<p>Copy a config from the <a href="/tutorial">tutorial</a> or the <code>cmd/sampleconf</code> directory to one of these locations and customize it to your setup.</p>
-
-<h2 id="runtime-directories">Runtime Directories</h2>
-
-<p>For default settings, the following should to the trick.
-Check out the <a href="/configuration/misc/#runtime-directories-unix-sockets">configuration documentation</a> for more information.</p>
-
-<pre><code class="language-bash">mkdir -p /var/run/zrepl/stdinserver
-chmod -R 0700 /var/run/zrepl
-</code></pre>
-
-<h2 id="running-the-daemon">Running the Daemon</h2>
-
-<p>All work zrepl done is performed by a daemon process.</p>
-
-<p>There are no <em>rc(8)</em> or <em>systemd.service(5)</em> service definitions yet.</p>
-
-<p>The daemon does not fork and writes all log output to stderr.</p>
-
-<pre><code class="language-bash">zrepl daemon
-</code></pre>
-
-<p>FreeBSD ships with the <em>daemon(8)</em> utility which is also a good start for writing an <em>rc(8)</em> file:</p>
-
-<pre><code class="language-bash">daemon -o /var/log/zrepl.log \
-       -p /var/run/zrepl/daemon.pid \
-       zrepl --config /usr/local/etc/zrepl/zrepl.yml daemon
-</code></pre>
-
-<div class="notices info" ><p>Make sure to read the first lines of log output after the daemon starts: if the daemon cannot create the <a href="/configuration/transports/#stdinserver">stdinserver</a> sockets
-in the runtime directory, it will complain but not terminate as other tasks such as taking periodic snapshots might still work and are equally important.</p>
-</div>
-
-
-<h3 id="restarting">Restarting</h3>
-
-<p>The daemon handles SIGINT and SIGTERM for graceful shutdown.</p>
-
-<p>Graceful shutdown means at worst that a job will not be rescheduled for the next interval.</p>
-
-<p>The daemon exits as soon as all jobs have reported shut down.</p>
+<p>See <code>cmd/sampleconf/random/logging.yml</code>.</p>
 
 
 <footer class=" footline" >
 	
 </footer>
-
-
 
 
 
@@ -545,7 +458,6 @@ in the runtime directory, it will complain but not terminate as other tasks such
             
                 
                     
-                    
                 
                 
 
@@ -562,8 +474,6 @@ in the runtime directory, it will complain but not terminate as other tasks such
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -578,21 +488,8 @@ in the runtime directory, it will complain but not terminate as other tasks such
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
+                        
                     
                 
                 
@@ -657,6 +554,26 @@ in the runtime directory, it will complain but not terminate as other tasks such
             
             
                 
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
                     
                 
                 
@@ -719,3 +636,4 @@ in the runtime directory, it will complain but not terminate as other tasks such
 
   </body>
 </html>
+
