@@ -381,7 +381,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#stdinserver">Stdinserver</a></li>
+<li><a href="#ssh-stdinserver"><code>ssh+stdinserver</code></a>
+<ul>
+<li><a href="#serve"><code>serve</code></a></li>
+<li><a href="#connect"><code>connect</code></a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -401,31 +405,102 @@
 
 
 
-<div class="alert 
-alert-warning"
- 
-role="alert">Under Construction</div>
+<p>A transport provides an authenticated <a href="https://golang.org/pkg/io/#ReadWriteCloser"><code>io.ReadWriteCloser</code></a> to the RPC layer.
+(An <code>io.ReadWriteCloser</code> is essentially a bidirectional reliable communication channel.)</p>
 
+<p>Currently, only the <code>ssh+stdinserver</code> transport is supported.</p>
 
-<h2 id="stdinserver">Stdinserver</h2>
+<h2 id="ssh-stdinserver"><code>ssh+stdinserver</code></h2>
 
-<p>The SSH transport connects to the remote server using the SSH binary in
-<code>$PATH</code> and the parameters specified in the <code>zrepl</code> config file.</p>
+<p>The way the <code>ssh+stdinserver</code> transport works is inspired by <a href="https://git-scm.com/docs/git-shell">git shell</a> and <a href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Backup</a>.
+It is implemented in the Go package <code>github.com/zrepl/zrepl/sshbytestream</code>.
+The config excerpts are taken from the <a href="/tutorial/">tutorial</a> which you should complete before reading further.</p>
 
-<p>However, instead of a traditional interactive SSH session, <code>zrepl</code> expects
-another instance of <code>zrepl</code> on the other side of the connection; You may be
-familiar with this concept from <a href="https://git-scm.com/docs/git-shell">git shell</a>
-or <a href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Backup</a>.</p>
+<h3 id="serve"><code>serve</code></h3>
 
-<p>Check the examples for instructions on how to set this up on your machines!</p>
+<pre><code class="language-yaml">jobs:
+- name: pull_backup
+  type: source
+  serve:
+    type: stdinserver
+    client_identity: backup-srv.example.com
+  ...
+</code></pre>
 
-<p><div class="panel panel-primary">
-	
-	<div class="panel-body"><p>The environment variables of the underlying SSH process are cleared. <code>$SSH_AUTH_SOCK</code> will not be available. We suggest creating a separate, unencrypted SSH key.</p>
+<p>The serving job opens a UNIX socket named after <code>client_identity</code> in the runtime directory, e.g. <code>/var/run/zrepl/stdinserver/backup-srv.example.com</code>.</p>
+
+<p>On the same machine, the <code>zrepl stdinserver $client_identity</code> command connects to that socket.
+For example, <code>zrepl stdinserver backup-srv.example.com</code> connects to the UNIX socket <code>/var/run/zrepl/stdinserver/backup-srv.example.com</code>.</p>
+
+<p>It then passes its stdin and stdout file descriptors to the zrepl daemon via <em>cmsg(3)</em>.
+zrepl daemon in turn combines them into an <code>io.ReadWriteCloser</code>:
+a <code>Write()</code> turns into a write to stdout, a <code>Read()</code> turns into a read from stdin.</p>
+
+<p>Interactive use of the <code>stdinserver</code> subcommand does not make much sense.
+However, we can force its execution when a user with a particular SSH pubkey connects via SSH.
+This can be achieved with an entry in the <code>authorized_keys</code> file of the serving zrepl daemon.</p>
+
+<pre><code># for OpenSSH &gt;= 7.2
+command=&quot;zrepl stdinserver CLIENT_IDENTITY&quot;,restrict CLIENT_SSH_KEY
+# for older OpenSSH versions
+command=&quot;zrepl stdinserver CLIENT_IDENTITY&quot;,no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc  CLIENT_SSH_KEY
+</code></pre>
+
+<ul>
+<li>CLIENT_IDENTITY is substituted with <code>backup-srv.example.com</code></li>
+<li>CLIENT_SSH_KEY is substituted with the public part of the SSH keypair specified in the <code>connect</code> directive on the connecting host.</li>
+</ul>
+
+<p>To recap, this is of how client authentication works with the <code>ssh+stdinserver</code> transport:</p>
+
+<ul>
+<li>Connections to the <code>client_identity</code> UNIX socket are blindly trusted by zrepl daemon.</li>
+<li>Thus, the runtime directory must be private to the zrepl user (checked by zrepl daemon)</li>
+<li>The admin of the host with the serving zrepl daemon controls the <code>authorized_keys</code> file.</li>
+<li>Thus, the administrator controls the mapping <code>PUBKEY -&gt; CLIENT_IDENTITY</code>.</li>
+</ul>
+
+<h3 id="connect"><code>connect</code></h3>
+
+<pre><code class="language-yaml">jobs:
+- name: pull_app-srv
+  type: pull
+  connect:
+    type: ssh+stdinserver
+    host: app-srv.example.com
+    user: root
+    port: 22
+    identity_file: /etc/zrepl/ssh/identity
+    options: # optional
+    - &quot;Compression=on&quot;
+</code></pre>
+
+<p>The connecting zrepl daemon</p>
+
+<ol>
+<li>Creates a pipe</li>
+<li>Forks</li>
+<li>In the forked process
+
+<ol>
+<li>Replaces forked stdin and stdout with the corresponding pipe ends</li>
+<li>Executes the <code>ssh</code> binary found in <code>$PATH</code>.
+
+<ol>
+<li>The identity file (<code>-i</code>) is set to <code>$identity_file</code>.</li>
+<li>The remote user, host and port correspond to those configured.</li>
+<li>Further options can be specified using the <code>options</code> field, which appends each entry in the list to the command line using <code>-o $entry</code>.</li>
+</ol></li>
+</ol></li>
+<li>Wraps the pipe ends in an <code>io.ReadWriteCloser</code> and uses it for RPC.</li>
+</ol>
+
+<p>As discussed in the section above, the connecting zrepl daemon expects that <code>zrepl stdinserver $client_identity</code> is  executed automatically via an <code>authorized_keys</code> file entry.</p>
+
+<div class="notices info" ><p>The environment variables of the underlying SSH process are cleared. <code>$SSH_AUTH_SOCK</code> will not be available.<br />
+It is suggested to create a separate, unencrypted SSH key solely for that purpose.</p>
 </div>
-	
-</div>
-</p>
+
 
 
 <footer class=" footline" >

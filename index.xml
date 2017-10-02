@@ -16,7 +16,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/jobs/</guid>
-      <description> Under Construction See sampleconf/*/*.yml for examples.
+      <description> Under Construction See cmd/sampleconf/ for examples.
 Source Pull Local </description>
     </item>
     
@@ -38,9 +38,10 @@ Pattern Syntax A mapping / filter is specified as a YAML dictionary with pattern
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/transports/</guid>
-      <description>Under Construction Stdinserver The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
-However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.
-Check the examples for instructions on how to set this up on your machines!</description>
+      <description>A transport provides an authenticated io.ReadWriteCloser to the RPC layer. (An io.ReadWriteCloser is essentially a bidirectional reliable communication channel.)
+Currently, only the ssh+stdinserver transport is supported.
+ssh+stdinserver The way the ssh+stdinserver transport works is inspired by git shell and Borg Backup. It is implemented in the Go package github.com/zrepl/zrepl/sshbytestream. The config excerpts are taken from the tutorial which you should complete before reading further.
+serve jobs: - name: pull_backup type: source serve: type: stdinserver client_identity: backup-srv.</description>
     </item>
     
     <item>
@@ -58,7 +59,7 @@ Check the examples for instructions on how to set this up on your machines!</des
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/logging/</guid>
-      <description>Under Construction See cmd/sampleconf/random/logging.yml.</description>
+      <description>Under Construction See cmd/sampleconf/random/logging.yml .</description>
     </item>
     
     <item>

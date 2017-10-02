@@ -428,7 +428,7 @@ role="alert">Under Construction</div>
 
 			
 				
-<p> Under Construction See sampleconf/*/*.yml for examples.
+<p> Under Construction See cmd/sampleconf/ for examples.
 Source Pull Local </p>
 				
 			
@@ -479,9 +479,10 @@ Source Pull Local </p>
 
 			
 				
-<p>Under Construction Stdinserver The SSH transport connects to the remote server using the SSH binary in $PATH and the parameters specified in the zrepl config file.
-However, instead of a traditional interactive SSH session, zrepl expects another instance of zrepl on the other side of the connection; You may be familiar with this concept from git shell or Borg Backup.
-Check the examples for instructions on how to set this up on your machines!</p>
+<p>A transport provides an authenticated io.ReadWriteCloser to the RPC layer. (An io.ReadWriteCloser is essentially a bidirectional reliable communication channel.)
+Currently, only the ssh+stdinserver transport is supported.
+ssh+stdinserver The way the ssh+stdinserver transport works is inspired by git shell and Borg Backup. It is implemented in the Go package github.com/zrepl/zrepl/sshbytestream. The config excerpts are taken from the tutorial which you should complete before reading further.
+serve jobs: - name: pull_backup type: source serve: type: stdinserver client_identity: backup-srv.</p>
 				
 			
 		
@@ -531,7 +532,7 @@ Check the examples for instructions on how to set this up on your machines!</p>
 
 			
 				
-<p>Under Construction See cmd/sampleconf/random/logging.yml.</p>
+<p>Under Construction See cmd/sampleconf/random/logging.yml .</p>
 				
 			
 		
