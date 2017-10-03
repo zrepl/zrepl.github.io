@@ -363,6 +363,7 @@
 <h1 id="zrepl-zfs-replication">zrepl - ZFS replication</h1>
 
 <div class="notices info" ><p>zrepl as well as this documentation is still under active development.
+It is neither feature complete nor is there a stability guarantee on the configuration format.
 Use &amp; test at your own risk ;)</p>
 </div>
 
@@ -396,10 +397,16 @@ Use &amp; test at your own risk ;)</p>
 <ul class="task-list">
 <li><input type="checkbox" checked disabled class="task-list-item"> Ensure fixed time interval between snapshots</li>
 </ul></li>
-<li>Automatic snapshot pruning
+<li>Automatic snapshot <a href="https://zrepl.github.io/configuration/prune/">pruning</a>
 
 <ul class="task-list">
-<li><input type="checkbox" checked disabled class="task-list-item"> <i class="fa fa-arrow-right" aria-hidden="true"></i> <a href="https://zrepl.github.io/configuration/prune/#retention-grid">Retention Grid</a></li>
+<li><input type="checkbox" checked disabled class="task-list-item"> Age-based fading (grandfathering scheme)</li>
+</ul></li>
+<li>Flexible, detailed &amp; structured <a href="https://zrepl.github.io/configuration/logging/">logging</a>
+
+<ul class="task-list">
+<li><input type="checkbox" checked disabled class="task-list-item"> <code>human</code>, <code>logfmt</code> and <code>json</code> formatting</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> stdout, syslog and TCP (+TLS client auth) outlets</li>
 </ul></li>
 <li>Maintainable implementation in Go
 
@@ -407,12 +414,11 @@ Use &amp; test at your own risk ;)</p>
 <li><input type="checkbox" checked disabled class="task-list-item"> Cross platform</li>
 <li><input type="checkbox" checked disabled class="task-list-item"> Type safe &amp; testable code</li>
 </ul></li>
-<li>Flexible, detailed &amp; structured <a href="https://zrepl.github.io/configuration/logging/">logging</a></li>
 </ul>
 
 <h2 id="contributing">Contributing</h2>
 
-<p>zrepl is usable but nowhere near a stable release right now -  we are happy about contributors!</p>
+<p>We are happy about any help we can get!</p>
 
 <ul>
 <li>Explore the codebase
@@ -425,9 +431,9 @@ Use &amp; test at your own risk ;)</p>
 </ul>
 
 <div class="panel panel-primary">
-	<div class="panel-heading"><i class='fa fa-github'></i> Getting your code merged</div>
-	<div class="panel-body"><p><a href="https://github.com/zrepl/zrepl">The <i class='fa fa-github'></i> GitHub repository</a> is where all development happens.
-Open your issue / PR there.</p>
+	<div class="panel-heading"><i class='fa fa-github'></i> Development Workflow</div>
+	<div class="panel-body"><p><a href="https://github.com/zrepl/zrepl">The <i class='fa fa-github'></i> GitHub repository</a> is where all development happens.<br />
+Make sure to read the <a href="https://github.com/zrepl/zrepl">Developer Documentation section</a> and open new issues or pull requests there.</p>
 </div>
 	
 </div>
