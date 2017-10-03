@@ -7,7 +7,7 @@
     <meta name="description" content="Automated pruning of snapshots">
 
 
-    <title>Pruning :: zrepl - ZFS replication</title>
+    <title>Pruning Policies :: zrepl - ZFS replication</title>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
     <link href="/css/nucleus.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
@@ -227,7 +227,7 @@
      active
       ">
         <a href="/configuration/prune/">
-        <span>Pruning</span> 
+        <span>Pruning Policies</span> 
         
         </a></li>
      
@@ -366,7 +366,7 @@
 
 
 
- <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Pruning
+ <a href='/'>zrepl - ZFS replication</a> > <a href='/configuration/'>Configuration</a> > Pruning Policies
 
  
 
@@ -393,7 +393,7 @@
         
         <div id="body-inner">
           
-            <h1>Pruning</h1>
+            <h1>Pruning Policies</h1>
           
 
 
@@ -401,13 +401,54 @@
 
 
 
-<div class="alert 
-alert-warning"
- 
-role="alert">Under Construction</div>
+<p>In zrepl, <em>pruning</em> means <em>destroying snapshots by some policy</em>.</p>
 
+<p>A <em>pruning policy</em> takes a list of snapshots and - for each snapshot - decides whether it should be kept or destroyed.</p>
+
+<p>The job context defines which snapshots are even considered for pruning, for example through the <code>snapshot_prefix</code> variable.
+Check the <a href="/configuration/jobs/">job definition</a> for details.</p>
+
+<p>Currently, the retention grid is the only supported pruning policy.</p>
 
 <h2 id="retention-grid">Retention Grid</h2>
+
+<pre><code class="language-yaml">jobs:
+- name: pull_app-srv
+  ...
+  prune:
+    policy: grid
+    grid: 1x1h(keep=all) | 24x1h | 35x1d | 6x30d
+            │               │
+            └─ one hour interval
+                            │
+                            └─ 24 adjacent one-hour intervals
+</code></pre>
+
+<p>The retention grid can be thought of as a time-based sieve:</p>
+
+<p>The <code>grid</code> field specifies a list of adjacent time intervals:
+the left edge of the leftmost (first) interval is the <code>creation</code> date of the youngest snapshot.
+All intervals to its right describe time intervals further in the past.</p>
+
+<p>Each interval carries a maximum number of snapshots to keep.
+It is secified via <code>(keep=N)</code>, where <code>N</code> is either <code>all</code> (all snapshots are kept) or a positive integer.
+The default value is <strong>1</strong>.</p>
+
+<p>The following procedure happens during pruning:</p>
+
+<ol>
+<li>The list of snapshots eligible for pruning is sorted by <code>creation</code></li>
+<li>The left edge of the first interval is aligned to the <code>creation</code> date of the youngest snapshot</li>
+<li>A list of buckets is created, one for each interval</li>
+<li>The list of snapshots is split up into the buckets.</li>
+<li>For each bucket
+
+<ol>
+<li>the contained snapshot list is sorted by creation.</li>
+<li>snapshots from the list, oldest first, are destroyed until the specified <code>keep</code> count is reached.</li>
+<li>all remaining snapshots on the list are kept.</li>
+</ol></li>
+</ol>
 
 
 <footer class=" footline" >

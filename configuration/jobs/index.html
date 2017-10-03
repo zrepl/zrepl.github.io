@@ -227,7 +227,7 @@
      
       ">
         <a href="/configuration/prune/">
-        <span>Pruning</span> 
+        <span>Pruning Policies</span> 
         
         </a></li>
      
@@ -381,9 +381,20 @@
 <ul>
 <li>
 <ul>
+<li><a href="#job-types">Job Types</a>
+<ul>
 <li><a href="#source">Source</a></li>
 <li><a href="#pull">Pull</a></li>
 <li><a href="#local">Local</a></li>
+</ul></li>
+<li><a href="#glossary">Glossary</a>
+<ul>
+<li>
+<ul>
+<li><a href="#task">Task</a></li>
+<li><a href="#patient">patient</a></li>
+</ul></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -403,20 +414,315 @@
 
 
 
-<div class="alert 
-alert-warning"
- 
-role="alert">Under Construction</div>
+<p>A <em>job</em> is the unit of activity tracked by the zrepl daemon and configured in the <a href="/install/#configuration-files">configuration file</a>.</p>
 
+<p>Every job has a unique <code>name</code>, a <code>type</code> and type-dependent fields which are documented on this page.</p>
 
-<p>See <a href="https://github.com/zrepl/zrepl/tree/master/cmd/sampleconf/" target="_new"><code>cmd/sampleconf/</code></a>
- for examples.</p>
+<p>Check out the <a href="/tutorial/">tutorial</a> and <a href="https://github.com/zrepl/zrepl/tree/master/cmd/sampleconf/" target="_new"><code>cmd/sampleconf/</code></a>
+ for examples on how job types are actually used.</p>
 
-<h2 id="source">Source</h2>
+<h2 id="job-types">Job Types</h2>
 
-<h2 id="pull">Pull</h2>
+<h3 id="source">Source</h3>
 
-<h2 id="local">Local</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description / Example</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td></td>
+<td><code>source</code></td>
+</tr>
+
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td>unique name of the job</td>
+</tr>
+
+<tr>
+<td><code>serve</code></td>
+<td></td>
+<td>
+
+<a href="/configuration/transports/">serve transport</a>
+
+ specification</td>
+</tr>
+
+<tr>
+<td><code>datasets</code></td>
+<td></td>
+<td>
+
+<a href="/configuration/map_filter_syntax/#filters">filter</a>
+
+ for datasets to expose to client</td>
+</tr>
+
+<tr>
+<td><code>snapshot_prefix</code></td>
+<td></td>
+<td>prefix for ZFS snapshots taken by this job</td>
+</tr>
+
+<tr>
+<td><code>interval</code></td>
+<td></td>
+<td>snapshotting interval</td>
+</tr>
+
+<tr>
+<td><code>prune</code></td>
+<td></td>
+<td>
+
+<a href="/configuration/prune/">prune policy</a>
+
+ policy for datasets in <code>datasets</code> with prefix <code>snapshot_prefix</code></td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>Snapshotting Task (every <code>interval</code>, <a href="#patient">patient</a>
+)
+
+<ol>
+<li>A snapshot of filesystems matched by <code>datasets</code> is taken every <code>interval</code> with prefix <code>snapshot_prefix</code>.</li>
+<li>The <code>prune</code> policy is triggered on datasets matched by <code>datasets</code> with snapshots matched by <code>snapshot_prefix</code>.</li>
+</ol></li>
+<li>Serve Task
+
+<ul>
+<li>Wait for connections from pull job using <code>serve</code></li>
+</ul></li>
+</ul>
+
+<p>A source job is the counterpart to a <a href="#pull">pull job</a>.</p>
+
+<p>Example: <a href="https://github.com/zrepl/zrepl/tree/master/cmd/sampleconf/pullbackup/productionhost.yml" target="_new"><code>cmd/sampleconf/pullbackup/productionhost.yml</code></a>
+</p>
+
+<h3 id="pull">Pull</h3>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description / Example</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td></td>
+<td><code>pull</code></td>
+</tr>
+
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td>unique name of the job</td>
+</tr>
+
+<tr>
+<td><code>connect</code></td>
+<td></td>
+<td>
+
+<a href="/configuration/transports/">connect transport</a>
+
+ specification</td>
+</tr>
+
+<tr>
+<td><code>interval</code></td>
+<td></td>
+<td>Interval between pull attempts</td>
+</tr>
+
+<tr>
+<td><code>mapping</code></td>
+<td></td>
+<td>
+
+<a href="/configuration/map_filter_syntax/#mappings">mapping</a>
+
+ for remote to local filesystems</td>
+</tr>
+
+<tr>
+<td><code>initial_repl_policy</code></td>
+<td><code>most_recent</code></td>
+<td>initial replication policy</td>
+</tr>
+
+<tr>
+<td><code>snapshot_prefix</code></td>
+<td></td>
+<td>prefix filter used for replication &amp; pruning</td>
+</tr>
+
+<tr>
+<td><code>prune</code></td>
+<td></td>
+<td>
+
+<a href="/configuration/prune/">prune policy</a>
+
+ policy for local filesystems reachable by <code>mapping</code></td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>Main Task (every <code>interval</code>, <a href="#patient">patient</a>
+)
+
+<ol>
+<li>A connection to the remote source job is established using the strategy in <code>connect</code></li>
+<li><code>mapping</code> maps filesystems presented by the remote side to local <em>target filesystems</em></li>
+<li>Those remote filesystems with a local <em>target filesystem</em> are replicated:
+
+<ol>
+<li>Only snapshots with prefix <code>snapshot_prefix</code> are replicated.</li>
+<li>If possible, incremental replication takes place.</li>
+<li>If the local target filesystem does not exist, <code>initial_repl_policy</code> is used.</li>
+<li>On conflicts, an error is logged but replication of other filesystems with mapping continues.</li>
+</ol></li>
+<li>The <code>prune</code> policy is triggered for all <em>target filesystems</em></li>
+</ol></li>
+</ul>
+
+<p>A pull job is the counterpart to a <a href="#source">source job</a>.</p>
+
+<p>Example: <a href="https://github.com/zrepl/zrepl/tree/master/cmd/sampleconf/pullbackup/backuphost.yml" target="_new"><code>cmd/sampleconf/pullbackup/backuphost.yml</code></a>
+</p>
+
+<h3 id="local">Local</h3>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description / Example</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td></td>
+<td><code>local</code></td>
+</tr>
+
+<tr>
+<td><code>name</code></td>
+<td></td>
+<td>unique name of the job</td>
+</tr>
+
+<tr>
+<td><code>mapping</code></td>
+<td></td>
+<td>
+
+<a href="/configuration/map_filter_syntax/#mappings">mapping</a>
+
+ from source to target filesystem (both local)</td>
+</tr>
+
+<tr>
+<td><code>snapshot_prefix</code></td>
+<td></td>
+<td>prefix for ZFS snapshots taken by this job</td>
+</tr>
+
+<tr>
+<td><code>interval</code></td>
+<td>snapshotting &amp; replication interval</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>initial_repl_policy</code></td>
+<td><code>most_recent</code></td>
+<td>initial replication policy</td>
+</tr>
+
+<tr>
+<td><code>prune_lhs</code></td>
+<td></td>
+<td>pruning policy on left-hand-side (source)</td>
+</tr>
+
+<tr>
+<td><code>prune_rhs</code></td>
+<td></td>
+<td>pruning policy on right-hand-side (target)</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>Main Task (every <code>interval</code>, <a href="#patient">patient</a>
+)
+
+<ol>
+<li>Evaluate <code>mapping</code> for local filesystems, those with a <em>target filesystem</em> are called <em>mapped filesystems</em>.</li>
+<li>Snapshot <em>mapped filesystems</em> with <code>snapshot_prefix</code>.</li>
+<li>Replicate <em>mapped filesystems</em> to their respective <em>target filesystems</em>:
+
+<ol>
+<li>Only snapshots with prefix <code>snapshot_prefix</code> are replicated.</li>
+<li>If possible, incremental replication takes place.</li>
+<li>If the <em>target filesystem</em> does not exist, <code>initial_repl_policy</code> is used.</li>
+<li>On conflicts, an error is logged but replication of other <em>mapped filesystems</em> continues.</li>
+</ol></li>
+<li>The <code>prune_lhs</code> policy is triggered for all <em>mapped filesystems</em></li>
+<li>The <code>prune_rhs</code> policy is triggered for all <em>target filesystems</em></li>
+</ol></li>
+</ul>
+
+<p>A local job is combination of source &amp; pull job executed on the same machine.</p>
+
+<p>Example: <a href="https://github.com/zrepl/zrepl/tree/master/cmd/sampleconf/localbackup/host1.yml" target="_new"><code>cmd/sampleconf/localbackup/host1.yml</code></a>
+</p>
+
+<h2 id="glossary">Glossary</h2>
+
+<h4 id="task">Task</h4>
+
+<p>A job consists of one or more tasks and a task consists of one or more steps.
+Some tasks may be periodic while others wait for an event to occur.</p>
+
+<h4 id="patient">patient</h4>
+
+<p>it is supposed to execute some task every <code>interval</code>.
+We call the start of the task an <em>invocation</em>.</p>
+
+<ul>
+<li>If the task completes in less than <code>interval</code>, the task is restarted at <code>last_invocation + interval</code>.</li>
+<li>Otherwise, a patient job
+
+<ul>
+<li>logs a warning as soon as a task exceeds its configured <code>interval</code></li>
+<li>waits for the last invocation to finish</li>
+<li>logs a warning with the effective task duration</li>
+<li>immediately starts a new invocation of the task</li>
+</ul></li>
+</ul>
 
 
 <footer class=" footline" >

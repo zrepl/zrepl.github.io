@@ -16,8 +16,10 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/jobs/</guid>
-      <description> Under Construction See cmd/sampleconf/ for examples.
-Source Pull Local </description>
+      <description>A job is the unit of activity tracked by the zrepl daemon and configured in the configuration file.
+Every job has a unique name, a type and type-dependent fields which are documented on this page.
+Check out the tutorial and cmd/sampleconf/ for examples on how job types are actually used.
+Job Types Source    Parameter Default Description / Example     type  source   name  unique name of the job   serve   serve transport specification   datasets   filter for datasets to expose to client   snapshot_prefix  prefix for ZFS snapshots taken by this job   interval  snapshotting interval   prune   prune policy policy for datasets in datasets with prefix snapshot_prefix     Snapshotting Task (every interval, patient )  A snapshot of filesystems matched by datasets is taken every interval with prefix snapshot_prefix.</description>
     </item>
     
     <item>
@@ -26,8 +28,8 @@ Source Pull Local </description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/map_filter_syntax/</guid>
-      <description>Under Construction Mapping &amp;amp; Filter Syntax For various job types, a filesystem mapping or filter needs to be specified.
-Both have in common that they return a result for a given filesystem path (in the ZFS filesystem hierarchy): mappings return a target filesystem, filters return a filter result (omit, ok).
+      <description>Mapping &amp;amp; Filter Syntax For various job types, a filesystem mapping or filter needs to be specified.
+Both have in common that they take a filesystem path (in the ZFS filesystem hierarchy)as parameters and return something. Mappings return a target filesystem and filters return a filter result.
 The pattern syntax is the same for mappings and filters and is documented in the following section.
 Pattern Syntax A mapping / filter is specified as a YAML dictionary with patterns as keys and results as values.</description>
     </item>
@@ -45,12 +47,16 @@ serve jobs: - name: pull_backup type: source serve: type: stdinserver client_ide
     </item>
     
     <item>
-      <title>Pruning</title>
+      <title>Pruning Policies</title>
       <link>https://zrepl.github.io/configuration/prune/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/prune/</guid>
-      <description> Under Construction Retention Grid </description>
+      <description>In zrepl, pruning means destroying snapshots by some policy.
+A pruning policy takes a list of snapshots and - for each snapshot - decides whether it should be kept or destroyed.
+The job context defines which snapshots are even considered for pruning, for example through the snapshot_prefix variable. Check the job definition for details.
+Currently, the retention grid is the only supported pruning policy.
+Retention Grid jobs: - name: pull_app-srv .</description>
     </item>
     
     <item>
