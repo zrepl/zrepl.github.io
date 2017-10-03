@@ -65,7 +65,9 @@ Retention Grid jobs: - name: pull_app-srv .</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://zrepl.github.io/configuration/logging/</guid>
-      <description>Under Construction See cmd/sampleconf/random/logging.yml .</description>
+      <description>zrepl uses structured logging to provide users with easily processable log messages.
+Configuration Logging is configured in the global section of the configuration file. Check out cmd/sampleconf/random/logging.yml for an example on how to configure multiple outlets:
+global: logging: OUTLET_TYPE: PARAM: VAUE ... OUTLET_TYPE: ... jobs: ...  Note: Currently, only one instance of an outlet type can be instantiated (Issue #20) Output to stderr should always be considered a critical error.</description>
     </item>
     
     <item>

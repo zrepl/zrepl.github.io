@@ -428,7 +428,10 @@ role="alert">Under Construction</div>
 
 			
 				
-<p></p>
+<p>A job is the unit of activity tracked by the zrepl daemon and configured in the configuration file.
+Every job has a unique name, a type and type-dependent fields which are documented on this page.
+Check out the tutorial and cmd/sampleconf/ for examples on how job types are actually used.
+Job Types Source    Parameter Default Description / Example     type  source   name  unique name of the job   serve   serve transport specification   datasets   filter for datasets to expose to client   snapshot_prefix  prefix for ZFS snapshots taken by this job   interval  snapshotting interval   prune   prune policy policy for datasets in datasets with prefix snapshot_prefix     Snapshotting Task (every interval, patient )  A snapshot of filesystems matched by datasets is taken every interval with prefix snapshot_prefix.</p>
 				
 			
 		
@@ -531,7 +534,9 @@ serve jobs: - name: pull_backup type: source serve: type: stdinserver client_ide
 
 			
 				
-<p>Under Construction See cmd/sampleconf/random/logging.yml .</p>
+<p>zrepl uses structured logging to provide users with easily processable log messages.
+Configuration Logging is configured in the global section of the configuration file. Check out cmd/sampleconf/random/logging.yml for an example on how to configure multiple outlets:
+global: logging: OUTLET_TYPE: PARAM: VAUE ... OUTLET_TYPE: ... jobs: ...  Note: Currently, only one instance of an outlet type can be instantiated (Issue #20) Output to stderr should always be considered a critical error.</p>
 				
 			
 		
