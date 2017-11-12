@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pruning Policies &mdash; zrepl 0.0.2
+ documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="zrepl 0.0.2
+ documentation" href="../index.html"/>
+        <link rel="up" title="Configuration" href="../configuration.html"/>
+        <link rel="next" title="Logging" href="logging.html"/>
+        <link rel="prev" title="Mapping &amp; Filter Syntax" href="map_filter_syntax.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="../_static/zrepl.svg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.2
+
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pruning Policies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#retention-grid">Retention Grid</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../configuration.html">Configuration</a> &raquo;</li>
+        
+      <li>Pruning Policies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/configuration/prune.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pruning-policies">
+<span id="prune"></span><h1>Pruning Policies<a class="headerlink" href="#pruning-policies" title="Permalink to this headline">¶</a></h1>
+<p>In zrepl, <em>pruning</em> means <em>destroying snapshots by some policy</em>.</p>
+<p>A <em>pruning policy</em> takes a list of snapshots and &#8211; for each snapshot &#8211; decides whether it should be kept or destroyed.</p>
+<p>The job context defines which snapshots are even considered for pruning, for example through the <code class="docutils literal"><span class="pre">snapshot_prefix</span></code> variable.
+Check the respective <a class="reference internal" href="jobs.html#job"><span class="std std-ref">job definition</span></a> for details.</p>
+<p>Currently, the <a class="reference internal" href="#prune-retention-grid"><span class="std std-ref">Retention Grid</span></a> is the only supported pruning policy.</p>
+<div class="section" id="retention-grid">
+<span id="prune-retention-grid"></span><h2>Retention Grid<a class="headerlink" href="#retention-grid" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span>jobs:
+- name: pull_app-srv
+  ...
+  prune:
+    policy: grid
+    grid: 1x1h(keep=all) | 24x1h | 35x1d | 6x30d
+            │               │
+            └─ one hour interval
+                            │
+                            └─ 24 adjacent one-hour intervals
+</pre></div>
+</div>
+<p>The retention grid can be thought of as a time-based sieve:
+The <code class="docutils literal"><span class="pre">grid</span></code> field specifies a list of adjacent time intervals:
+the left edge of the leftmost (first) interval is the <code class="docutils literal"><span class="pre">creation</span></code> date of the youngest snapshot.
+All intervals to its right describe time intervals further in the past.</p>
+<p>Each interval carries a maximum number of snapshots to keep.
+It is secified via <code class="docutils literal"><span class="pre">(keep=N)</span></code>, where <code class="docutils literal"><span class="pre">N</span></code> is either <code class="docutils literal"><span class="pre">all</span></code> (all snapshots are kept) or a positive integer.
+The default value is <strong>1</strong>.</p>
+<p>The following procedure happens during pruning:</p>
+<ol class="arabic simple">
+<li>The list of snapshots eligible for pruning is sorted by <code class="docutils literal"><span class="pre">creation</span></code></li>
+<li>The left edge of the first interval is aligned to the <code class="docutils literal"><span class="pre">creation</span></code> date of the youngest snapshot</li>
+<li>A list of buckets is created, one for each interval</li>
+<li>The list of snapshots is split up into the buckets.</li>
+<li>For each bucket<ol class="arabic">
+<li>the contained snapshot list is sorted by creation.</li>
+<li>snapshots from the list, oldest first, are destroyed until the specified <code class="docutils literal"><span class="pre">keep</span></code> count is reached.</li>
+<li>all remaining snapshots on the list are kept.</li>
+</ol>
+</li>
+</ol>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p>The configuration of the first interval (<code class="docutils literal"><span class="pre">1x1h(keep=all)</span></code> in the example) determines the <strong>maximum allowable replication lag</strong> between source and destination.
+After the first interval, source and destination likely have different retention settings.
+This means source and destination may prune different snapshots, prohibiting incremental replication froms snapshots that are not in the first interval.</p>
+<p class="last"><strong>Always</strong> configure the first interval to <code class="docutils literal"><span class="pre">1x?(keep=all)</span></code>, substituting <code class="docutils literal"><span class="pre">?</span></code> with the maximum time replication may fail due to downtimes, maintenance, connectivity issues, etc.
+After outages longer than <code class="docutils literal"><span class="pre">?</span></code> you may be required to perform <strong>full replication</strong> again.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="map_filter_syntax.html" class="btn btn-neutral" title="Mapping &amp; Filter Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Christian Schwarz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
