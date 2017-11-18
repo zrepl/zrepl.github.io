@@ -8,8 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; zrepl 0.0.2
- documentation</title>
+  <title>Installation &mdash; zrepl  documentation</title>
   
 
   
@@ -31,13 +30,14 @@
   
 
   
+    <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="zrepl 0.0.2
- documentation" href="index.html"/>
+    <link rel="top" title="zrepl  documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="configuration.html"/>
         <link rel="prev" title="Tutorial" href="tutorial.html"/> 
 
@@ -69,11 +69,6 @@
 
           
             
-            
-              <div class="version">
-                0.0.2
-
-              </div>
             
           
 
@@ -181,7 +176,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installation">
+  
+
+
+
+
+
+<div class="section" id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -196,8 +197,9 @@ However, until we get around documenting those setups, you will have to run zrep
 </div>
 <div class="section" id="packages">
 <h2>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h2>
-<p>zrepl releases are signed &amp; tagged by the author in the git repository.
+<p>zrepl source releases are signed &amp; tagged by the author in the git repository.
 Your OS vendor may provide binary packages of zrepl through the package manager.
+Additionally, <a class="reference external" href="https://github.com/zrepl/zrepl/releases">binary releases</a> are provided on GitHub.
 The following list may be incomplete, feel free to submit a PR with an update:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -218,82 +220,40 @@ The following list may be incomplete, feel free to submit a PR with an update:</
 </tr>
 <tr class="row-odd"><td>Others</td>
 <td>&#160;</td>
-<td>Install from source, see below</td>
+<td>Use <a class="reference external" href="https://github.com/zrepl/zrepl/releases">binary releases</a> or build from source.</td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="compile-from-source">
 <h3>Compile From Source<a class="headerlink" href="#compile-from-source" title="Permalink to this headline">¶</a></h3>
-<p>Go 1.9 or newer and a configured <code class="docutils literal"><span class="pre">$GOPATH</span></code> environment variable and a few build dependencies are required to build zrepl.
-A tutorial is available over at <a class="reference external" href="https://golang.org/doc/install">golang.org</a>.
-If Go 1.9 is not available on your distro consider build in Docker (see below).</p>
-<p>The following shell script checks out the zrepl project into your <code class="docutils literal"><span class="pre">$GOPATH</span></code>,
-installs the build dependencies, installs dependencies using <code class="docutils literal"><span class="pre">dep</span> <span class="pre">ensure</span></code> and does a <code class="docutils literal"><span class="pre">make</span> <span class="pre">release</span></code>.
-Build artifacts are placed into <code class="docutils literal"><span class="pre">$GOPATH/github.com/zrepl/zrepl/artifacts/</span></code>.</p>
-<p>When doing builds afterwards, it should be sufficient to checkout the new revision, run <code class="docutils literal"><span class="pre">dep</span> <span class="pre">ensure</span></code> and <code class="docutils literal"><span class="pre">make</span> <span class="pre">release</span></code>.
-You may want to switch to a tagged commit (we use <a class="reference external" href="http://semver.org">semver</a>) but master should generally be considered stable.</p>
-<p><strong>Note</strong>: it is your job to install the apropriate binary in the zrepl users&#8217;s <code class="docutils literal"><span class="pre">$PATH</span></code>, e.g. <code class="docutils literal"><span class="pre">/usr/local/bin/zrepl</span></code>.
-Otherwise, the examples in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> may need to be adjusted.</p>
-<p><strong>You are encouraged to understand what happens by auditing the script.</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s1">&#39;https://raw.githubusercontent.com/zrepl/zrepl/master/clone_and_build.sh&#39;</span> <span class="o">|</span> <span class="n">sh</span>
-</pre></div>
-</div>
-<p>You can also build in a Docker container if you want an isolated build environment or don&#8217;t have a compatible Go version.</p>
+<p>Producing a release requires <strong>Go 1.9</strong> or newer and <strong>Python 3</strong> + <strong>pip3</strong> + <code class="docutils literal"><span class="pre">docs/requirements.txt</span></code> for the Sphinx documentation.
+A tutorial to install Go is available over at <a class="reference external" href="https://golang.org/doc/install">golang.org</a>.
+Python and pip3 should probably be installed via your distro&#8217;s package manager.</p>
+<p>Alternatively, you can use the Docker build process:
+it is used to produce the official zrepl <a class="reference external" href="https://github.com/zrepl/zrepl/releases">binary releases</a>
+and serves as a reference for build dependencies and procedure:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">git</span>
 <span class="n">cd</span> <span class="n">zrepl</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl_build</span> <span class="o">-</span><span class="n">f</span> <span class="n">build</span><span class="o">.</span><span class="n">Dockerfile</span> <span class="o">.</span>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> \
     <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;$</span><span class="si">{PWD}</span><span class="s2">:/zrepl&quot;</span> \
     <span class="o">--</span><span class="n">user</span> <span class="s2">&quot;$(id -u):$(id -g)&quot;</span> \
-    <span class="n">golang</span><span class="p">:</span><span class="n">latest</span> <span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;export CLONEPATH=/go/src/github.com/zrepl; mkdir -p &quot;$CLONEPATH&quot; &amp;&amp; ln -s /zrepl $CLONEPATH/zrepl &amp;&amp; $</span><span class="si">{CLONEPATH}</span><span class="s1">/zrepl/clone_and_build.sh&#39;</span>
+    <span class="n">zrepl_build</span> <span class="n">make</span> <span class="n">release</span>
 </pre></div>
 </div>
-<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
-<span class="nb">set</span> -e
-
-<span class="nv">bold</span><span class="o">=</span><span class="k">$(</span>tput bold<span class="k">)</span>
-<span class="nv">normal</span><span class="o">=</span><span class="k">$(</span>tput sgr0<span class="k">)</span>
-
-step<span class="o">()</span> <span class="o">{</span>
-    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">bold</span><span class="si">}</span><span class="nv">$1</span><span class="si">${</span><span class="nv">normal</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="o">}</span>
-
-<span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;</span><span class="nv">$GOPATH</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    step <span class="s2">&quot;Make sure you have your GOPATH configured correctly&quot;</span> <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
-    <span class="nb">exit</span> <span class="m">1</span>
-<span class="k">fi</span>
-
-step <span class="s2">&quot;Checkout sources to \$GOPATH/github.com/zrepl/zrepl&quot;</span>
-<span class="nv">CHECKOUTPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">GOPATH</span><span class="si">}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
-<span class="k">if</span> <span class="o">[</span> -e <span class="s2">&quot;</span><span class="nv">$CHECKOUTPATH</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CHECKOUTPATH</span><span class="si">}</span><span class="s2"> already exists&quot;</span>
-    <span class="k">if</span> <span class="o">[</span> ! -d <span class="s2">&quot;</span><span class="nv">$CHECKOUTPATH</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CHECKOUTPATH</span><span class="si">}</span><span class="s2"> is not a directory, aborting&quot;</span> <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
-    <span class="k">else</span>
-        <span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$CHECKOUTPATH</span><span class="s2">&quot;</span>
-    <span class="k">fi</span>
-<span class="k">else</span>
-    mkdir -p <span class="s2">&quot;</span><span class="nv">$GOPATH</span><span class="s2">/src/github.com/zrepl&quot;</span>
-    <span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$GOPATH</span><span class="s2">/src/github.com/zrepl&quot;</span>
-    git clone https://github.com/zrepl/zrepl.git
-    <span class="nb">cd</span> zrepl
-<span class="k">fi</span>
-
-step <span class="s2">&quot;Install build depdencies using &#39;go get&#39; to \$GOPATH/bin&quot;</span>
-go get -u golang.org/x/tools/cmd/stringer
-go get -u github.com/golang/dep/cmd/dep
-<span class="k">if</span> ! <span class="nb">type</span> stringer <span class="o">||</span> ! <span class="nb">type</span> dep<span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;Installed dependencies but can&#39;t find them in \$PATH, adjust it to contain \$GOPATH/bin&quot;</span> <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
-    <span class="nb">exit</span> <span class="m">1</span>
-<span class="k">fi</span>
-
-step <span class="s2">&quot;Fetching dependencies using &#39;dep ensure&#39;&quot;</span>
-dep ensure
-
-step <span class="s2">&quot;Making release&quot;</span>
-make release
-
-step <span class="s2">&quot;Release artifacts are available in </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/artifacts&quot;</span>
+<p>Alternatively, you can install build dependencies on your local system and then build in your <code class="docutils literal"><span class="pre">$GOPATH</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">git</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
+<span class="n">cd</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
+<span class="o">./</span><span class="n">lazy</span><span class="o">.</span><span class="n">sh</span> <span class="n">devsetup</span>
+<span class="n">make</span> <span class="n">release</span>
 </pre></div>
+</div>
+<p>Build results are located in the <code class="docutils literal"><span class="pre">artifacts/</span></code> directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is your job to install the apropriate binary in the zrepl users&#8217;s <code class="docutils literal"><span class="pre">$PATH</span></code>, e.g. <code class="docutils literal"><span class="pre">/usr/local/bin/zrepl</span></code>.
+Otherwise, the examples in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> may need to be adjusted.</p>
 </div>
 </div>
 </div>
@@ -378,6 +338,23 @@ The daemon exits as soon as all jobs have reported shut down.</p>
 
   </div>
   
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: master
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="0.0.2/installation.html">0.0.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="master/installation.html">master</a></dd>
+        </dl>
+    </div>
+</div>
 
 
   
@@ -385,7 +362,7 @@ The daemon exits as soon as all jobs have reported shut down.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.2',
+            VERSION:'',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

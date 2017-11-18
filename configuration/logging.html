@@ -8,8 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Logging &mdash; zrepl 0.0.2
- documentation</title>
+  <title>Logging &mdash; zrepl  documentation</title>
   
 
   
@@ -31,13 +30,14 @@
   
 
   
+    <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="zrepl 0.0.2
- documentation" href="../index.html"/>
+    <link rel="top" title="zrepl  documentation" href="../index.html"/>
         <link rel="up" title="Configuration" href="../configuration.html"/>
         <link rel="next" title="Miscellaneous" href="misc.html"/>
         <link rel="prev" title="Pruning Policies" href="prune.html"/> 
@@ -70,11 +70,6 @@
 
           
             
-            
-              <div class="version">
-                0.0.2
-
-              </div>
             
           
 
@@ -190,7 +185,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="logging">
+  
+
+
+
+
+
+<div class="section" id="logging">
 <span id="id1"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
 <p>zrepl uses structured logging to provide users with easily processable log messages.</p>
 <p>Logging outlets are configured in the <code class="docutils literal"><span class="pre">global</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.
@@ -211,6 +212,11 @@ Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blo
 <span class="n">jobs</span><span class="p">:</span> <span class="o">...</span>
 </pre></div>
 </div>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">The <strong>first outlet is special</strong>: if an error writing to any outlet occurs, the first outlet receives the error and can print it.
+Thus, the first outlet must be the one that always works and does not block, e.g. <code class="docutils literal"><span class="pre">stdout</span></code>, which is the default.</p>
+</div>
 <div class="section" id="default-configuration">
 <h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
 <p>By default, the following logging configuration is used</p>
@@ -221,11 +227,6 @@ Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blo
       <span class="n">level</span><span class="p">:</span>  <span class="s2">&quot;warn&quot;</span>
       <span class="nb">format</span><span class="p">:</span> <span class="s2">&quot;human&quot;</span>
 </pre></div>
-</div>
-<div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p class="last">Output to <strong>stderr</strong> should always be considered a <strong>critical error</strong>.
-Only errors in the logging infrastructure itself, e.g. IO errors when writing to an outlet, are sent to stderr.</p>
 </div>
 </div>
 <div class="section" id="building-blocks">
@@ -317,9 +318,13 @@ log aggregation or when processing state dumps.</td>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">format</span></code></td>
 <td>output <a class="reference internal" href="#logging-formats"><span class="std std-ref">format</span></a></td>
 </tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">time</span></code></td>
+<td>always include time in output (<code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>)</td>
+</tr>
 </tbody>
 </table>
-<p>Writes all log entries with minimum level <code class="docutils literal"><span class="pre">level</span></code> formatted by <code class="docutils literal"><span class="pre">format</span></code> to stdout.</p>
+<p>Writes all log entries with minimum level <code class="docutils literal"><span class="pre">level</span></code> formatted by <code class="docutils literal"><span class="pre">format</span></code> to stdout.
+If stdout is a tty, interactive usage is assumed and the current time is included in the output.</p>
 <p>Can only be specified once.</p>
 </div>
 <div class="section" id="syslog-outlet">
@@ -466,6 +471,23 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
 
   </div>
   
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: master
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../0.0.2/configuration/logging.html">0.0.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../master/configuration/logging.html">master</a></dd>
+        </dl>
+    </div>
+</div>
 
 
   
@@ -473,7 +495,7 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.2',
+            VERSION:'',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
