@@ -238,7 +238,7 @@ and serves as a reference for build dependencies and procedure:</p>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> \
     <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;$</span><span class="si">{PWD}</span><span class="s2">:/zrepl&quot;</span> \
     <span class="o">--</span><span class="n">user</span> <span class="s2">&quot;$(id -u):$(id -g)&quot;</span> \
-    <span class="n">zrepl_build</span> <span class="n">make</span> <span class="n">release</span>
+    <span class="n">zrepl_build</span> <span class="n">make</span> <span class="n">vendordeps</span> <span class="n">release</span>
 </pre></div>
 </div>
 <p>Alternatively, you can install build dependencies on your local system and then build in your <code class="docutils literal"><span class="pre">$GOPATH</span></code>:</p>
@@ -246,7 +246,7 @@ and serves as a reference for build dependencies and procedure:</p>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">git</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
 <span class="n">cd</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
 <span class="o">./</span><span class="n">lazy</span><span class="o">.</span><span class="n">sh</span> <span class="n">devsetup</span>
-<span class="n">make</span> <span class="n">release</span>
+<span class="n">make</span> <span class="n">vendordeps</span> <span class="n">release</span>
 </pre></div>
 </div>
 <p>Build results are located in the <code class="docutils literal"><span class="pre">artifacts/</span></code> directory.</p>
