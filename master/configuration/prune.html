@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
@@ -108,6 +109,7 @@
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
@@ -185,15 +187,20 @@
 
 <div class="section" id="pruning-policies">
 <span id="prune"></span><h1>Pruning Policies<a class="headerlink" href="#pruning-policies" title="Permalink to this headline">¶</a></h1>
-<p>In zrepl, <em>pruning</em> means <em>destroying snapshots by some policy</em>.</p>
-<p>A <em>pruning policy</em> takes a list of snapshots and &#8211; for each snapshot &#8211; decides whether it should be kept or destroyed.</p>
+<p>In zrepl, <em>pruning</em> means <em>destroying filesystem versions by some policy</em> where filesystem versions are bookmarks and snapshots.</p>
+<p>A <em>pruning policy</em> takes a list of filesystem versions and decides for each whether it should be kept or destroyed.</p>
 <p>The job context defines which snapshots are even considered for pruning, for example through the <code class="docutils literal"><span class="pre">snapshot_prefix</span></code> variable.
 Check the respective <a class="reference internal" href="jobs.html#job"><span class="std std-ref">job definition</span></a> for details.</p>
 <p>Currently, the <a class="reference internal" href="#prune-retention-grid"><span class="std std-ref">Retention Grid</span></a> is the only supported pruning policy.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can perform a dry-run of a job&#8217;s pruning policy using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">test</span></code> subcommand.</p>
+</div>
 <div class="section" id="retention-grid">
 <span id="prune-retention-grid"></span><h2>Retention Grid<a class="headerlink" href="#retention-grid" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default"><div class="highlight"><pre><span></span>jobs:
 - name: pull_app-srv
+  type: pull
   ...
   prune:
     policy: grid
@@ -202,6 +209,14 @@ Check the respective <a class="reference internal" href="jobs.html#job"><span cl
             └─ one hour interval
                             │
                             └─ 24 adjacent one-hour intervals
+
+- name: pull_backup
+  type: source
+  interval: 10m
+  prune:
+    policy: grid
+    grid: 1x1d(keep=all)
+    keep_bookmarks: 144
 </pre></div>
 </div>
 <p>The retention grid can be thought of as a time-based sieve:
@@ -211,6 +226,10 @@ All intervals to its right describe time intervals further in the past.</p>
 <p>Each interval carries a maximum number of snapshots to keep.
 It is secified via <code class="docutils literal"><span class="pre">(keep=N)</span></code>, where <code class="docutils literal"><span class="pre">N</span></code> is either <code class="docutils literal"><span class="pre">all</span></code> (all snapshots are kept) or a positive integer.
 The default value is <strong>1</strong>.</p>
+<p>Bookmarks are not affected by the above.
+Instead, the <code class="docutils literal"><span class="pre">keep_bookmarks</span></code> field specifies the number of bookmarks to be kept per filesystem.
+You only need to specify <code class="docutils literal"><span class="pre">keep_bookmarks</span></code> at the source-side of a replication setup since the destination side does not receive bookmarks.
+You can specify <code class="docutils literal"><span class="pre">all</span></code> as a value to keep all bookmarks, but be warned that you should install some other way to prune unneeded ones then (see below).</p>
 <p>The following procedure happens during pruning:</p>
 <ol class="arabic simple">
 <li>The list of snapshots eligible for pruning is sorted by <code class="docutils literal"><span class="pre">creation</span></code></li>
@@ -223,14 +242,15 @@ The default value is <strong>1</strong>.</p>
 <li>all remaining snapshots on the list are kept.</li>
 </ol>
 </li>
+<li>The list of bookmarks eligible for pruning is sorted by <code class="docutils literal"><span class="pre">createtxg</span></code> and the most recent <code class="docutils literal"><span class="pre">keep_bookmarks</span></code> bookmarks are kept.</li>
 </ol>
-<div class="admonition attention">
+<div class="admonition attention" id="replication-downtime">
 <p class="first admonition-title">Attention</p>
-<p>The configuration of the first interval (<code class="docutils literal"><span class="pre">1x1h(keep=all)</span></code> in the example) determines the <strong>maximum allowable replication lag</strong> between source and destination.
-After the first interval, source and destination likely have different retention settings.
-This means source and destination may prune different snapshots, prohibiting incremental replication froms snapshots that are not in the first interval.</p>
-<p class="last"><strong>Always</strong> configure the first interval to <code class="docutils literal"><span class="pre">1x?(keep=all)</span></code>, substituting <code class="docutils literal"><span class="pre">?</span></code> with the maximum time replication may fail due to downtimes, maintenance, connectivity issues, etc.
-After outages longer than <code class="docutils literal"><span class="pre">?</span></code> you may be required to perform <strong>full replication</strong> again.</p>
+<p>Be aware that <code class="docutils literal"><span class="pre">keep_bookmarks</span> <span class="pre">x</span> <span class="pre">interval</span></code> (interval of the job level) controls the <strong>maximum allowable replication downtime</strong> between source and destination.
+If replication does not work for whatever reason, source and destination will eventually run out of sync because the source will continue pruning snapshots.
+The only recovery in that case is full replication, which may not always be viable due to disk space or traffic constraints.</p>
+<p class="last">Further note that while bookmarks consume a constant amount of disk space, listing them requires temporary dynamic <strong>kernel memory</strong> proportional to the number of bookmarks.
+Thus, do not use <code class="docutils literal"><span class="pre">all</span></code> or an inappropriately high value without good reason.</p>
 </div>
 </div>
 </div>
@@ -286,6 +306,8 @@ After outages longer than <code class="docutils literal"><span class="pre">?</sp
         <dl>
             <dt>Branches</dt>
             <dd><a href="prune.html">master</a></dd>
+            <dd><a href="../../parallel_zfs_ops/configuration/prune.html">parallel_zfs_ops</a></dd>
+            <dd><a href="../../push/configuration/prune.html">push</a></dd>
         </dl>
     </div>
 </div>

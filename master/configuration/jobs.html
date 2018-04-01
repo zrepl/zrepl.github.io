@@ -40,7 +40,7 @@
     <link rel="top" title="zrepl  documentation" href="../index.html"/>
         <link rel="up" title="Configuration" href="../configuration.html"/>
         <link rel="next" title="Transports" href="transports.html"/>
-        <link rel="prev" title="Configuration" href="../configuration.html"/> 
+        <link rel="prev" title="Preface" href="preface.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Job Types</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#source-job">Source Job</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pull-job">Pull Job</a></li>
@@ -111,6 +112,7 @@
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
@@ -230,14 +232,15 @@ This is temporary and being worked on <a class="reference external" href="https:
 <td>snapshotting interval</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">prune</span></code></td>
-<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy for filesytems in <code class="docutils literal"><span class="pre">filesystems</span></code> with prefix <code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
+<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> for versions of filesytems in <code class="docutils literal"><span class="pre">filesystems</span></code>, versions prefixed with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
 </tr>
 </tbody>
 </table>
 <ul class="simple">
 <li>Snapshotting Task (every <code class="docutils literal"><span class="pre">interval</span></code>, <a class="reference internal" href="#job-term-patient"><span class="std std-ref">patient</span></a>)<ul>
 <li>A snapshot of filesystems matched by <code class="docutils literal"><span class="pre">filesystems</span></code> is taken every <code class="docutils literal"><span class="pre">interval</span></code> with prefix <code class="docutils literal"><span class="pre">snapshot_prefix</span></code>.</li>
-<li>The <code class="docutils literal"><span class="pre">prune</span></code> policy is triggered on filesystems matched by <code class="docutils literal"><span class="pre">filesystems</span></code> with snapshots matched by <code class="docutils literal"><span class="pre">snapshot_prefix</span></code>.</li>
+<li>A bookmark of that snapshot is created with the same name.</li>
+<li>The <code class="docutils literal"><span class="pre">prune</span></code> policy is evaluated for versions of filesystems matched by <code class="docutils literal"><span class="pre">filesystems</span></code>, versions prefixed with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code>.</li>
 </ul>
 </li>
 <li>Serve Task<ul>
@@ -246,10 +249,7 @@ This is temporary and being worked on <a class="reference external" href="https:
 </li>
 </ul>
 <p>A source job is the counterpart to a <a class="reference internal" href="#job-pull"><span class="std std-ref">Pull Job</span></a>.</p>
-<p>Note that the prune policy determines the maximum replication lag:
-a pull job may stop replication due to link failure, misconfiguration or administrative action.
-The source prune policy will eventually destroy the last common snapshot between source and pull job, requiring full replication.
-Make sure you read the <a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy documentation.</p>
+<p>Make sure you read the <a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy documentation.</p>
 </div>
 <div class="section" id="pull-job">
 <span id="job-pull"></span><h2>Pull Job<a class="headerlink" href="#pull-job" title="Permalink to this headline">¶</a></h2>
@@ -287,7 +287,7 @@ Make sure you read the <a class="reference internal" href="prune.html#prune"><sp
 <td>prefix snapshots must match to be considered for replication &amp; pruning</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">prune</span></code></td>
-<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy for local filesystems reachable by <code class="docutils literal"><span class="pre">mapping</span></code></td>
+<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy for versions of filesystems of local filesystems reachable by <code class="docutils literal"><span class="pre">mapping</span></code>, versions prefixed with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -302,11 +302,12 @@ Make sure you read the <a class="reference internal" href="prune.html#prune"><sp
 <li>On conflicts, an error is logged but replication of other filesystems with mapping continues.</li>
 </ol>
 </li>
-<li>The <code class="docutils literal"><span class="pre">prune</span></code> policy is triggered for all <em>target filesystems</em></li>
+<li>The <code class="docutils literal"><span class="pre">prune</span></code> policy is evaluated for all <em>target filesystems</em></li>
 </ol>
 </li>
 </ul>
 <p>A pull job is the counterpart to a <a class="reference internal" href="#job-source"><span class="std std-ref">Source Job</span></a>.</p>
+<p>Make sure you read the <a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy documentation.</p>
 </div>
 <div class="section" id="local-job">
 <span id="job-local"></span><h2>Local Job<a class="headerlink" href="#local-job" title="Permalink to this headline">¶</a></h2>
@@ -352,6 +353,7 @@ Make sure you read the <a class="reference internal" href="prune.html#prune"><sp
 <li>Main Task (every <code class="docutils literal"><span class="pre">interval</span></code>, <a class="reference internal" href="#job-term-patient"><span class="std std-ref">patient</span></a>)<ol class="arabic">
 <li>Evaluate <code class="docutils literal"><span class="pre">mapping</span></code> for local filesystems, those with a <em>target filesystem</em> are called <em>mapped filesystems</em>.</li>
 <li>Snapshot <em>mapped filesystems</em> with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code>.</li>
+<li>Bookmark the snapshot created above.</li>
 <li>Replicate <em>mapped filesystems</em> to their respective <em>target filesystems</em>:<ol class="arabic">
 <li>Only snapshots with prefix <code class="docutils literal"><span class="pre">snapshot_prefix</span></code> are replicated.</li>
 <li>If possible, incremental replication takes place.</li>
@@ -391,6 +393,9 @@ We call the start of the task an <em>invocation</em>.</p>
 </li>
 </ul>
 </div></blockquote>
+<p>filesystem version</p>
+<blockquote>
+<div>A snapshot or a bookmark.</div></blockquote>
 </div>
 </div>
 
@@ -407,7 +412,7 @@ We call the start of the task an <em>invocation</em>.</p>
         <a href="transports.html" class="btn btn-neutral float-right" title="Transports" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../configuration.html" class="btn btn-neutral" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="preface.html" class="btn btn-neutral" title="Preface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -445,6 +450,8 @@ We call the start of the task an <em>invocation</em>.</p>
         <dl>
             <dt>Branches</dt>
             <dd><a href="jobs.html">master</a></dd>
+            <dd><a href="../../parallel_zfs_ops/configuration/jobs.html">parallel_zfs_ops</a></dd>
+            <dd><a href="../../push/configuration/jobs.html">push</a></dd>
         </dl>
     </div>
 </div>

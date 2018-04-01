@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>zrepl - ZFS replication &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="zrepl  documentation" href="#"/>
+        <link rel="next" title="Tutorial" href="tutorial.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="_static/zrepl.svg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">zrepl</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>zrepl - ZFS replication</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+    
+    
+
+
+
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../master/index.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is master.</a></p>
+<div class="section" id="zrepl-zfs-replication">
+<h1>zrepl - ZFS replication<a class="headerlink" href="#zrepl-zfs-replication" title="Permalink to this headline">¶</a></h1>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">zrepl as well as this documentation is still under active development.
+It is neither feature complete nor is there a stability guarantee on the configuration format.
+Use &amp; test at your own risk ;)</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">5 minute tutorial setup</span></a> gives you a first impression.</p>
+</div>
+<div class="section" id="main-features">
+<h2>Main Features<a class="headerlink" href="#main-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Filesystem Replication<ul>
+<li>[x] Local &amp; Remote</li>
+<li>[x] Pull mode</li>
+<li>[ ] Push mode</li>
+<li>[x] Access control checks when pulling datasets</li>
+<li>[x] <a class="reference internal" href="configuration/map_filter_syntax.html#pattern-mapping"><span class="std std-ref">Flexible mapping</span></a> rules</li>
+<li>[x] Bookmarks support</li>
+<li>[ ] Feature-negotiation for<ul>
+<li>Resumable <cite>send &amp; receive</cite></li>
+<li>Compressed <cite>send &amp; receive</cite></li>
+<li>Raw encrypted <cite>send &amp; receive</cite> (as soon as it is available)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Automatic snapshot creation<ul>
+<li>[x] Ensure fixed time interval between snapshots</li>
+</ul>
+</li>
+<li>Automatic snapshot <a class="reference internal" href="configuration/prune.html#prune"><span class="std std-ref">pruning</span></a><ul>
+<li>[x] Age-based fading (grandfathering scheme)</li>
+</ul>
+</li>
+<li>Flexible, detailed &amp; structured <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a><ul>
+<li>[x] <code class="docutils literal"><span class="pre">human</span></code>, <code class="docutils literal"><span class="pre">logfmt</span></code> and <code class="docutils literal"><span class="pre">json</span></code> formatting</li>
+<li>[x] stdout, syslog and TCP (+TLS client auth) outlets</li>
+</ul>
+</li>
+<li>Maintainable implementation in Go<ul>
+<li>[x] Cross platform</li>
+<li>[x] Type safe &amp; testable code</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<p>We are happy about any help we can get!</p>
+<ul class="simple">
+<li>Explore the codebase<ul>
+<li>These docs live in the <code class="docutils literal"><span class="pre">docs/</span></code> subdirectory</li>
+</ul>
+</li>
+<li>Document any non-obvious / confusing / plain broken behavior you encounter when setting up zrepl for the first time</li>
+<li>Check the <em>Issues</em> and <em>Projects</em> sections for things to do</li>
+</ul>
+<div class="note admonition">
+<p class="first admonition-title">Development Workflow</p>
+<p class="last">The <a class="reference external" href="https://github.com/zrepl/zrepl">GitHub repository</a> is where all development happens.
+Make sure to read the <a class="reference external" href="https://github.com/zrepl/zrepl">Developer Documentation section</a> and open new issues or pull requests there.</p>
+</div>
+</div>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#analysis">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#install-zrepl">Install zrepl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#configure-backup-srv">Configure <code class="docutils literal"><span class="pre">backup-srv</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#configure-app-srv">Configure <code class="docutils literal"><span class="pre">app-srv</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#apply-configuration-changes">Apply Configuration Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#watch-it-work">Watch it Work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#user-privileges">User Privileges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#packages">Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#what-next">What next?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/preface.html">Preface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/transports.html">Transports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#cli-overview">CLI Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#zrepl-daemon">zrepl daemon</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#testability-performance">Testability &amp; Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#rpc-protocol">RPC protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#logging-transparency">Logging &amp; Transparency</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">0.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.0.1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Christian Schwarz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: push
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../0.0.2/index.html">0.0.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../master/index.html">master</a></dd>
+            <dd><a href="../parallel_zfs_ops/index.html">parallel_zfs_ops</a></dd>
+            <dd><a href="index.html">push</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

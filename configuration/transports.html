@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Transports</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ssh-stdinserver-transport"><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport</a><ul>
@@ -112,6 +113,7 @@
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
@@ -195,7 +197,7 @@
 <div class="section" id="ssh-stdinserver-transport">
 <span id="transport-ssh-stdinserver"></span><h2><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport<a class="headerlink" href="#ssh-stdinserver-transport" title="Permalink to this headline">¶</a></h2>
 <p>The way the <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport works is inspired by <a class="reference external" href="https://git-scm.com/docs/git-shell">git shell</a> and <a class="reference external" href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Backup</a>.
-It is implemented in the Go package <code class="docutils literal"><span class="pre">github.com/zrepl/zrepl/sshbytestream</span></code>.
+It is provided by the Go package <code class="docutils literal"><span class="pre">github.com/problame/go-netssh</span></code>.
 The config excerpts are taken from the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> which you should complete before reading further.</p>
 <div class="section" id="serve-mode">
 <span id="transport-ssh-stdinserver-serve"></span><h3>Serve Mode<a class="headerlink" href="#serve-mode" title="Permalink to this headline">¶</a></h3>
@@ -251,8 +253,9 @@ Refer to sshd_config(5) for details.</p>
     user: root
     port: <span class="m">22</span>
     identity_file: /etc/zrepl/ssh/identity
-    options: <span class="c1"># optional</span>
+    options: <span class="c1"># optional, default [], `-o` arguments passed to ssh</span>
     - <span class="s2">&quot;Compression=on&quot;</span>
+    dial_timeout: <span class="c1"># optional, default 10s, max time.Duration until initial handshake is completed</span>
 </pre></div>
 </div>
 <p>The connecting zrepl daemon</p>
@@ -269,11 +272,10 @@ Refer to sshd_config(5) for details.</p>
 </li>
 </ol>
 </li>
-</ol>
-<ol class="arabic simple">
 <li>Wraps the pipe ends in an <code class="docutils literal"><span class="pre">io.ReadWriteCloser</span></code> and uses it for RPC.</li>
 </ol>
 <p>As discussed in the section above, the connecting zrepl daemon expects that <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">$client_identity</span></code> is  executed automatically via an <code class="docutils literal"><span class="pre">authorized_keys</span></code> file entry.</p>
+<p>The <code class="docutils literal"><span class="pre">known_hosts</span></code> file used by the ssh command must contain an entry for the serving host, e.g., <code class="docutils literal"><span class="pre">app-srv.example.com</span></code> in the example above.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The environment variables of the underlying SSH process are cleared. <code class="docutils literal"><span class="pre">$SSH_AUTH_SOCK</span></code> will not be available.
@@ -334,6 +336,8 @@ It is suggested to create a separate, unencrypted SSH key solely for that purpos
         <dl>
             <dt>Branches</dt>
             <dd><a href="../master/configuration/transports.html">master</a></dd>
+            <dd><a href="../parallel_zfs_ops/configuration/transports.html">parallel_zfs_ops</a></dd>
+            <dd><a href="../push/configuration/transports.html">push</a></dd>
         </dl>
     </div>
 </div>

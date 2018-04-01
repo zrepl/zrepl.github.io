@@ -100,15 +100,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#compile-from-source">Compile From Source</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration-files">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#runtime-directories">Runtime Directories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#running-the-daemon">Running the Daemon</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#restarting">Restarting</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#what-next">What next?</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
@@ -236,7 +232,7 @@ and serves as a reference for build dependencies and procedure:</p>
 <span class="n">cd</span> <span class="n">zrepl</span>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl_build</span> <span class="o">-</span><span class="n">f</span> <span class="n">build</span><span class="o">.</span><span class="n">Dockerfile</span> <span class="o">.</span>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> \
-    <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;$</span><span class="si">{PWD}</span><span class="s2">:/zrepl&quot;</span> \
+    <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;$</span><span class="si">{PWD}</span><span class="s2">:/go/src/github.com/zrepl/zrepl&quot;</span> \
     <span class="o">--</span><span class="n">user</span> <span class="s2">&quot;$(id -u):$(id -g)&quot;</span> \
     <span class="n">zrepl_build</span> <span class="n">make</span> <span class="n">vendordeps</span> <span class="n">release</span>
 </pre></div>
@@ -257,47 +253,11 @@ Otherwise, the examples in the <a class="reference internal" href="tutorial.html
 </div>
 </div>
 </div>
-<div class="section" id="configuration-files">
-<span id="mainconfigfile"></span><h2>Configuration Files<a class="headerlink" href="#configuration-files" title="Permalink to this headline">¶</a></h2>
-<p>zrepl searches for its main configuration file in the following locations (in that order):</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code></li>
-<li><code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code></li>
-</ul>
-<p>Alternatively, use CLI flags to specify a config location.
-Copy a config from the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> or the <code class="docutils literal"><span class="pre">cmd/sampleconf</span></code> directory to one of these locations and customize it to your setup.</p>
-</div>
-<div class="section" id="runtime-directories">
-<h2>Runtime Directories<a class="headerlink" href="#runtime-directories" title="Permalink to this headline">¶</a></h2>
-<p>zrepl requires ephemeral runtime directories where control sockets, etc are placed.
-Refer to the <a class="reference internal" href="configuration/misc.html#conf-runtime-directories"><span class="std std-ref">configuration documentation</span></a> for more information.</p>
-<p>When installing from a package, the package maintainer should have taken care of setting them up through the init system.
-Alternatively, for default settings, the following should to the trick.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">stdinserver</span>
-<span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">0700</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="running-the-daemon">
-<h2>Running the Daemon<a class="headerlink" href="#running-the-daemon" title="Permalink to this headline">¶</a></h2>
-<p>All actual work zrepl does is performed by a daemon process.
-Logging is configurable via the config file. Please refer to the <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging documention</span></a>.</p>
-<p>When installating from a package, the package maintainer should have provided an init script / systemd.service file.
-You should thus be able to start zrepl daemon using your init system.</p>
-<p>Alternatively, or for running zrepl in the foreground, simply execute <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code>.
-Note that you won&#8217;t see any output unless you configure <a class="reference internal" href="configuration/logging.html#logging-outlet-stdout"><span class="std std-ref">stdout logging outlet</span></a>.</p>
-<div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p>Make sure to actually monitor the error level output of zrepl: some configuration errors will not make the daemon exit.</p>
-<p class="last">Example: if the daemon cannot create the <a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a> sockets in the runtime directory,
-it will emit an error message but not exit because other tasks such as periodic snapshots &amp; pruning are of equal importance.</p>
-</div>
-<div class="section" id="restarting">
-<span id="install-restarting"></span><h3>Restarting<a class="headerlink" href="#restarting" title="Permalink to this headline">¶</a></h3>
-<p>The daemon handles SIGINT and SIGTERM for graceful shutdown.
-Graceful shutdown means at worst that a job will not be rescheduled for the next interval.
-The daemon exits as soon as all jobs have reported shut down.</p>
-</div>
+<div class="section" id="what-next">
+<span id="mainconfigfile"></span><h2>What next?<a class="headerlink" href="#what-next" title="Permalink to this headline">¶</a></h2>
+<p>Read the <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">configuration chapter</span></a> and optionally create the <a class="reference internal" href="configuration/preface.html#configuration-preface"><span class="std std-ref">runtime directories</span></a>.
+Afterwards, continue with the <a class="reference internal" href="usage.html#usage"><span class="std std-ref">usage chapter</span></a>.</p>
+<p><strong>Reminder</strong>: If you want a quick introduction, please read the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a>.</p>
 </div>
 </div>
 
@@ -352,6 +312,8 @@ The daemon exits as soon as all jobs have reported shut down.</p>
         <dl>
             <dt>Branches</dt>
             <dd><a href="installation.html">master</a></dd>
+            <dd><a href="../parallel_zfs_ops/installation.html">parallel_zfs_ops</a></dd>
+            <dd><a href="../push/installation.html">push</a></dd>
         </dl>
     </div>
 </div>

@@ -60,7 +60,7 @@ Follow the :ref:`OS-specific installation instructions <installation>` and come 
 Configure ``backup-srv``
 ------------------------
 
-We define a **pull job** named ``pull_app-srv`` in the |mainconfig|: ::
+We define a **pull job** named ``pull_app-srv`` in the |mainconfig| on host ``backup-srv``: ::
 
     jobs:
     - name: pull_app-srv
@@ -94,6 +94,13 @@ It uses the private key specified at ``connect.identity_file`` which we still ne
 Note that most use cases do not benefit from separate keypairs per remote endpoint.
 Thus, it is sufficient to create one keypair and use it for all ``connect`` directives on one host.
 
+zrepl uses ssh's default ``known_hosts`` file, which must contain a host identification entry for ``app-srv.example.com``.
+If that entry does not already exist, we need to generate it.
+Run the following command, compare the host fingerprints, and confirm with yes if they match.
+You will not be able to get a shell with the identity file we just generated, which is fine. ::
+
+    ssh -i /etc/zrepl/ssh/identity root@app-srv.example.com
+
 Learn more about :ref:`transport-ssh+stdinserver` transport and the :ref:`pull job <job-pull>` format.
 
 .. _tutorial-configure-app-srv:
@@ -101,7 +108,7 @@ Learn more about :ref:`transport-ssh+stdinserver` transport and the :ref:`pull j
 Configure ``app-srv``
 ---------------------
 
-We define a corresponding **source job** named ``pull_backup`` in the |mainconfig|: ::
+We define a corresponding **source job** named ``pull_backup`` in the |mainconfig| on host ``app-srv``:  ::
 
     jobs:
     - name: pull_backup
@@ -119,6 +126,7 @@ We define a corresponding **source job** named ``pull_backup`` in the |mainconfi
       prune:
           policy: grid
           grid: 1x1d(keep=all)
+          keep_bookmarks: 144
 
 
 The ``serve`` section corresponds to the ``connect`` section in the configuration of ``backup-srv``.
@@ -153,12 +161,15 @@ Apply Configuration Changes
 ---------------------------
 
 We need to restart the zrepl daemon on **both** ``app-srv`` and ``backup-srv``.
-This is :ref:`OS-specific <install-restarting>`.
+This is :ref:`OS-specific <usage-zrepl-daemon-restarting>`.
 
 Watch it Work
 -------------
 
-A common setup is to ``watch`` the log output and ``zfs list`` of snapshots on both machines.
+Run ``zrepl control status`` to view the current activity of the configured jobs.
+If a job encountered problems since it last left idle state, the output contains useful debug log.
+
+Additionally, you can check the detailed structured logs of the `zrepl daemon` process and use GNU *watch* to view the snapshots present on both machines.
 
 If you like tmux, here is a handy script that works on FreeBSD: ::
 

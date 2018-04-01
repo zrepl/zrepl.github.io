@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
@@ -106,6 +107,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#building-blocks">Building Blocks</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#levels">Levels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#formats">Formats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#outlets">Outlets</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#stdout-outlet"><code class="docutils literal"><span class="pre">stdout</span></code> Outlet</a></li>
@@ -116,6 +118,7 @@
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
@@ -212,13 +215,13 @@ Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blo
 <span class="n">jobs</span><span class="p">:</span> <span class="o">...</span>
 </pre></div>
 </div>
-<div class="admonition attention">
+<div class="admonition attention" id="logging-error-outlet">
 <p class="first admonition-title">Attention</p>
 <p class="last">The <strong>first outlet is special</strong>: if an error writing to any outlet occurs, the first outlet receives the error and can print it.
 Thus, the first outlet must be the one that always works and does not block, e.g. <code class="docutils literal"><span class="pre">stdout</span></code>, which is the default.</p>
 </div>
 <div class="section" id="default-configuration">
-<h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
+<span id="logging-default-config"></span><h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
 <p>By default, the following logging configuration is used</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">logging</span><span class="p">:</span>
@@ -295,6 +298,10 @@ log aggregation or when processing state dumps.</td>
 </tbody>
 </table>
 </div>
+<div class="section" id="outlets">
+<h3>Outlets<a class="headerlink" href="#outlets" title="Permalink to this headline">¶</a></h3>
+<p>Outlets are the destination for log entries.</p>
+</div>
 </div>
 <div class="section" id="stdout-outlet">
 <span id="logging-outlet-stdout"></span><h2><code class="docutils literal"><span class="pre">stdout</span></code> Outlet<a class="headerlink" href="#stdout-outlet" title="Permalink to this headline">¶</a></h2>
@@ -360,12 +367,6 @@ On normal setups, you should not need to change the <code class="docutils litera
 </div>
 <div class="section" id="tcp-outlet">
 <h2><code class="docutils literal"><span class="pre">tcp</span></code> Outlet<a class="headerlink" href="#tcp-outlet" title="Permalink to this headline">¶</a></h2>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The TCP outlet is not fully asynchronous and blocks the calling goroutine when it cannot connect.
-Currently it should only be used for local connections that are guaranteed to not fail / be slow.
-This issue is tracked in <a class="reference external" href="https://github.com/zrepl/zrepl/issues/26">issue #26</a></p>
-</div>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="10%" />
@@ -426,6 +427,13 @@ This is particularly useful in combination with log aggregation services that ru
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>zrepl drops log messages to the TCP outlet if the underlying connection is not fast enough.
+Note that TCP buffering in the kernel must first run full becfore messages are dropped.</p>
+<p class="last">Make sure to always configure a <code class="docutils literal"><span class="pre">stdout</span></code> outlet as the special error outlet to be informed about problems
+with the TCP outlet (see <a class="reference internal" href="#logging-error-outlet"><span class="std std-ref">above</span></a> ).</p>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">zrepl uses Go&#8217;s <code class="docutils literal"><span class="pre">crypto/tls</span></code> and <code class="docutils literal"><span class="pre">crypto/x509</span></code> packages and leaves all but the required fields in <code class="docutils literal"><span class="pre">tls.Config</span></code> at their default values.
@@ -485,6 +493,8 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
         <dl>
             <dt>Branches</dt>
             <dd><a href="../master/configuration/logging.html">master</a></dd>
+            <dd><a href="../parallel_zfs_ops/configuration/logging.html">parallel_zfs_ops</a></dd>
+            <dd><a href="../push/configuration/logging.html">push</a></dd>
         </dl>
     </div>
 </div>

@@ -16,7 +16,7 @@ Currently, only the ``ssh+stdinserver`` transport is supported.
 -----------------------------
 
 The way the ``ssh+stdinserver`` transport works is inspired by `git shell <https://git-scm.com/docs/git-shell>`_ and `Borg Backup <https://borgbackup.readthedocs.io/en/stable/deployment.html>`_.
-It is implemented in the Go package ``github.com/zrepl/zrepl/sshbytestream``.
+It is provided by the Go package ``github.com/problame/go-netssh``.
 The config excerpts are taken from the :ref:`tutorial` which you should complete before reading further.
 
 .. _transport-ssh+stdinserver-serve:
@@ -85,8 +85,9 @@ Connect Mode
         user: root
         port: 22
         identity_file: /etc/zrepl/ssh/identity
-        options: # optional
+        options: # optional, default [], `-o` arguments passed to ssh
         - "Compression=on"
+        dial_timeout: # optional, default 10s, max time.Duration until initial handshake is completed
 
 The connecting zrepl daemon
 
@@ -101,9 +102,12 @@ The connecting zrepl daemon
       #. The remote user, host and port correspond to those configured.
       #. Further options can be specified using the ``options`` field, which appends each entry in the list to the command line using ``-o $entry``.
 
-1. Wraps the pipe ends in an ``io.ReadWriteCloser`` and uses it for RPC.
+#. Wraps the pipe ends in an ``io.ReadWriteCloser`` and uses it for RPC.
+
 
 As discussed in the section above, the connecting zrepl daemon expects that ``zrepl stdinserver $client_identity`` is  executed automatically via an ``authorized_keys`` file entry.
+
+The ``known_hosts`` file used by the ssh command must contain an entry for the serving host, e.g., ``app-srv.example.com`` in the example above.
 
 .. NOTE::
 

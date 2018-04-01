@@ -105,6 +105,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
@@ -230,7 +231,7 @@ a gap in our backup history.</p>
 </div>
 <div class="section" id="configure-backup-srv">
 <h2>Configure <code class="docutils literal"><span class="pre">backup-srv</span></code><a class="headerlink" href="#configure-backup-srv" title="Permalink to this headline">¶</a></h2>
-<p>We define a <strong>pull job</strong> named <code class="docutils literal"><span class="pre">pull_app-srv</span></code> in the <a class="reference internal" href="installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>:</p>
+<p>We define a <strong>pull job</strong> named <code class="docutils literal"><span class="pre">pull_app-srv</span></code> in the <a class="reference internal" href="installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a> on host <code class="docutils literal"><span class="pre">backup-srv</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">pull_app</span><span class="o">-</span><span class="n">srv</span>
   <span class="nb">type</span><span class="p">:</span> <span class="n">pull</span>
@@ -262,11 +263,18 @@ a gap in our backup history.</p>
 </div>
 <p>Note that most use cases do not benefit from separate keypairs per remote endpoint.
 Thus, it is sufficient to create one keypair and use it for all <code class="docutils literal"><span class="pre">connect</span></code> directives on one host.</p>
+<p>zrepl uses ssh&#8217;s default <code class="docutils literal"><span class="pre">known_hosts</span></code> file, which must contain a host identification entry for <code class="docutils literal"><span class="pre">app-srv.example.com</span></code>.
+If that entry does not already exist, we need to generate it.
+Run the following command, compare the host fingerprints, and confirm with yes if they match.
+You will not be able to get a shell with the identity file we just generated, which is fine.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">ssh</span><span class="o">/</span><span class="n">identity</span> <span class="n">root</span><span class="nd">@app</span><span class="o">-</span><span class="n">srv</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
 <p>Learn more about <a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a> transport and the <a class="reference internal" href="configuration/jobs.html#job-pull"><span class="std std-ref">pull job</span></a> format.</p>
 </div>
 <div class="section" id="configure-app-srv">
 <span id="tutorial-configure-app-srv"></span><h2>Configure <code class="docutils literal"><span class="pre">app-srv</span></code><a class="headerlink" href="#configure-app-srv" title="Permalink to this headline">¶</a></h2>
-<p>We define a corresponding <strong>source job</strong> named <code class="docutils literal"><span class="pre">pull_backup</span></code> in the <a class="reference internal" href="installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>:</p>
+<p>We define a corresponding <strong>source job</strong> named <code class="docutils literal"><span class="pre">pull_backup</span></code> in the <a class="reference internal" href="installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a> on host <code class="docutils literal"><span class="pre">app-srv</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">pull_backup</span>
   <span class="nb">type</span><span class="p">:</span> <span class="n">source</span>
@@ -283,6 +291,7 @@ Thus, it is sufficient to create one keypair and use it for all <code class="doc
   <span class="n">prune</span><span class="p">:</span>
       <span class="n">policy</span><span class="p">:</span> <span class="n">grid</span>
       <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1d</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span>
+      <span class="n">keep_bookmarks</span><span class="p">:</span> <span class="mi">144</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">serve</span></code> section corresponds to the <code class="docutils literal"><span class="pre">connect</span></code> section in the configuration of <code class="docutils literal"><span class="pre">backup-srv</span></code>.</p>
@@ -312,11 +321,13 @@ Refer to sshd_config(5) for details.</p>
 <div class="section" id="apply-configuration-changes">
 <h2>Apply Configuration Changes<a class="headerlink" href="#apply-configuration-changes" title="Permalink to this headline">¶</a></h2>
 <p>We need to restart the zrepl daemon on <strong>both</strong> <code class="docutils literal"><span class="pre">app-srv</span></code> and <code class="docutils literal"><span class="pre">backup-srv</span></code>.
-This is <a class="reference internal" href="installation.html#install-restarting"><span class="std std-ref">OS-specific</span></a>.</p>
+This is <a class="reference internal" href="usage.html#usage-zrepl-daemon-restarting"><span class="std std-ref">OS-specific</span></a>.</p>
 </div>
 <div class="section" id="watch-it-work">
 <h2>Watch it Work<a class="headerlink" href="#watch-it-work" title="Permalink to this headline">¶</a></h2>
-<p>A common setup is to <code class="docutils literal"><span class="pre">watch</span></code> the log output and <code class="docutils literal"><span class="pre">zfs</span> <span class="pre">list</span></code> of snapshots on both machines.</p>
+<p>Run <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span> <span class="pre">status</span></code> to view the current activity of the configured jobs.
+If a job encountered problems since it last left idle state, the output contains useful debug log.</p>
+<p>Additionally, you can check the detailed structured logs of the <cite>zrepl daemon</cite> process and use GNU <em>watch</em> to view the snapshots present on both machines.</p>
 <p>If you like tmux, here is a handy script that works on FreeBSD:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pkg</span> <span class="n">install</span> <span class="n">gnu</span><span class="o">-</span><span class="n">watch</span> <span class="n">tmux</span>
 <span class="n">tmux</span> <span class="n">new</span><span class="o">-</span><span class="n">window</span>
@@ -395,6 +406,8 @@ This is <a class="reference internal" href="installation.html#install-restarting
         <dl>
             <dt>Branches</dt>
             <dd><a href="master/tutorial.html">master</a></dd>
+            <dd><a href="parallel_zfs_ops/tutorial.html">parallel_zfs_ops</a></dd>
+            <dd><a href="push/tutorial.html">push</a></dd>
         </dl>
     </div>
 </div>
