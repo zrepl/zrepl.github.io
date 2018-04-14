@@ -218,7 +218,7 @@ invoke any subcommand at any level with the <code class="docutils literal"><span
 <div class="section" id="zrepl-daemon">
 <span id="usage-zrepl-daemon"></span><h2>zrepl daemon<a class="headerlink" href="#zrepl-daemon" title="Permalink to this headline">¶</a></h2>
 <p>All actual work zrepl does is performed by a daemon process.
-Logging is configurable via the config file. Please refer to the <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging documention</span></a>.</p>
+The daemon supports structured <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a> and provides <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring endpoints</span></a>.</p>
 <p>When installating from a package, the package maintainer should have provided an init script / systemd.service file.
 You should thus be able to start zrepl daemon using your init system.</p>
 <p>Alternatively, or for running zrepl in the foreground, simply execute <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code>.

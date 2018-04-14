@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Preface &mdash; zrepl  documentation</title>
+  <title>Monitoring &mdash; zrepl  documentation</title>
   
 
   
@@ -39,8 +39,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="zrepl  documentation" href="../index.html"/>
         <link rel="up" title="Configuration" href="../configuration.html"/>
-        <link rel="next" title="Job Types" href="jobs.html"/>
-        <link rel="prev" title="Configuration" href="../configuration.html"/> 
+        <link rel="next" title="Miscellaneous" href="misc.html"/>
+        <link rel="prev" title="Logging" href="logging.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,18 +97,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Preface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#configuration-file-path">Configuration File Path</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#runtime-directories">Runtime Directories</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#validating">Validating</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Monitoring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prometheus">Prometheus</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
@@ -163,13 +161,13 @@
         
           <li><a href="../configuration.html">Configuration</a> &raquo;</li>
         
-      <li>Preface</li>
+      <li>Monitoring</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/configuration/preface.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/configuration/monitoring.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -188,31 +186,22 @@
 
 
 
-<div class="section" id="preface">
-<span id="configuration-preface"></span><h1>Preface<a class="headerlink" href="#preface" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="configuration-file-path">
-<h2>Configuration File Path<a class="headerlink" href="#configuration-file-path" title="Permalink to this headline">¶</a></h2>
-<p>zrepl searches for its main configuration file in the following locations (in that order):</p>
-<ul class="simple">
-<li>If set, the location specified via the global <code class="docutils literal"><span class="pre">--config</span></code> flag</li>
-<li><code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code></li>
-<li><code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code></li>
-</ul>
-<p>The examples in the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> or the <code class="docutils literal"><span class="pre">cmd/sampleconf</span></code> directory should provide a good starting point.</p>
-</div>
-<div class="section" id="runtime-directories">
-<h2>Runtime Directories<a class="headerlink" href="#runtime-directories" title="Permalink to this headline">¶</a></h2>
-<p>zrepl requires runtime directories for various UNIX sockets &#8212; they are documented in the <a class="reference internal" href="misc.html#conf-runtime-directories"><span class="std std-ref">config file</span></a>.
-Your package maintainer / init script should take care of creating them.
-Alternatively, for default settings, the following should to the trick.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">stdinserver</span>
-<span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">0700</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span>
+<div class="section" id="monitoring">
+<span id="id1"></span><h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline">¶</a></h1>
+<p>Monitoring endpoints are configured in the <code class="docutils literal"><span class="pre">global.monitoring</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.
+Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/random/logging_and_monitoring.yml">cmd/sampleconf/random/logging_and_monitoring.yml</a> for examples.</p>
+<div class="section" id="prometheus">
+<span id="monitoring-prometheus"></span><h2>Prometheus<a class="headerlink" href="#prometheus" title="Permalink to this headline">¶</a></h2>
+<p>zrepl can expose <a class="reference external" href="https://prometheus.io/docs/instrumenting/exposition_formats/">Prometheus metrics</a> via HTTP.
+The <code class="docutils literal"><span class="pre">listen</span></code> attribute is a <a class="reference external" href="https://golang.org/pkg/net/#Listen">net.Listen</a>  string for tcp, e.g. <code class="docutils literal"><span class="pre">:9091</span></code> or <code class="docutils literal"><span class="pre">127.0.0.1:9091</span></code>.</p>
+<p>The Prometheues monitoring job appears in the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span></code> job list and may be specified <strong>at most once</strong>.
+There is no stability guarantee on the exported metrics.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
+  <span class="n">monitoring</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">prometheus</span>
+      <span class="n">listen</span><span class="p">:</span> <span class="s1">&#39;:9091&#39;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="validating">
-<h2>Validating<a class="headerlink" href="#validating" title="Permalink to this headline">¶</a></h2>
-<p>The config can be validated using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">test</span></code> subcommand.</p>
 </div>
 </div>
 
@@ -226,10 +215,10 @@ Alternatively, for default settings, the following should to the trick.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="jobs.html" class="btn btn-neutral float-right" title="Job Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="misc.html" class="btn btn-neutral float-right" title="Miscellaneous" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../configuration.html" class="btn btn-neutral" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="logging.html" class="btn btn-neutral" title="Logging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -263,13 +252,13 @@ Alternatively, for default settings, the following should to the trick.</p>
         <dl>
             <dt>Tags</dt>
             <dd><a href="../0.0.2/index.html">0.0.2</a></dd>
-            <dd><a href="../0.0.3/configuration/preface.html">0.0.3</a></dd>
+            <dd><a href="../0.0.3/index.html">0.0.3</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="../master/configuration/preface.html">master</a></dd>
-            <dd><a href="../parallel_zfs_ops/configuration/preface.html">parallel_zfs_ops</a></dd>
-            <dd><a href="../push/configuration/preface.html">push</a></dd>
+            <dd><a href="../master/configuration/monitoring.html">master</a></dd>
+            <dd><a href="../parallel_zfs_ops/index.html">parallel_zfs_ops</a></dd>
+            <dd><a href="../push/index.html">push</a></dd>
         </dl>
     </div>
 </div>

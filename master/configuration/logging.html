@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="zrepl  documentation" href="../index.html"/>
         <link rel="up" title="Configuration" href="../configuration.html"/>
-        <link rel="next" title="Miscellaneous" href="misc.html"/>
+        <link rel="next" title="Monitoring" href="monitoring.html"/>
         <link rel="prev" title="Pruning Policies" href="prune.html"/> 
 
   
@@ -115,6 +115,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#tcp-outlet"><code class="docutils literal"><span class="pre">tcp</span></code> Outlet</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
@@ -198,7 +199,7 @@
 <span id="id1"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
 <p>zrepl uses structured logging to provide users with easily processable log messages.</p>
 <p>Logging outlets are configured in the <code class="docutils literal"><span class="pre">global</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.
-Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/random/logging.yml">cmd/sampleconfrandom/logging.yml</a> for an example on how to configure multiple outlets:</p>
+Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/random/logging_and_monitoring.yml">cmd/sampleconf/random/logging_and_monitoring.yml</a> for an example on how to configure multiple outlets:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">logging</span><span class="p">:</span>
 
@@ -452,7 +453,7 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="misc.html" class="btn btn-neutral float-right" title="Miscellaneous" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="monitoring.html" class="btn btn-neutral float-right" title="Monitoring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="prune.html" class="btn btn-neutral" title="Pruning Policies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

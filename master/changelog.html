@@ -99,6 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unreleased">0.0.4 (unreleased)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">0.0.3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">0.0.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">0.0.1</a></li>
@@ -179,6 +180,12 @@
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <p>The changelog summarized bugfixes that are deemed relevant for users.
 Developers should consult the git commit log or GitHub issue tracker.</p>
+<div class="section" id="unreleased">
+<h2>0.0.4 (unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/67">issue #67</a>: Expose <a class="reference external" href="https://prometheus.io">Prometheus</a> metrics via HTTP (<a class="reference internal" href="configuration/monitoring.html#monitoring-prometheus"><span class="std std-ref">config docs</span></a>)</li>
+</ul>
+</div>
 <div class="section" id="id1">
 <h2>0.0.3<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -186,7 +193,7 @@ Developers should consult the git commit log or GitHub issue tracker.</p>
 <li>Snapshots are automatically bookmarked and pruning of bookmarks <strong>must</strong> be configured.</li>
 <li>This breaks existing configuration: <code class="docutils literal"><span class="pre">grid</span></code> <a class="reference internal" href="configuration/prune.html#prune-retention-grid"><span class="std std-ref">prune policy</span></a>  specifications require the new <code class="docutils literal"><span class="pre">keep_bookmarks</span></code> parameter.</li>
 <li>Make sure to understand the meaning bookmarks have for <a class="reference internal" href="configuration/prune.html#replication-downtime"><span class="std std-ref">maximum replication downtime</span></a>.</li>
-<li>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/pullbackup/productionhost.yml">cmd/sampleconfpullbackup/productionhost.yml</a></li>
+<li>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/pullbackup/productionhost.yml">cmd/sampleconf/pullbackup/productionhost.yml</a></li>
 </ul>
 </li>
 <li><strong>[BREAK]</strong> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/ccd062e">commit ccd062e</a>: <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport: changed protocol requires daemon restart on both sides<ul>
