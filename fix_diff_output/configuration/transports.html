@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Transports &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="zrepl  documentation" href="../index.html"/>
+        <link rel="up" title="Configuration" href="../configuration.html"/>
+        <link rel="next" title="Mapping &amp; Filter Syntax" href="map_filter_syntax.html"/>
+        <link rel="prev" title="Job Types" href="jobs.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="../_static/zrepl.svg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Transports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ssh-stdinserver-transport"><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serve-mode">Serve Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-mode">Connect Mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../configuration.html">Configuration</a> &raquo;</li>
+        
+      <li>Transports</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/configuration/transports.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+    
+    
+
+
+
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../master/configuration/transports.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is master.</a></p>
+<div class="section" id="transports">
+<span id="transport"></span><h1>Transports<a class="headerlink" href="#transports" title="Permalink to this headline">¶</a></h1>
+<p>A transport provides an authenticated <a class="reference external" href="https://golang.org/pkg/io/#ReadWriteCloser">io.ReadWriteCloser</a> to the RPC layer.
+(An <code class="docutils literal"><span class="pre">io.ReadWriteCloser</span></code> is essentially a bidirectional reliable communication channel.)</p>
+<p>Currently, only the <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport is supported.</p>
+<div class="section" id="ssh-stdinserver-transport">
+<span id="transport-ssh-stdinserver"></span><h2><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport<a class="headerlink" href="#ssh-stdinserver-transport" title="Permalink to this headline">¶</a></h2>
+<p>The way the <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport works is inspired by <a class="reference external" href="https://git-scm.com/docs/git-shell">git shell</a> and <a class="reference external" href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Backup</a>.
+It is provided by the Go package <code class="docutils literal"><span class="pre">github.com/problame/go-netssh</span></code>.
+The config excerpts are taken from the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> which you should complete before reading further.</p>
+<div class="section" id="serve-mode">
+<span id="transport-ssh-stdinserver-serve"></span><h3>Serve Mode<a class="headerlink" href="#serve-mode" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
+- name: pull_backup
+  type: <span class="nb">source</span>
+  serve:
+    type: stdinserver
+    client_identity: backup-srv.example.com
+  ...
+</pre></div>
+</div>
+<p>The serving job opens a UNIX socket named after <code class="docutils literal"><span class="pre">client_identity</span></code> in the runtime directory, e.g. <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/backup-srv.example.com</span></code>.</p>
+<p>On the same machine, the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">$client_identity</span></code> command connects to that socket.
+For example, <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">backup-srv.example.com</span></code> connects to the UNIX socket <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/backup-srv.example.com</span></code>.</p>
+<p>It then passes its stdin and stdout file descriptors to the zrepl daemon via <em>cmsg(3)</em>.
+zrepl daemon in turn combines them into an <code class="docutils literal"><span class="pre">io.ReadWriteCloser</span></code>:
+a <code class="docutils literal"><span class="pre">Write()</span></code> turns into a write to stdout, a <code class="docutils literal"><span class="pre">Read()</span></code> turns into a read from stdin.</p>
+<p>Interactive use of the <code class="docutils literal"><span class="pre">stdinserver</span></code> subcommand does not make much sense.
+However, we can force its execution when a user with a particular SSH pubkey connects via SSH.
+This can be achieved with an entry in the <code class="docutils literal"><span class="pre">authorized_keys</span></code> file of the serving zrepl daemon.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># for OpenSSH &gt;= 7.2</span>
+<span class="nv">command</span><span class="o">=</span><span class="s2">&quot;zrepl stdinserver CLIENT_IDENTITY&quot;</span>,restrict CLIENT_SSH_KEY
+<span class="c1"># for older OpenSSH versions</span>
+<span class="nv">command</span><span class="o">=</span><span class="s2">&quot;zrepl stdinserver CLIENT_IDENTITY&quot;</span>,no-port-forwarding,no-X11-forwarding,no-pty,no-agent-forwarding,no-user-rc CLIENT_SSH_KEY
+</pre></div>
+</div>
+<ul class="simple">
+<li>CLIENT_IDENTITY is substituted with <code class="docutils literal"><span class="pre">backup-srv.example.com</span></code> in our example</li>
+<li>CLIENT_SSH_KEY is substituted with the public part of the SSH keypair specified in the <code class="docutils literal"><span class="pre">connect</span></code> directive on the connecting host.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may need to adjust the <code class="docutils literal"><span class="pre">PermitRootLogin</span></code> option in <code class="docutils literal"><span class="pre">/etc/ssh/sshd_config</span></code> to <code class="docutils literal"><span class="pre">forced-commands-only</span></code> or higher for this to work.
+Refer to sshd_config(5) for details.</p>
+</div>
+<p>To recap, this is of how client authentication works with the <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport:</p>
+<ul class="simple">
+<li>Connections to the <code class="docutils literal"><span class="pre">client_identity</span></code> UNIX socket are blindly trusted by zrepl daemon.</li>
+<li>Thus, the runtime directory must be private to the zrepl user (checked by zrepl daemon)</li>
+<li>The admin of the host with the serving zrepl daemon controls the <code class="docutils literal"><span class="pre">authorized_keys</span></code> file.</li>
+<li>Thus, the administrator controls the mapping <code class="docutils literal"><span class="pre">PUBKEY</span> <span class="pre">-&gt;</span> <span class="pre">CLIENT_IDENTITY</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="connect-mode">
+<span id="transport-ssh-stdinserver-connect"></span><h3>Connect Mode<a class="headerlink" href="#connect-mode" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
+- name: pull_app-srv
+  type: pull
+  connect:
+    type: ssh+stdinserver
+    host: app-srv.example.com
+    user: root
+    port: <span class="m">22</span>
+    identity_file: /etc/zrepl/ssh/identity
+    options: <span class="c1"># optional, default [], `-o` arguments passed to ssh</span>
+    - <span class="s2">&quot;Compression=on&quot;</span>
+    dial_timeout: <span class="c1"># optional, default 10s, max time.Duration until initial handshake is completed</span>
+</pre></div>
+</div>
+<p>The connecting zrepl daemon</p>
+<ol class="arabic simple">
+<li>Creates a pipe</li>
+<li>Forks</li>
+<li>In the forked process<ol class="arabic">
+<li>Replaces forked stdin and stdout with the corresponding pipe ends</li>
+<li>Executes the <code class="docutils literal"><span class="pre">ssh</span></code> binary found in <code class="docutils literal"><span class="pre">$PATH</span></code>.<ol class="arabic">
+<li>The identity file (<code class="docutils literal"><span class="pre">-i</span></code>) is set to <code class="docutils literal"><span class="pre">$identity_file</span></code>.</li>
+<li>The remote user, host and port correspond to those configured.</li>
+<li>Further options can be specified using the <code class="docutils literal"><span class="pre">options</span></code> field, which appends each entry in the list to the command line using <code class="docutils literal"><span class="pre">-o</span> <span class="pre">$entry</span></code>.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Wraps the pipe ends in an <code class="docutils literal"><span class="pre">io.ReadWriteCloser</span></code> and uses it for RPC.</li>
+</ol>
+<p>As discussed in the section above, the connecting zrepl daemon expects that <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">$client_identity</span></code> is  executed automatically via an <code class="docutils literal"><span class="pre">authorized_keys</span></code> file entry.</p>
+<p>The <code class="docutils literal"><span class="pre">known_hosts</span></code> file used by the ssh command must contain an entry for the serving host, e.g., <code class="docutils literal"><span class="pre">app-srv.example.com</span></code> in the example above.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The environment variables of the underlying SSH process are cleared. <code class="docutils literal"><span class="pre">$SSH_AUTH_SOCK</span></code> will not be available.
+It is suggested to create a separate, unencrypted SSH key solely for that purpose.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="map_filter_syntax.html" class="btn btn-neutral float-right" title="Mapping &amp; Filter Syntax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="jobs.html" class="btn btn-neutral" title="Job Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Christian Schwarz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: fix_diff_output
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../0.0.2/configuration/transports.html">0.0.2</a></dd>
+            <dd><a href="../../0.0.3/configuration/transports.html">0.0.3</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="transports.html">fix_diff_output</a></dd>
+            <dd><a href="../../master/configuration/transports.html">master</a></dd>
+            <dd><a href="../../parallel_zfs_ops/configuration/transports.html">parallel_zfs_ops</a></dd>
+            <dd><a href="../../push/configuration/transports.html">push</a></dd>
+            <dd><a href="../../replication_rewrite/configuration/transports.html">replication_rewrite</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

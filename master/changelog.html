@@ -184,6 +184,7 @@ Developers should consult the git commit log or GitHub issue tracker.</p>
 <h2>0.0.4 (unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/67">issue #67</a>: Expose <a class="reference external" href="https://prometheus.io">Prometheus</a> metrics via HTTP (<a class="reference internal" href="configuration/monitoring.html#monitoring-prometheus"><span class="std std-ref">config docs</span></a>)</li>
+<li>[BUG] Goroutine leak on ssh transport connection timeouts</li>
 </ul>
 </div>
 <div class="section" id="id1">
@@ -305,9 +306,11 @@ i.e. no filesystems are presented to the other side.</li>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../fix_diff_output/changelog.html">fix_diff_output</a></dd>
             <dd><a href="changelog.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/changelog.html">parallel_zfs_ops</a></dd>
             <dd><a href="../push/changelog.html">push</a></dd>
+            <dd><a href="../replication_rewrite/changelog.html">replication_rewrite</a></dd>
         </dl>
     </div>
 </div>
