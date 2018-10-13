@@ -230,6 +230,11 @@ The keep rules are <strong>evaluated on the active side</strong> (<a class="refe
         <span class="c1"># manually created snapshots will be kept forever on receiver</span>
 </pre></div>
 </div>
+<div class="admonition danger">
+<p class="first admonition-title">Danger</p>
+<p class="last">You might have <strong>existing snapshots</strong> of filesystems affected by pruning which you want to keep, i.e. not be destroyed by zrepl.
+Make sure to actually add the necessary <code class="docutils literal"><span class="pre">regex</span></code> keep rules on both sides, like with <code class="docutils literal"><span class="pre">manual</span></code> in the example above.</p>
+</div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">It is currently not possible to define pruning on a source job.

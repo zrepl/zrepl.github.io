@@ -198,6 +198,14 @@ Note that even updating the package on both sides might not be sufficient, e.g. 
 <h2>0.1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>This release is a milestone for zrepl and required significant refactoring if not rewrites of substantial parts of the application.
 It breaks both configuration and transport format, and thus requires manual intervention and updates on both sides of a replication setup.</p>
+<div class="admonition danger">
+<p class="first admonition-title">Danger</p>
+<p class="last">The changes in the pruning system for this release require you to explicitly define <strong>keep rules</strong>:
+for any snapshot that you want to keep, at least one rule must match.
+This is different from previous releases where pruning only affected snapshots with the configured snapshotting prefix.
+Make sure that snapshots to be kept or ignored by zrepl are covered, e.g. by using the <code class="docutils literal"><span class="pre">regex</span></code> keep rule.
+<a class="reference internal" href="configuration/prune.html#prune"><span class="std std-ref">Learn more in the config docs...</span></a></p>
+</div>
 <div class="section" id="notes-to-package-maintainers">
 <h3>Notes to Package Maintainers<a class="headerlink" href="#notes-to-package-maintainers" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
