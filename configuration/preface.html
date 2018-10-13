@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="zrepl  documentation" href="../index.html"/>
         <link rel="up" title="Configuration" href="../configuration.html"/>
-        <link rel="next" title="Job Types" href="jobs.html"/>
+        <link rel="next" title="Job Types &amp; Replication" href="jobs.html"/>
         <link rel="prev" title="Configuration" href="../configuration.html"/> 
 
   
@@ -103,9 +103,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#validating">Validating</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
@@ -114,9 +114,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -169,7 +169,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/configuration/preface.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/preface.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -198,7 +200,7 @@
 <li><code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code></li>
 <li><code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code></li>
 </ul>
-<p>The examples in the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> or the <code class="docutils literal"><span class="pre">cmd/sampleconf</span></code> directory should provide a good starting point.</p>
+<p>The examples in the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> or the <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/">config/samples/</a> directory should provide a good starting point.</p>
 </div>
 <div class="section" id="runtime-directories">
 <h2>Runtime Directories<a class="headerlink" href="#runtime-directories" title="Permalink to this headline">¶</a></h2>
@@ -212,7 +214,7 @@ Alternatively, for default settings, the following should to the trick.</p>
 </div>
 <div class="section" id="validating">
 <h2>Validating<a class="headerlink" href="#validating" title="Permalink to this headline">¶</a></h2>
-<p>The config can be validated using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">test</span></code> subcommand.</p>
+<p>The config can be validated using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> subcommand.</p>
 </div>
 </div>
 
@@ -226,7 +228,7 @@ Alternatively, for default settings, the following should to the trick.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="jobs.html" class="btn btn-neutral float-right" title="Job Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="jobs.html" class="btn btn-neutral float-right" title="Job Types &amp; Replication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../configuration.html" class="btn btn-neutral" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -238,7 +240,7 @@ Alternatively, for default settings, the following should to the trick.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -264,9 +266,11 @@ Alternatively, for default settings, the following should to the trick.</p>
             <dt>Tags</dt>
             <dd><a href="../0.0.2/index.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/configuration/preface.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/configuration/preface.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/configuration/preface.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/configuration/preface.html">fix_diff_output</a></dd>
             <dd><a href="../master/configuration/preface.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/configuration/preface.html">parallel_zfs_ops</a></dd>

@@ -98,9 +98,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Monitoring</a><ul>
@@ -112,9 +112,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -167,7 +167,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/configuration/monitoring.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/monitoring.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -188,14 +190,13 @@
 
 <div class="section" id="monitoring">
 <span id="id1"></span><h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline">¶</a></h1>
-<p>Monitoring endpoints are configured in the <code class="docutils literal"><span class="pre">global.monitoring</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.
-Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/random/logging_and_monitoring.yml">cmd/sampleconf/random/logging_and_monitoring.yml</a> for examples.</p>
+<p>Monitoring endpoints are configured in the <code class="docutils literal"><span class="pre">global.monitoring</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.</p>
 <div class="section" id="prometheus">
 <span id="monitoring-prometheus"></span><h2>Prometheus<a class="headerlink" href="#prometheus" title="Permalink to this headline">¶</a></h2>
 <p>zrepl can expose <a class="reference external" href="https://prometheus.io/docs/instrumenting/exposition_formats/">Prometheus metrics</a> via HTTP.
 The <code class="docutils literal"><span class="pre">listen</span></code> attribute is a <a class="reference external" href="https://golang.org/pkg/net/#Listen">net.Listen</a>  string for tcp, e.g. <code class="docutils literal"><span class="pre">:9091</span></code> or <code class="docutils literal"><span class="pre">127.0.0.1:9091</span></code>.</p>
 <p>The Prometheues monitoring job appears in the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span></code> job list and may be specified <strong>at most once</strong>.
-There is no stability guarantee on the exported metrics.</p>
+At the time of writing, there is no stability guarantee on the exported metrics.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">monitoring</span><span class="p">:</span>
     <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">prometheus</span>
@@ -227,7 +228,7 @@ There is no stability guarantee on the exported metrics.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -253,9 +254,11 @@ There is no stability guarantee on the exported metrics.</p>
             <dt>Tags</dt>
             <dd><a href="../../0.0.2/index.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/index.html">0.0.3</a></dd>
+            <dd><a href="../../0.1.0-rc1/configuration/monitoring.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../../anton_wip/configuration/monitoring.html">anton_wip</a></dd>
             <dd><a href="../../fix_diff_output/configuration/monitoring.html">fix_diff_output</a></dd>
             <dd><a href="monitoring.html">master</a></dd>
             <dd><a href="../../parallel_zfs_ops/index.html">parallel_zfs_ops</a></dd>

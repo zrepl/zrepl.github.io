@@ -39,8 +39,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="zrepl  documentation" href="../index.html"/>
         <link rel="up" title="Configuration" href="../configuration.html"/>
-        <link rel="next" title="Mapping &amp; Filter Syntax" href="map_filter_syntax.html"/>
-        <link rel="prev" title="Job Types" href="jobs.html"/> 
+        <link rel="next" title="Filter Syntax" href="filter_syntax.html"/>
+        <link rel="prev" title="Job Types &amp; Replication" href="jobs.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -98,16 +98,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Transports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tcp-transport"><code class="docutils literal"><span class="pre">tcp</span></code> Transport</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serve">Serve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect">Connect</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tls-transport"><code class="docutils literal"><span class="pre">tls</span></code> Transport</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Serve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Connect</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#ssh-stdinserver-transport"><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serve-mode">Serve Mode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#connect-mode">Connect Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transport-ssh-stdinserver-serve">Serve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transport-ssh-stdinserver-connect">Connect</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#local-transport"><code class="docutils literal"><span class="pre">local</span></code> Transport</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
@@ -116,9 +127,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -171,7 +182,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/configuration/transports.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/transports.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -192,30 +205,132 @@
 
 <div class="section" id="transports">
 <span id="transport"></span><h1>Transports<a class="headerlink" href="#transports" title="Permalink to this headline">¶</a></h1>
-<p>A transport provides an authenticated <a class="reference external" href="https://golang.org/pkg/io/#ReadWriteCloser">io.ReadWriteCloser</a> to the RPC layer.
-(An <code class="docutils literal"><span class="pre">io.ReadWriteCloser</span></code> is essentially a bidirectional reliable communication channel.)</p>
-<p>Currently, only the <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport is supported.</p>
-<div class="section" id="ssh-stdinserver-transport">
-<span id="transport-ssh-stdinserver"></span><h2><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport<a class="headerlink" href="#ssh-stdinserver-transport" title="Permalink to this headline">¶</a></h2>
-<p>The way the <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport works is inspired by <a class="reference external" href="https://git-scm.com/docs/git-shell">git shell</a> and <a class="reference external" href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Backup</a>.
-It is provided by the Go package <code class="docutils literal"><span class="pre">github.com/problame/go-netssh</span></code>.
-The config excerpts are taken from the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> which you should complete before reading further.</p>
-<div class="section" id="serve-mode">
-<span id="transport-ssh-stdinserver-serve"></span><h3>Serve Mode<a class="headerlink" href="#serve-mode" title="Permalink to this headline">¶</a></h3>
+<p>The zrepl RPC layer uses <strong>transports</strong> to establish a single, bidirectional data stream between an active and passive job.
+On the passive (serving) side, the transport also provides the <strong>client identity</strong> to the upper layers:
+this string is used for access control and separation of filesystem sub-trees in <a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink jobs</span></a>.
+Transports are specified in the <code class="docutils literal"><span class="pre">connect</span></code> or <code class="docutils literal"><span class="pre">serve</span></code> section of a job definition.</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">The <strong>client identities must be valid ZFS dataset path components</strong>
+because the <a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink job</span></a> uses <code class="docutils literal"><span class="pre">${root_fs}/${client_identity}</span></code> to determine the client&#8217;s subtree.</p>
+</div>
+<div class="section" id="tcp-transport">
+<span id="transport-tcp"></span><h2><code class="docutils literal"><span class="pre">tcp</span></code> Transport<a class="headerlink" href="#tcp-transport" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">tcp</span></code> transport uses plain TCP, which means that the data is <strong>not encrypted</strong> on the wire.
+Clients are identified by their IPv4 or IPv6 addresses, and the client identity is established through a mapping on the server.</p>
+<p>This transport may also be used in conjunction with network-layer encryption and/or VPN tunnels to provide encryption on the wire.
+To make the IP-based client authentication effective, such solutions should provide authenticated IP addresses.
+Some options to consider:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.wireguard.com/">WireGuard</a>: Linux-focussed, in-kernel TLS</li>
+<li><a class="reference external" href="https://openvpn.net/">OpenVPN</a>: Cross-platform VPN, uses tun on *nix</li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/IPsec">IPSec</a>: Properly standardized, in-kernel network-layer VPN</li>
+<li><a class="reference external" href="http://www.tarsnap.com/spiped.html">spiped</a>: think of it as an encrypted pipe between two servers</li>
+<li>SSH<ul>
+<li><a class="reference external" href="https://sshuttle.readthedocs.io/en/stable/overview.html">sshuttle</a>: VPN-like solution, but using SSH</li>
+<li><a class="reference external" href="https://help.ubuntu.com/community/SSH/OpenSSH/PortForwarding">SSH port forwarding</a>: Systemd user unit &amp; make it start before the zrepl service.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="serve">
+<h3>Serve<a class="headerlink" href="#serve" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
-- name: pull_backup
-  type: <span class="nb">source</span>
+- type: sink
   serve:
-    type: stdinserver
-    client_identity: backup-srv.example.com
+    type: tcp
+    listen: <span class="s2">&quot;:8888&quot;</span>
+    clients: <span class="o">{</span>
+      <span class="s2">&quot;192.168.122.123&quot;</span> : <span class="s2">&quot;mysql01&quot;</span>
+      <span class="s2">&quot;192.168.122.123&quot;</span> : <span class="s2">&quot;mx01&quot;</span>
+    <span class="o">}</span>
   ...
 </pre></div>
 </div>
-<p>The serving job opens a UNIX socket named after <code class="docutils literal"><span class="pre">client_identity</span></code> in the runtime directory, e.g. <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/backup-srv.example.com</span></code>.</p>
-<p>On the same machine, the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">$client_identity</span></code> command connects to that socket.
-For example, <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">backup-srv.example.com</span></code> connects to the UNIX socket <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/backup-srv.example.com</span></code>.</p>
-<p>It then passes its stdin and stdout file descriptors to the zrepl daemon via <em>cmsg(3)</em>.
-zrepl daemon in turn combines them into an <code class="docutils literal"><span class="pre">io.ReadWriteCloser</span></code>:
+</div>
+<div class="section" id="connect">
+<h3>Connect<a class="headerlink" href="#connect" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
+ - type: push
+   connect:
+     type: tcp
+     address: <span class="s2">&quot;10.23.42.23:8888&quot;</span>
+     dial_timeout: <span class="c1"># optional, default 10s</span>
+   ...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tls-transport">
+<span id="transport-tcp-tlsclientauth"></span><h2><code class="docutils literal"><span class="pre">tls</span></code> Transport<a class="headerlink" href="#tls-transport" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">tls</span></code> transport uses TCP + TLS with client authentication using client certificates.
+The client identity is the common name (CN) presented in the client certificate.
+It is recommended to set up a dedicated CA infrastructure for this transport, e.g. using OpenVPN&#8217;s <a class="reference external" href="https://github.com/OpenVPN/easy-rsa">EasyRSA</a>.</p>
+<p>The implementation uses <a class="reference external" href="https://golang.org/pkg/crypto/tls/">Go&#8217;s TLS library</a>.
+Since Go binaries are statically linked, you or your distribution need to recompile zrepl when vulnerabilities in that library are disclosed.</p>
+<p>All file paths are resolved relative to the zrepl daemon&#8217;s working directory.
+Specify absolute paths if you are unsure what directory that is (or find out from your init system).</p>
+<div class="section" id="id1">
+<h3>Serve<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
+  - type: sink
+    root_fs: <span class="s2">&quot;pool2/backup_laptops&quot;</span>
+    serve:
+      type: tls
+      listen: <span class="s2">&quot;:8888&quot;</span>
+      ca: /etc/zrepl/ca.crt
+      cert: /etc/zrepl/prod.crt
+      key: /etc/zrepl/prod.key
+      client_cns:
+        - <span class="s2">&quot;laptop1&quot;</span>
+        - <span class="s2">&quot;homeserver&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">ca</span></code> field specified the certificate authority used to validate client certificates.
+The <code class="docutils literal"><span class="pre">client_cns</span></code> list specifies a list of accepted client common names (which are also the client identities for this transport).</p>
+</div>
+<div class="section" id="id2">
+<h3>Connect<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
+- type: pull
+  connect:
+    type: tls
+    address: <span class="s2">&quot;server1.foo.bar:8888&quot;</span>
+    ca: /etc/zrepl/ca.crt
+    cert: /etc/zrepl/backupserver.crt
+    key:  /etc/zrepl/backupserver.key
+    server_cn: <span class="s2">&quot;server1&quot;</span>
+    dial_timeout: <span class="c1"># optional, default 10s</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">ca</span></code> field specifies the CA which signed the server&#8217;s certificate (<code class="docutils literal"><span class="pre">serve.cert</span></code>).
+The <code class="docutils literal"><span class="pre">server_cn</span></code> specifies the expected common name (CN) of the server&#8217;s certificate.
+It overrides the hostname specified in <code class="docutils literal"><span class="pre">address</span></code>.
+The connection fails if either do not match.</p>
+</div>
+</div>
+<div class="section" id="ssh-stdinserver-transport">
+<span id="transport-ssh-stdinserver"></span><h2><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport<a class="headerlink" href="#ssh-stdinserver-transport" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> is inspired by <a class="reference external" href="https://git-scm.com/docs/git-shell">git shell</a> and <a class="reference external" href="https://borgbackup.readthedocs.io/en/stable/deployment.html">Borg Backup</a>.
+It is provided by the Go package <code class="docutils literal"><span class="pre">github.com/problame/go-netssh</span></code>.</p>
+<div class="section" id="transport-ssh-stdinserver-serve">
+<span id="id3"></span><h3>Serve<a class="headerlink" href="#transport-ssh-stdinserver-serve" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
+- type: <span class="nb">source</span>
+  serve:
+    type: stdinserver
+    client_identities:
+    - <span class="s2">&quot;client1&quot;</span>
+    - <span class="s2">&quot;client2&quot;</span>
+  ...
+</pre></div>
+</div>
+<p>First of all, note that <code class="docutils literal"><span class="pre">type=stdinserver</span></code> in this case:
+Currently, only <code class="docutils literal"><span class="pre">connect.type=ssh+stdinserver</span></code> can connect to a <code class="docutils literal"><span class="pre">serve.type=stdinserver</span></code>, but we want to keep that option open for future extensions.</p>
+<p>The serving job opens a UNIX socket named after <code class="docutils literal"><span class="pre">client_identity</span></code> in the runtime directory.
+In our example above, that is <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/client1</span></code> and <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/client2</span></code>.</p>
+<p>On the same machine, the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">$client_identity</span></code> command connects to <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/$client_identity</span></code>.
+It then passes its stdin and stdout file descriptors to the zrepl daemon via <em>cmsg(3)</em>.
+zrepl daemon in turn combines them into an object implementing <code class="docutils literal"><span class="pre">net.Conn</span></code>:
 a <code class="docutils literal"><span class="pre">Write()</span></code> turns into a write to stdout, a <code class="docutils literal"><span class="pre">Read()</span></code> turns into a read from stdin.</p>
 <p>Interactive use of the <code class="docutils literal"><span class="pre">stdinserver</span></code> subcommand does not make much sense.
 However, we can force its execution when a user with a particular SSH pubkey connects via SSH.
@@ -227,8 +342,8 @@ This can be achieved with an entry in the <code class="docutils literal"><span c
 </pre></div>
 </div>
 <ul class="simple">
-<li>CLIENT_IDENTITY is substituted with <code class="docutils literal"><span class="pre">backup-srv.example.com</span></code> in our example</li>
-<li>CLIENT_SSH_KEY is substituted with the public part of the SSH keypair specified in the <code class="docutils literal"><span class="pre">connect</span></code> directive on the connecting host.</li>
+<li>CLIENT_IDENTITY is substituted with an entry from <code class="docutils literal"><span class="pre">client_identities</span></code> in our example</li>
+<li>CLIENT_SSH_KEY is substituted with the public part of the SSH keypair specified in the <code class="docutils literal"><span class="pre">connect.identity_file</span></code> directive on the connecting host.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -237,20 +352,20 @@ Refer to sshd_config(5) for details.</p>
 </div>
 <p>To recap, this is of how client authentication works with the <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport:</p>
 <ul class="simple">
-<li>Connections to the <code class="docutils literal"><span class="pre">client_identity</span></code> UNIX socket are blindly trusted by zrepl daemon.</li>
-<li>Thus, the runtime directory must be private to the zrepl user (checked by zrepl daemon)</li>
+<li>Connections to the <code class="docutils literal"><span class="pre">/var/run/zrepl/stdinserver/${client_identity}</span></code> UNIX socket are blindly trusted by zrepl daemon.
+The connection client identity is the name of the socket, i.e. <code class="docutils literal"><span class="pre">${client_identity}</span></code>.</li>
+<li>Thus, the runtime directory must be private to the zrepl user (this is checked by zrepl daemon)</li>
 <li>The admin of the host with the serving zrepl daemon controls the <code class="docutils literal"><span class="pre">authorized_keys</span></code> file.</li>
 <li>Thus, the administrator controls the mapping <code class="docutils literal"><span class="pre">PUBKEY</span> <span class="pre">-&gt;</span> <span class="pre">CLIENT_IDENTITY</span></code>.</li>
 </ul>
 </div>
-<div class="section" id="connect-mode">
-<span id="transport-ssh-stdinserver-connect"></span><h3>Connect Mode<a class="headerlink" href="#connect-mode" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="transport-ssh-stdinserver-connect">
+<span id="id4"></span><h3>Connect<a class="headerlink" href="#transport-ssh-stdinserver-connect" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
-- name: pull_app-srv
-  type: pull
+- type: pull
   connect:
     type: ssh+stdinserver
-    host: app-srv.example.com
+    host: prod.example.com
     user: root
     port: <span class="m">22</span>
     identity_file: /etc/zrepl/ssh/identity
@@ -273,15 +388,40 @@ Refer to sshd_config(5) for details.</p>
 </li>
 </ol>
 </li>
-<li>Wraps the pipe ends in an <code class="docutils literal"><span class="pre">io.ReadWriteCloser</span></code> and uses it for RPC.</li>
+<li>Wraps the pipe ends in a <code class="docutils literal"><span class="pre">net.Conn</span></code> and returns it to the RPC layer.</li>
 </ol>
 <p>As discussed in the section above, the connecting zrepl daemon expects that <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">$client_identity</span></code> is  executed automatically via an <code class="docutils literal"><span class="pre">authorized_keys</span></code> file entry.</p>
-<p>The <code class="docutils literal"><span class="pre">known_hosts</span></code> file used by the ssh command must contain an entry for the serving host, e.g., <code class="docutils literal"><span class="pre">app-srv.example.com</span></code> in the example above.</p>
+<p>The <code class="docutils literal"><span class="pre">known_hosts</span></code> file used by the ssh command must contain an entry for <code class="docutils literal"><span class="pre">connect.host</span></code> prior to starting zrepl.
+Thus, run the following on the pulling host&#8217;s command line (substituting <code class="docutils literal"><span class="pre">connect.host</span></code>):</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>ssh -i /etc/zrepl/ssh/identity root@prod.example.com
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The environment variables of the underlying SSH process are cleared. <code class="docutils literal"><span class="pre">$SSH_AUTH_SOCK</span></code> will not be available.
 It is suggested to create a separate, unencrypted SSH key solely for that purpose.</p>
 </div>
+</div>
+</div>
+<div class="section" id="local-transport">
+<span id="transport-local"></span><h2><code class="docutils literal"><span class="pre">local</span></code> Transport<a class="headerlink" href="#local-transport" title="Permalink to this headline">¶</a></h2>
+<p>The local transport can be used to implement <a class="reference internal" href="jobs.html#replication-local"><span class="std std-ref">local replication</span></a>, i.e., push replication between a push and sink job defined in the same configuration file.</p>
+<p>The <code class="docutils literal"><span class="pre">listener_name</span></code> is analogous to a hostname and must match between <code class="docutils literal"><span class="pre">serve</span></code> and <code class="docutils literal"><span class="pre">connect</span></code>.
+The <code class="docutils literal"><span class="pre">client_identity</span></code> is used by the sink as documented above.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>jobs:
+- type: sink
+  serve:
+    type: <span class="nb">local</span>
+    listener_name: localsink
+  ...
+
+- type: push
+  connect:
+    type: <span class="nb">local</span>
+    listener_name: localsink
+    client_identity: local_backup
+  ...
+</pre></div>
 </div>
 </div>
 </div>
@@ -296,10 +436,10 @@ It is suggested to create a separate, unencrypted SSH key solely for that purpos
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="map_filter_syntax.html" class="btn btn-neutral float-right" title="Mapping &amp; Filter Syntax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="filter_syntax.html" class="btn btn-neutral float-right" title="Filter Syntax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="jobs.html" class="btn btn-neutral" title="Job Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="jobs.html" class="btn btn-neutral" title="Job Types &amp; Replication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -308,7 +448,7 @@ It is suggested to create a separate, unencrypted SSH key solely for that purpos
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -334,9 +474,11 @@ It is suggested to create a separate, unencrypted SSH key solely for that purpos
             <dt>Tags</dt>
             <dd><a href="../../0.0.2/configuration/transports.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/configuration/transports.html">0.0.3</a></dd>
+            <dd><a href="../../0.1.0-rc1/configuration/transports.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../../anton_wip/configuration/transports.html">anton_wip</a></dd>
             <dd><a href="../../fix_diff_output/configuration/transports.html">fix_diff_output</a></dd>
             <dd><a href="transports.html">master</a></dd>
             <dd><a href="../../parallel_zfs_ops/configuration/transports.html">parallel_zfs_ops</a></dd>

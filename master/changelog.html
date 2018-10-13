@@ -38,8 +38,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="zrepl  documentation" href="index.html"/>
-        <link rel="next" title="Talks &amp; Presentations" href="pr.html"/>
-        <link rel="prev" title="Implementation Overview" href="implementation.html"/> 
+        <link rel="prev" title="Talks &amp; Presentations" href="pr.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -98,15 +97,17 @@
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#unreleased">0.0.4 (unreleased)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">0.0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">0.0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">0.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#notes-to-package-maintainers">Notes to Package Maintainers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#previous-releases">Previous Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -157,7 +158,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/changelog.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/changelog.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -177,81 +180,95 @@
 
 
 <div class="section" id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
-<p>The changelog summarized bugfixes that are deemed relevant for users.
+<span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<p>The changelog summarizes bugfixes that are deemed relevant for users and package maintainers.
 Developers should consult the git commit log or GitHub issue tracker.</p>
-<div class="section" id="unreleased">
-<h2>0.0.4 (unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
+<p>We use the following annotations for classifying changes:</p>
 <ul class="simple">
-<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/67">issue #67</a>: Expose <a class="reference external" href="https://prometheus.io">Prometheus</a> metrics via HTTP (<a class="reference internal" href="configuration/monitoring.html#monitoring-prometheus"><span class="std std-ref">config docs</span></a>)</li>
-<li>[BUG] Goroutine leak on ssh transport connection timeouts</li>
+<li><strong>[CONFIG]</strong> Change that breaks the config.
+As a package maintainer, make sure to warn your users about config breakage somehow.</li>
+<li><strong>[BREAK]</strong> Change that breaks interoperability or persistent state representation with previous releases.
+As a package maintainer, make sure to warn your users about config breakage somehow.
+Note that even updating the package on both sides might not be sufficient, e.g. if persistent state needs to be migrated to a new format.</li>
+<li>[FEATURE] Change that introduces new functionality.</li>
+<li>[BUG] Change that fixes a bug, no regressions or incompatibilities expected.</li>
+<li>[DOCS] Change to the documentation.</li>
 </ul>
-</div>
-<div class="section" id="id1">
-<h2>0.0.3<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><strong>[BREAK]</strong> [FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/34">issue #34</a>: automatic bookmarking of snapshots<ul>
-<li>Snapshots are automatically bookmarked and pruning of bookmarks <strong>must</strong> be configured.</li>
-<li>This breaks existing configuration: <code class="docutils literal"><span class="pre">grid</span></code> <a class="reference internal" href="configuration/prune.html#prune-retention-grid"><span class="std std-ref">prune policy</span></a>  specifications require the new <code class="docutils literal"><span class="pre">keep_bookmarks</span></code> parameter.</li>
-<li>Make sure to understand the meaning bookmarks have for <a class="reference internal" href="configuration/prune.html#replication-downtime"><span class="std std-ref">maximum replication downtime</span></a>.</li>
-<li>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/pullbackup/productionhost.yml">cmd/sampleconf/pullbackup/productionhost.yml</a></li>
-</ul>
-</li>
-<li><strong>[BREAK]</strong> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/ccd062e">commit ccd062e</a>: <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport: changed protocol requires daemon restart on both sides<ul>
-<li>The delicate procedure of talking to the serving-side zrepl daemon via the stdinserver proxy command now has better error handling.</li>
-<li>This includes handshakes between client+proxy and client + remote daemo, which is not implemented in previous versions of zrepl.</li>
-<li>The connecting side will therefore time out, with the message <code class="docutils literal"><span class="pre">dial_timeout</span> <span class="pre">of</span> <span class="pre">10s</span> <span class="pre">exceeded</span></code>.</li>
-<li>Both sides of a replication setup must be updated and restarted. Otherwise the connecting side will hang and not time out.</li>
-</ul>
-</li>
-<li><strong>[BREAK]</strong> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/2bfcfa5">commit 2bfcfa5</a>: first outlet in <code class="docutils literal"><span class="pre">global.logging</span></code> is now used for logging meta-errors, for example problems encountered when writing to other outlets.</li>
-<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/10">issue #10</a>: <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span> <span class="pre">status</span></code> subcommand<ul>
-<li>Allows inspection of job activity per task and their log output at runtime.</li>
-<li>Supports <code class="docutils literal"><span class="pre">--format</span> <span class="pre">raw</span></code> option for JSON output, usable for monitoring from scripts.</li>
-</ul>
-</li>
-<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/commit/d7f3fb9">commit d7f3fb9</a>: subcommand bash completions<ul>
-<li>Package maintainers should install this as appropriate.</li>
-</ul>
-</li>
-<li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/61">issue #61</a>: fix excessive memory usage</li>
-<li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/8">issue #8</a> and <a class="reference external" href="https://github.com/zrepl/zrepl/issues/56">issue #56</a>: <code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> transport properly reaps SSH child processes</li>
-<li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/commit/cef63ac">commit cef63ac</a>: <code class="docutils literal"><span class="pre">human</span></code> format now prints non-string values correctly</li>
-<li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/26">issue #26</a>: slow TCP outlets no longer block the daemon</li>
-<li>[DOCS] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/64">issue #64</a>: tutorial: document <code class="docutils literal"><span class="pre">known_host</span></code> file entry</li>
-</ul>
-</div>
 <div class="section" id="id2">
-<h2>0.0.2<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2>0.1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>This release is a milestone for zrepl and required significant refactoring if not rewrites of substantial parts of the application.
+It breaks both configuration and transport format, and thus requires manual intervention and updates on both sides of a replication setup.</p>
+<div class="section" id="notes-to-package-maintainers">
+<h3>Notes to Package Maintainers<a class="headerlink" href="#notes-to-package-maintainers" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><strong>[BREAK]</strong> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/b95260f">commit b95260f</a>: <code class="docutils literal"><span class="pre">global.logging</span></code> is no longer a dictionary but a list</li>
-<li><strong>[BREAK]</strong> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/3e647c1">commit 3e647c1</a>: <code class="docutils literal"><span class="pre">source</span></code> job field <code class="docutils literal"><span class="pre">datasets</span></code> renamed to <code class="docutils literal"><span class="pre">filesystems</span></code><ul>
-<li><strong>NOTE</strong>: zrepl will parse missing <code class="docutils literal"><span class="pre">filesystems</span></code> field as an empty filter,
-i.e. no filesystems are presented to the other side.</li>
-</ul>
-</li>
-<li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/commit/72d2885">commit 72d2885</a> fix aliasing bug with root <cite>&lt;</cite> subtree wildcard<ul>
-<li>Filesystems paths with final match at blank <cite>s</cite> subtree wildcard are now appended to the target path</li>
-<li>Non-root subtree wildcards, e.g. <cite>zroot/foo/bar&lt;</cite> still map directrly onto the target path</li>
-</ul>
-</li>
-<li>Support days (<code class="docutils literal"><span class="pre">d</span></code>) and weeks (<code class="docutils literal"><span class="pre">w</span></code>) in durations</li>
-<li>Docs<ul>
-<li>Ditch Hugo, move to Python Sphinx</li>
-<li>Improve &amp; simplify tutorial (single SSH key per installation)</li>
-<li>Document pruning policies</li>
-<li>Document job types</li>
-<li>Document logging</li>
-<li>Start updating implementation overview</li>
-</ul>
-</li>
+<li>If the daemon crashes, the stack trace produced by the Go runtime and possibly diagnostic output of zrepl will be written to stderr.
+This behavior is independent from the <code class="docutils literal"><span class="pre">stdout</span></code> outlet type.
+Please make sure the stderr output of the daemon is captured to a file.
+Rotation should not be necessary because stderr is not written to under normal circumstances.
+To conserve precious stack traces, make sure that multiple service restarts do not directly discard previous stderr output.</li>
+<li>Make it obvious for users how to set the <code class="docutils literal"><span class="pre">GOTRACEBACK</span></code> environment variable to <code class="docutils literal"><span class="pre">GOTRACEBACK=crash</span></code>.
+This functionality will cause SIGABRT on panics and can be used to capture a coredump of the panicking process.
+To that extend, make sure that your package build system, your OS&#8217;s coredump collection and the Go delve debugger work together.
+Use your build system to package the Go program in <a class="reference external" href="https://rakyll.org/coredumps/">this tutorial on Go coredumps and the delve debugger</a> , and make sure the symbol resolution etc. work on coredumps captured from the binary produced by your build system. (Special focus on symbol stripping, etc.)</li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>0.0.1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="changes">
+<h3>Changes<a class="headerlink" href="#changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Initial release</li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/55">issue #55</a> : Push replication (see <a class="reference internal" href="configuration/jobs.html#job-push"><span class="std std-ref">push job</span></a> and <a class="reference internal" href="configuration/jobs.html#job-sink"><span class="std std-ref">sink job</span></a>)</li>
+<li>[FEATURE] <a class="reference internal" href="configuration/transports.html#transport-tcp"><span class="std std-ref">TCP Transport</span></a></li>
+<li>[FEATURE] <a class="reference internal" href="configuration/transports.html#transport-tcp-tlsclientauth"><span class="std std-ref">TCP + TLS client authentication transport</span></a></li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/78">issue #78</a> TODO MERGE COMMIT Replication protocol rewrite<ul>
+<li>Uses <code class="docutils literal"><span class="pre">github.com/problame/go-streamrpc</span></code> for RPC layer</li>
+<li><strong>[BREAK]</strong> zrepl 0.1 and restart on both sides of a replication setup is required</li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/83">issue #83</a>:  Improved error handling of network-level errors (zrepl retries instead of failing the entire job)</li>
+<li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/75">issue #75</a> <a class="reference external" href="https://github.com/zrepl/zrepl/issues/81">issue #81</a>: use connection timeouts and protocol-level heartbeats</li>
+<li><strong>[BREAK]</strong> <strong>[CONFIG]</strong>: mappings are no longer supported<ul>
+<li>Receiving sides (<code class="docutils literal"><span class="pre">pull</span></code> and <code class="docutils literal"><span class="pre">sink</span></code> job) specify a single <code class="docutils literal"><span class="pre">root_fs</span></code>.
+Received filesystems are then stored <em>per client</em> in <code class="docutils literal"><span class="pre">${root_fs}/${client_identity}</span></code>.</li>
 </ul>
+</li>
+</ul>
+</li>
+<li>[FEATURE] <strong>[BREAK]</strong> <strong>[CONFIG]</strong> Manual snapshotting + triggering of replication<ul>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/69">issue #69</a>: include manually created snapshots in replication</li>
+<li><strong>[CONFIG]</strong> <code class="docutils literal"><span class="pre">manual</span></code> and <code class="docutils literal"><span class="pre">periodic</span></code> <a class="reference internal" href="configuration/jobs.html#job-snapshotting-spec"><span class="std std-ref">snapshotting types</span></a></li>
+<li>[FEATURE] <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand to trigger <em>just</em> replication</li>
+</ul>
+</li>
+<li>[FEATURE] <strong>[BREAK]</strong> <strong>[CONFIG]</strong> New pruning system<ul>
+<li>The active side of a replication (pull or push) decides what to prune for both sender and receiver.
+The RPC protocol is used to execute the destroy operations on the remote side.</li>
+<li>New pruning policies (see <a class="reference internal" href="configuration/prune.html#prune"><span class="std std-ref">configuration documentation</span></a> )<ul>
+<li>The decision what snapshots shall be pruned is now made based on <em>keep rules</em></li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/68">issue #68</a>: keep rule <code class="docutils literal"><span class="pre">not_replicated</span></code> prevents divergence of sender and receiver</li>
+</ul>
+</li>
+<li>[FEATURE] <strong>[BREAK]</strong> Bookmark pruning is no longer necessary<ul>
+<li>Per filesystem, zrepl creates a single bookmark (<code class="docutils literal"><span class="pre">#zrepl_replication_cursor</span></code>) and moves it forward with the most recent successfully replicated snapshot on the receiving side.</li>
+<li>Old bookmarks created prior to zrepl 0.1 (named like their corresponding snapshot) must be deleted manually.</li>
+<li><strong>[CONFIG]</strong> <code class="docutils literal"><span class="pre">keep_bookmarks</span></code> parameter of the <code class="docutils literal"><span class="pre">grid</span></code> keep rule has been removed</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>[FEATURE] <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code> for live-updating replication progress (it&#8217;s really cool!)</li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/67">issue #67</a>: Expose <a class="reference external" href="https://prometheus.io">Prometheus</a> metrics via HTTP (<a class="reference internal" href="configuration/monitoring.html#monitoring-prometheus"><span class="std std-ref">config docs</span></a>)</li>
+<li><strong>[CONFIG]</strong> Logging outlet types must be specified using the <code class="docutils literal"><span class="pre">type</span></code> instead of <code class="docutils literal"><span class="pre">outlet</span></code> key</li>
+<li><strong>[BREAK]</strong> <a class="reference external" href="https://github.com/zrepl/zrepl/issues/53">issue #53</a>: CLI: <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span> <span class="pre">*</span></code> subcommands have been made direct subcommands of <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">*</span></code></li>
+<li>[BUG] Goroutine leak on ssh transport connection timeouts</li>
+<li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/81">issue #81</a> <a class="reference external" href="https://github.com/zrepl/zrepl/issues/77">issue #77</a> : handle failed accepts correctly (<code class="docutils literal"><span class="pre">source</span></code> job)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="previous-releases">
+<h2>Previous Releases<a class="headerlink" href="#previous-releases" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Due to limitations in our documentation system, we only show the changelog since the last release and the time this documentation is built.
+For the changelog of previous releases, use the version selection in the hosted version of these docs at <a class="reference external" href="https://zrepl.github.io">zrepl.github.io</a>.</p>
+</div>
+<p>W</p>
 </div>
 </div>
 
@@ -265,10 +282,8 @@ i.e. no filesystems are presented to the other side.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pr.html" class="btn btn-neutral float-right" title="Talks &amp; Presentations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="implementation.html" class="btn btn-neutral" title="Implementation Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pr.html" class="btn btn-neutral" title="Talks &amp; Presentations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -277,7 +292,7 @@ i.e. no filesystems are presented to the other side.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -303,9 +318,11 @@ i.e. no filesystems are presented to the other side.</li>
             <dt>Tags</dt>
             <dd><a href="../0.0.2/changelog.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/changelog.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/changelog.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/changelog.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/changelog.html">fix_diff_output</a></dd>
             <dd><a href="changelog.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/changelog.html">parallel_zfs_ops</a></dd>

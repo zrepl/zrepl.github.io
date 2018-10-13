@@ -96,8 +96,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-zrepl">Install zrepl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configure-backup-srv">Configure <code class="docutils literal"><span class="pre">backup-srv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configure-app-srv">Configure <code class="docutils literal"><span class="pre">app-srv</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-server-backups">Configure server <code class="docutils literal"><span class="pre">backups</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-server-prod">Configure server <code class="docutils literal"><span class="pre">prod</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#apply-configuration-changes">Apply Configuration Changes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#watch-it-work">Watch it Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
@@ -107,9 +107,9 @@
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -160,7 +160,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/tutorial.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -184,155 +186,116 @@
 <p>This tutorial shows how zrepl can be used to implement a ZFS-based pull backup.
 We assume the following scenario:</p>
 <ul class="simple">
-<li>Production server <code class="docutils literal"><span class="pre">app-srv</span></code> with filesystems to back up:<ul>
+<li>Production server <code class="docutils literal"><span class="pre">prod</span></code> with filesystems to back up:<ul>
 <li><code class="docutils literal"><span class="pre">zroot/var/db</span></code></li>
 <li><code class="docutils literal"><span class="pre">zroot/usr/home</span></code> and all its child filesystems</li>
 <li><strong>except</strong> <code class="docutils literal"><span class="pre">zroot/usr/home/paranoid</span></code> belonging to a user doing backups themselves</li>
 </ul>
 </li>
-<li>Backup server <code class="docutils literal"><span class="pre">backup-srv</span></code> with<ul>
-<li>Filesystem <code class="docutils literal"><span class="pre">storage/zrepl/pull/app-srv</span></code> + children dedicated to backups of <code class="docutils literal"><span class="pre">app-srv</span></code></li>
+<li>Backup server <code class="docutils literal"><span class="pre">backups</span></code> with<ul>
+<li>Filesystem <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod</span></code> + children dedicated to backups of <code class="docutils literal"><span class="pre">prod</span></code></li>
 </ul>
 </li>
 </ul>
 <p>Our backup solution should fulfill the following requirements:</p>
 <ul class="simple">
-<li>Periodically snapshot the filesystems on <code class="docutils literal"><span class="pre">app-srv</span></code> <em>every 10 minutes</em></li>
-<li>Incrementally replicate these snapshots to <code class="docutils literal"><span class="pre">storage/zrepl/pull/app-srv/*</span></code> on <code class="docutils literal"><span class="pre">backup-srv</span></code></li>
-<li>Keep only very few snapshots on <code class="docutils literal"><span class="pre">app-srv</span></code> to save disk space</li>
-<li>Keep a fading history (24 hourly, 30 daily, 6 monthly) of snapshots on <code class="docutils literal"><span class="pre">backup-srv</span></code></li>
+<li>Periodically snapshot the filesystems on <code class="docutils literal"><span class="pre">prod</span></code> <em>every 10 minutes</em></li>
+<li>Incrementally replicate these snapshots to <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod/*</span></code> on <code class="docutils literal"><span class="pre">backups</span></code></li>
+<li>Keep only very few snapshots on <code class="docutils literal"><span class="pre">prod</span></code> to save disk space</li>
+<li>Keep a fading history (24 hourly, 30 daily, 6 monthly) of snapshots on <code class="docutils literal"><span class="pre">backups</span></code></li>
 </ul>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>We can model this situation as two jobs:</p>
 <ul class="simple">
-<li>A <strong>source job</strong> on <code class="docutils literal"><span class="pre">app-srv</span></code><ul>
+<li>A <strong>source job</strong> on <code class="docutils literal"><span class="pre">prod</span></code><ul>
 <li>Creates the snapshots</li>
-<li>Keeps a short history of snapshots to enable incremental replication to <code class="docutils literal"><span class="pre">backup-srv</span></code></li>
-<li>Accepts connections from <code class="docutils literal"><span class="pre">backup-srv</span></code></li>
+<li>Keeps a short history of snapshots to enable incremental replication to <code class="docutils literal"><span class="pre">backups</span></code></li>
+<li>Accepts connections from <code class="docutils literal"><span class="pre">backups</span></code></li>
 </ul>
 </li>
-<li>A <strong>pull job</strong> on <code class="docutils literal"><span class="pre">backup-srv</span></code><ul>
-<li>Connects to the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code> process on <code class="docutils literal"><span class="pre">app-srv</span></code></li>
-<li>Pulls the snapshots to <code class="docutils literal"><span class="pre">storage/zrepl/pull/app-srv/*</span></code></li>
-<li>Fades out snapshots in <code class="docutils literal"><span class="pre">storage/zrepl/pull/app-srv/*</span></code> as they age</li>
+<li>A <strong>pull job</strong> on <code class="docutils literal"><span class="pre">backups</span></code><ul>
+<li>Connects to the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code> process on <code class="docutils literal"><span class="pre">prod</span></code></li>
+<li>Pulls the snapshots to <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod/*</span></code></li>
+<li>Fades out snapshots in <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod/*</span></code> as they age</li>
 </ul>
 </li>
 </ul>
 <p>Why doesn&#8217;t the <strong>pull job</strong> create the snapshots before pulling?</p>
-<p>As is the case with all distributed systems, the link between <code class="docutils literal"><span class="pre">app-srv</span></code> and <code class="docutils literal"><span class="pre">backup-srv</span></code> might be down for an hour or two.
+<p>As is the case with all distributed systems, the link between <code class="docutils literal"><span class="pre">prod</span></code> and <code class="docutils literal"><span class="pre">backups</span></code> might be down for an hour or two.
 We do not want to sacrifice our required backup resolution of 10 minute intervals for a temporary connection outage.</p>
-<p>When the link comes up again, <code class="docutils literal"><span class="pre">backup-srv</span></code> will happily catch up the 12 snapshots taken by <code class="docutils literal"><span class="pre">app-srv</span></code> in the meantime, without
-a gap in our backup history.</p>
+<p>When the link comes up again, <code class="docutils literal"><span class="pre">backups</span></code> will catch up with the snapshots taken by <code class="docutils literal"><span class="pre">prod</span></code> in the meantime, without a gap in our backup history.</p>
 </div>
 <div class="section" id="install-zrepl">
 <h2>Install zrepl<a class="headerlink" href="#install-zrepl" title="Permalink to this headline">¶</a></h2>
 <p>Follow the <a class="reference internal" href="installation.html#installation"><span class="std std-ref">OS-specific installation instructions</span></a> and come back here.</p>
 </div>
-<div class="section" id="configure-backup-srv">
-<h2>Configure <code class="docutils literal"><span class="pre">backup-srv</span></code><a class="headerlink" href="#configure-backup-srv" title="Permalink to this headline">¶</a></h2>
-<p>We define a <strong>pull job</strong> named <code class="docutils literal"><span class="pre">pull_app-srv</span></code> in the <a class="reference internal" href="installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a> on host <code class="docutils literal"><span class="pre">backup-srv</span></code>:</p>
+<div class="section" id="configure-server-backups">
+<h2>Configure server <code class="docutils literal"><span class="pre">backups</span></code><a class="headerlink" href="#configure-server-backups" title="Permalink to this headline">¶</a></h2>
+<p>We define a <strong>pull job</strong> named <code class="docutils literal"><span class="pre">pull_prod</span></code> in <code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code> or <code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal"><span class="pre">backups</span></code> :</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">pull_app</span><span class="o">-</span><span class="n">srv</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">pull_prod</span>
   <span class="nb">type</span><span class="p">:</span> <span class="n">pull</span>
   <span class="n">connect</span><span class="p">:</span>
-      <span class="nb">type</span><span class="p">:</span> <span class="n">ssh</span><span class="o">+</span><span class="n">stdinserver</span>
-      <span class="n">host</span><span class="p">:</span> <span class="n">app</span><span class="o">-</span><span class="n">srv</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
-      <span class="n">user</span><span class="p">:</span> <span class="n">root</span>
-      <span class="n">port</span><span class="p">:</span> <span class="mi">22</span>
-      <span class="n">identity_file</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">ssh</span><span class="o">/</span><span class="n">identity</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">tcp</span>
+    <span class="n">address</span><span class="p">:</span> <span class="s2">&quot;192.168.2.20:2342&quot;</span>
+  <span class="n">root_fs</span><span class="p">:</span> <span class="s2">&quot;storage/zrepl/pull/prod&quot;</span>
   <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
-  <span class="n">mapping</span><span class="p">:</span> <span class="p">{</span>
-      <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span><span class="s2">&quot;storage/zrepl/pull/app-srv&quot;</span>
-  <span class="p">}</span>
-  <span class="n">initial_repl_policy</span><span class="p">:</span> <span class="n">most_recent</span>
-  <span class="n">snapshot_prefix</span><span class="p">:</span> <span class="n">zrepl_pull_backup_</span>
-  <span class="n">prune</span><span class="p">:</span>
-      <span class="n">policy</span><span class="p">:</span> <span class="n">grid</span>
-      <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">35</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">6</span><span class="n">x30d</span>
+  <span class="n">pruning</span><span class="p">:</span>
+    <span class="n">keep_sender</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">not_replicated</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">last_n</span>
+      <span class="n">count</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="n">keep_receiver</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">grid</span>
+      <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">30</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">6</span><span class="n">x30d</span>
+      <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_&quot;</span>
+      <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">connect</span></code> section instructs the zrepl daemon to use the <code class="docutils literal"><span class="pre">stdinserver</span></code> transport:
-<code class="docutils literal"><span class="pre">backup-srv</span></code> will connect to the specified SSH server and expect <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span> <span class="pre">CLIENT_IDENTITY</span></code> instead of the shell on the other side.</p>
-<p>It uses the private key specified at <code class="docutils literal"><span class="pre">connect.identity_file</span></code> which we still need to create:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span>
-<span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">ssh</span>
-<span class="n">chmod</span> <span class="mi">0700</span> <span class="n">ssh</span>
-<span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">ed25519</span> <span class="o">-</span><span class="n">N</span> <span class="s1">&#39;&#39;</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">ssh</span><span class="o">/</span><span class="n">identity</span>
-</pre></div>
+<p>The <code class="docutils literal"><span class="pre">connect</span></code> section instructs the zrepl daemon to use plain TCP transport.
+Check out the <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">transports</span></a> section for alternatives that support encryption.</p>
 </div>
-<p>Note that most use cases do not benefit from separate keypairs per remote endpoint.
-Thus, it is sufficient to create one keypair and use it for all <code class="docutils literal"><span class="pre">connect</span></code> directives on one host.</p>
-<p>zrepl uses ssh&#8217;s default <code class="docutils literal"><span class="pre">known_hosts</span></code> file, which must contain a host identification entry for <code class="docutils literal"><span class="pre">app-srv.example.com</span></code>.
-If that entry does not already exist, we need to generate it.
-Run the following command, compare the host fingerprints, and confirm with yes if they match.
-You will not be able to get a shell with the identity file we just generated, which is fine.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">ssh</span><span class="o">/</span><span class="n">identity</span> <span class="n">root</span><span class="nd">@app</span><span class="o">-</span><span class="n">srv</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</pre></div>
-</div>
-<p>Learn more about <a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a> transport and the <a class="reference internal" href="configuration/jobs.html#job-pull"><span class="std std-ref">pull job</span></a> format.</p>
-</div>
-<div class="section" id="configure-app-srv">
-<span id="tutorial-configure-app-srv"></span><h2>Configure <code class="docutils literal"><span class="pre">app-srv</span></code><a class="headerlink" href="#configure-app-srv" title="Permalink to this headline">¶</a></h2>
-<p>We define a corresponding <strong>source job</strong> named <code class="docutils literal"><span class="pre">pull_backup</span></code> in the <a class="reference internal" href="installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a> on host <code class="docutils literal"><span class="pre">app-srv</span></code>:</p>
+<div class="section" id="configure-server-prod">
+<span id="tutorial-configure-prod"></span><h2>Configure server <code class="docutils literal"><span class="pre">prod</span></code><a class="headerlink" href="#configure-server-prod" title="Permalink to this headline">¶</a></h2>
+<p>We define a corresponding <strong>source job</strong> named <code class="docutils literal"><span class="pre">source_backups</span></code> in <code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code> or <code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal"><span class="pre">prod</span></code> :</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">pull_backup</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">source_backups</span>
   <span class="nb">type</span><span class="p">:</span> <span class="n">source</span>
   <span class="n">serve</span><span class="p">:</span>
-      <span class="nb">type</span><span class="p">:</span> <span class="n">stdinserver</span>
-      <span class="n">client_identity</span><span class="p">:</span> <span class="n">backup</span><span class="o">-</span><span class="n">srv</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">tcp</span>
+    <span class="n">listen</span><span class="p">:</span> <span class="s2">&quot;:2342&quot;</span>
+    <span class="n">clients</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;192.168.2.10&quot;</span> <span class="p">:</span> <span class="s2">&quot;backups&quot;</span>
+    <span class="p">}</span>
   <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
-      <span class="s2">&quot;zroot/var/db&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;zroot/usr/home&lt;&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;zroot/usr/home/paranoid&quot;</span><span class="p">:</span> <span class="s2">&quot;!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;zroot/var/db:&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;zroot/usr/home&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;zroot/usr/home/paranoid&quot;</span><span class="p">:</span> <span class="n">false</span>
   <span class="p">}</span>
-  <span class="n">snapshot_prefix</span><span class="p">:</span> <span class="n">zrepl_pull_backup_</span>
-  <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
-  <span class="n">prune</span><span class="p">:</span>
-      <span class="n">policy</span><span class="p">:</span> <span class="n">grid</span>
-      <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1d</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span>
-      <span class="n">keep_bookmarks</span><span class="p">:</span> <span class="mi">144</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">periodic</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">serve</span></code> section corresponds to the <code class="docutils literal"><span class="pre">connect</span></code> section in the configuration of <code class="docutils literal"><span class="pre">backup-srv</span></code>.</p>
-<p>We now want to authenticate <code class="docutils literal"><span class="pre">backup-srv</span></code> before allowing it to pull data.
-This is done by limiting SSH connections from <code class="docutils literal"><span class="pre">backup-srv</span></code> to execute the <code class="docutils literal"><span class="pre">stdinserver</span></code> subcommand.</p>
-<p>Open <code class="docutils literal"><span class="pre">/root/.ssh/authorized_keys</span></code> and add either of the the following lines.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># for OpenSSH &gt;= 7.2</span>
-<span class="n">command</span><span class="o">=</span><span class="s2">&quot;zrepl stdinserver backup-srv.example.com&quot;</span><span class="p">,</span><span class="n">restrict</span> <span class="n">CLIENT_SSH_KEY</span>
-<span class="c1"># for older OpenSSH versions</span>
-<span class="n">command</span><span class="o">=</span><span class="s2">&quot;zrepl stdinserver backup-srv.example.com&quot;</span><span class="p">,</span><span class="n">no</span><span class="o">-</span><span class="n">port</span><span class="o">-</span><span class="n">forwarding</span><span class="p">,</span><span class="n">no</span><span class="o">-</span><span class="n">X11</span><span class="o">-</span><span class="n">forwarding</span><span class="p">,</span><span class="n">no</span><span class="o">-</span><span class="n">pty</span><span class="p">,</span><span class="n">no</span><span class="o">-</span><span class="n">agent</span><span class="o">-</span><span class="n">forwarding</span><span class="p">,</span><span class="n">no</span><span class="o">-</span><span class="n">user</span><span class="o">-</span><span class="n">rc</span>  <span class="n">CLIENT_SSH_KEY</span>
-</pre></div>
-</div>
-<div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p class="last">Replace CLIENT_SSH_KEY with the contents of <code class="docutils literal"><span class="pre">/etc/zrepl/ssh/identity.pub</span></code> from <code class="docutils literal"><span class="pre">app-srv</span></code>.
-Mind the trailing <code class="docutils literal"><span class="pre">.pub</span></code> in the filename.
-The entries <strong>must</strong> be on a single line, including the replaced CLIENT_SSH_KEY.</p>
-</div>
-<div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last">You may need to adjust the <code class="docutils literal"><span class="pre">PermitRootLogin</span></code> option in <code class="docutils literal"><span class="pre">/etc/ssh/sshd_config</span></code> to <code class="docutils literal"><span class="pre">forced-commands-only</span></code> or higher for this to work.
-Refer to sshd_config(5) for details.</p>
-</div>
-<p>The argument <code class="docutils literal"><span class="pre">backup-srv.example.com</span></code> is the client identity of <code class="docutils literal"><span class="pre">backup-srv</span></code> as defined in <code class="docutils literal"><span class="pre">jobs.serve.client_identity</span></code>.</p>
-<p>Again, both <a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a> transport and the <a class="reference internal" href="configuration/jobs.html#job-source"><span class="std std-ref">Source Job</span></a> format are documented.</p>
+<p>The <code class="docutils literal"><span class="pre">serve</span></code> section whitelists <code class="docutils literal"><span class="pre">backups</span></code>&#8216;s IP address <code class="docutils literal"><span class="pre">192.168.2.10</span></code> and assigns it the client identity <code class="docutils literal"><span class="pre">backups</span></code> which will show up in the logs.
+Again, check the <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">docs for encrypted transports</span></a>.</p>
 </div>
 <div class="section" id="apply-configuration-changes">
 <h2>Apply Configuration Changes<a class="headerlink" href="#apply-configuration-changes" title="Permalink to this headline">¶</a></h2>
-<p>We need to restart the zrepl daemon on <strong>both</strong> <code class="docutils literal"><span class="pre">app-srv</span></code> and <code class="docutils literal"><span class="pre">backup-srv</span></code>.
+<p>We need to restart the zrepl daemon on <strong>both</strong> <code class="docutils literal"><span class="pre">prod</span></code> and <code class="docutils literal"><span class="pre">backups</span></code>.
 This is <a class="reference internal" href="usage.html#usage-zrepl-daemon-restarting"><span class="std std-ref">OS-specific</span></a>.</p>
 </div>
 <div class="section" id="watch-it-work">
 <h2>Watch it Work<a class="headerlink" href="#watch-it-work" title="Permalink to this headline">¶</a></h2>
-<p>Run <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span> <span class="pre">status</span></code> to view the current activity of the configured jobs.
-If a job encountered problems since it last left idle state, the output contains useful debug log.</p>
+<p>Run <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code> on <code class="docutils literal"><span class="pre">prod</span></code> to monitor the replication and pruning activity.</p>
 <p>Additionally, you can check the detailed structured logs of the <cite>zrepl daemon</cite> process and use GNU <em>watch</em> to view the snapshots present on both machines.</p>
 <p>If you like tmux, here is a handy script that works on FreeBSD:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pkg</span> <span class="n">install</span> <span class="n">gnu</span><span class="o">-</span><span class="n">watch</span> <span class="n">tmux</span>
 <span class="n">tmux</span> <span class="n">new</span><span class="o">-</span><span class="n">window</span>
 <span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;tail -f /var/log/zrepl.log&quot;</span>
-<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;gnu-watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_pull_backup_&#39;&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;gnu-watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_&#39;&quot;</span>
 <span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="n">tiled</span>
 </pre></div>
 </div>
@@ -340,7 +303,7 @@ If a job encountered problems since it last left idle state, the output contains
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># make sure tmux is installed &amp; let&#39;s assume you use systemd + journald</span>
 <span class="n">tmux</span> <span class="n">new</span><span class="o">-</span><span class="n">window</span>
 <span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;journalctl -f -u zrepl.service&quot;</span>
-<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_pull_backup_&#39;&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_&#39;&quot;</span>
 <span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="n">tiled</span>
 </pre></div>
 </div>
@@ -378,7 +341,7 @@ If a job encountered problems since it last left idle state, the output contains
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -404,9 +367,11 @@ If a job encountered problems since it last left idle state, the output contains
             <dt>Tags</dt>
             <dd><a href="../0.0.2/tutorial.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/tutorial.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/tutorial.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/tutorial.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/tutorial.html">fix_diff_output</a></dd>
             <dd><a href="tutorial.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/tutorial.html">parallel_zfs_ops</a></dd>

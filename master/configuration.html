@@ -97,9 +97,9 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types &amp; Replication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html">Transports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/monitoring.html">Monitoring</a></li>
@@ -108,9 +108,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -161,7 +161,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -190,32 +192,53 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/preface.html#validating">Validating</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="configuration/jobs.html">Job Types</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#source-job">Source Job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#pull-job">Pull Job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#local-job">Local Job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#terminology">Terminology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/jobs.html">Job Types &amp; Replication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#overview-terminology">Overview &amp; Terminology</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#how-the-active-side-works">How the Active Side Works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#how-the-passive-side-works">How the Passive Side Works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#how-replication-works">How Replication Works</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#taking-snaphots">Taking Snaphots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#job-type-push">Job Type <code class="docutils literal"><span class="pre">push</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#job-type-sink">Job Type <code class="docutils literal"><span class="pre">sink</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#job-type-pull">Job Type <code class="docutils literal"><span class="pre">pull</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#job-type-source">Job Type <code class="docutils literal"><span class="pre">source</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#local-replication">Local replication</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/transports.html">Transports</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/transports.html#tcp-transport"><code class="docutils literal"><span class="pre">tcp</span></code> Transport</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#serve">Serve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#connect">Connect</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/transports.html#tls-transport"><code class="docutils literal"><span class="pre">tls</span></code> Transport</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#id1">Serve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#id2">Connect</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html#ssh-stdinserver-transport"><code class="docutils literal"><span class="pre">ssh+stdinserver</span></code> Transport</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#serve-mode">Serve Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#connect-mode">Connect Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver-serve">Serve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver-connect">Connect</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/transports.html#local-transport"><code class="docutils literal"><span class="pre">local</span></code> Transport</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="configuration/map_filter_syntax.html">Mapping &amp; Filter Syntax</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration/map_filter_syntax.html#common-pattern-syntax">Common Pattern Syntax</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/map_filter_syntax.html#example">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/filter_syntax.html#full-access">Full Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/filter_syntax.html#fine-grained">Fine-grained</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/map_filter_syntax.html#mappings">Mappings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/map_filter_syntax.html#filters">Filters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration/prune.html#retention-grid">Retention Grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/prune.html#policy-not-replicated">Policy <code class="docutils literal"><span class="pre">not_replicated</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/prune.html#policy-grid">Policy <code class="docutils literal"><span class="pre">grid</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/prune.html#policy-last-n">Policy <code class="docutils literal"><span class="pre">last_n</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/prune.html#policy-regex">Policy <code class="docutils literal"><span class="pre">regex</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/logging.html">Logging</a><ul>
@@ -267,7 +290,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -293,9 +316,11 @@
             <dt>Tags</dt>
             <dd><a href="../0.0.2/configuration.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/configuration.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/configuration.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/configuration.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/configuration.html">fix_diff_output</a></dd>
             <dd><a href="configuration.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/configuration.html">parallel_zfs_ops</a></dd>

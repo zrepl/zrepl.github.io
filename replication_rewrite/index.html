@@ -97,9 +97,9 @@
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -150,7 +150,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/replication_rewrite/docs/index.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -174,57 +176,60 @@
     <p class="scv-banner scv-sphinx_rtd_theme"><a href="../master/index.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is master.</a></p>
 <div class="section" id="zrepl-zfs-replication">
 <h1>zrepl - ZFS replication<a class="headerlink" href="#zrepl-zfs-replication" title="Permalink to this headline">¶</a></h1>
-<div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p class="last">zrepl as well as this documentation is still under active development.
-It is neither feature complete nor is there a stability guarantee on the configuration format.
-Use &amp; test at your own risk ;)</p>
-</div>
-<div class="section" id="getting-started">
+<p><strong>zrepl</strong> is a one-stop, integrated solution for ZFS replication.</p>
+<div style="margin-bottom: 1em; background: #2e3436; min-height: 6em; max-width: 100%">
+  <a href="https://raw.githubusercontent.com/wiki/zrepl/zrepl/zrepl_0.1_status.mp4" target="_new" >
+    <video title="zrepl status subcommand" loop autoplay style="width: 100%; display: block;" src="https://raw.githubusercontent.com/wiki/zrepl/zrepl/zrepl_0.1_status.mp4"></video>
+  </a>
+</div><div class="section" id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">10 minutes tutorial setup</span></a> gives you a first impression.</p>
 </div>
 <div class="section" id="main-features">
 <h2>Main Features<a class="headerlink" href="#main-features" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Filesystem Replication<ul>
-<li>[x] Local &amp; Remote</li>
-<li>[x] Pull mode</li>
-<li>[ ] Push mode</li>
-<li>[x] Access control checks when pulling datasets</li>
-<li>[x] <a class="reference internal" href="configuration/map_filter_syntax.html#pattern-mapping"><span class="std std-ref">Flexible mapping</span></a> rules</li>
-<li>[x] Bookmarks support</li>
-<li>[ ] Feature-negotiation for<ul>
-<li>Resumable <cite>send &amp; receive</cite></li>
-<li>Compressed <cite>send &amp; receive</cite></li>
-<li>Raw encrypted <cite>send &amp; receive</cite> (as soon as it is available)</li>
+<li><strong>Filesystem replication</strong><ul>
+<li>[x] Pull &amp; Push mode</li>
+<li>[x] Multiple transport <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">transports</span></a>: TCP, TCP + TLS client auth, SSH</li>
+<li>Advanced replication features<ul>
+<li>[ ] Resumable send &amp; receive</li>
+<li>[ ] Compressed send &amp; receive</li>
+<li>[ ] Raw encrypted send &amp; receive</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>Automatic snapshot creation<ul>
-<li>[x] Ensure fixed time interval between snapshots</li>
-</ul>
-</li>
-<li>Automatic snapshot <a class="reference internal" href="configuration/prune.html#prune"><span class="std std-ref">pruning</span></a><ul>
+<li><strong>Automatic snapshot management</strong><ul>
+<li>[x] Periodic filesystem snapshots</li>
+<li>[x] Flexible <a class="reference internal" href="configuration/prune.html#prune"><span class="std std-ref">pruning rule system</span></a><ul>
 <li>[x] Age-based fading (grandfathering scheme)</li>
+<li>[x] Bookmarks to avoid divergence between sender and receiver</li>
 </ul>
 </li>
-<li>Logging &amp; Monitoring<ul>
-<li>Detailed &amp; structured <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a><ul>
+</ul>
+</li>
+<li><strong>Sophisticated Monitoring &amp; Logging</strong><ul>
+<li>[x] Live progress reporting via <cite>zrepl status</cite> <a class="reference internal" href="usage.html#usage"><span class="std std-ref">subcommand</span></a></li>
+<li>[x] Comprehensive, structured <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a><ul>
 <li><code class="docutils literal"><span class="pre">human</span></code>, <code class="docutils literal"><span class="pre">logfmt</span></code> and <code class="docutils literal"><span class="pre">json</span></code> formatting</li>
 <li>stdout, syslog and TCP (+TLS client auth) outlets</li>
 </ul>
 </li>
-<li>Prometheus <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring</span></a> endpoint</li>
+<li>[x] Prometheus <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring</span></a> endpoint</li>
 </ul>
 </li>
-<li>Maintainable implementation in Go<ul>
+<li><strong>Maintainable implementation in Go</strong><ul>
 <li>[x] Cross platform</li>
 <li>[x] Type safe &amp; testable code</li>
 </ul>
 </li>
 </ul>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">zrepl as well as this documentation is still under active development.
+There is no stability guarantee on the RPC protocol or configuration format,
+but we do our best to document breaking changes in the <a class="reference internal" href="changelog.html#changelog"><span class="std std-ref">Changelog</span></a>.</p>
+</div>
 </div>
 <div class="section" id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
@@ -251,8 +256,8 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#analysis">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#install-zrepl">Install zrepl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#configure-backup-srv">Configure <code class="docutils literal"><span class="pre">backup-srv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#configure-app-srv">Configure <code class="docutils literal"><span class="pre">app-srv</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#configure-server-backups">Configure server <code class="docutils literal"><span class="pre">backups</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#configure-server-prod">Configure server <code class="docutils literal"><span class="pre">prod</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#apply-configuration-changes">Apply Configuration Changes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#watch-it-work">Watch it Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#summary">Summary</a></li>
@@ -266,9 +271,9 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types &amp; Replication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html">Transports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/monitoring.html">Monitoring</a></li>
@@ -286,15 +291,13 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 <li class="toctree-l2"><a class="reference internal" href="implementation.html#logging-transparency">Logging &amp; Transparency</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#unreleased">0.0.4 (unreleased)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">0.0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">0.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#unreleased">0.1 (unreleased)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#previous-releases">Previous Releases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 </ul>
 </div>
 </div>
@@ -320,7 +323,7 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -346,9 +349,11 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
             <dt>Tags</dt>
             <dd><a href="../0.0.2/index.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/index.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/index.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/index.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/index.html">fix_diff_output</a></dd>
             <dd><a href="../master/index.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/index.html">parallel_zfs_ops</a></dd>

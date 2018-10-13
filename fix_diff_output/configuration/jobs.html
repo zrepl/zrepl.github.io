@@ -170,7 +170,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/configuration/jobs.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/fix_diff_output/docs/configuration/jobs.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -196,7 +198,7 @@
 <span id="job"></span><h1>Job Types<a class="headerlink" href="#job-types" title="Permalink to this headline">¶</a></h1>
 <p>A <em>job</em> is the unit of activity tracked by the zrepl daemon and configured in the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.
 Every job has a unique <code class="docutils literal"><span class="pre">name</span></code>, a <code class="docutils literal"><span class="pre">type</span></code> and type-dependent fields which are documented on this page.
-Check out the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> and <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf//">cmd/sampleconf//</a> for examples on how job types are actually used.</p>
+Check out the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> and <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/">config/samples/</a> for examples on how job types are actually used.</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">Currently, zrepl does not replicate filesystem properties.
@@ -205,7 +207,7 @@ This is temporary and being worked on <a class="reference external" href="https:
 </div>
 <div class="section" id="source-job">
 <span id="job-source"></span><h2>Source Job<a class="headerlink" href="#source-job" title="Permalink to this headline">¶</a></h2>
-<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/pullbackup/productionhost.yml">cmd/sampleconf/pullbackup/productionhost.yml</a>.</p>
+<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samplespullbackup/productionhost.yml">config/samplespullbackup/productionhost.yml</a>.</p>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="20%" />
@@ -257,7 +259,7 @@ This is temporary and being worked on <a class="reference external" href="https:
 </div>
 <div class="section" id="pull-job">
 <span id="job-pull"></span><h2>Pull Job<a class="headerlink" href="#pull-job" title="Permalink to this headline">¶</a></h2>
-<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/pullbackup/backuphost.yml">cmd/sampleconf/pullbackup/backuphost.yml</a></p>
+<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samplespullbackup/backuphost.yml">config/samplespullbackup/backuphost.yml</a></p>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="20%" />
@@ -315,7 +317,7 @@ This is temporary and being worked on <a class="reference external" href="https:
 </div>
 <div class="section" id="local-job">
 <span id="job-local"></span><h2>Local Job<a class="headerlink" href="#local-job" title="Permalink to this headline">¶</a></h2>
-<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/localbackup/host1.yml">cmd/sampleconf/localbackup/host1.yml</a></p>
+<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/sampleslocalbackup/host1.yml">config/sampleslocalbackup/host1.yml</a></p>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="20%" />
@@ -425,7 +427,7 @@ We call the start of the task an <em>invocation</em>.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -451,9 +453,11 @@ We call the start of the task an <em>invocation</em>.</p>
             <dt>Tags</dt>
             <dd><a href="../../0.0.2/configuration/jobs.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/configuration/jobs.html">0.0.3</a></dd>
+            <dd><a href="../../0.1.0-rc1/configuration/jobs.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../../anton_wip/configuration/jobs.html">anton_wip</a></dd>
             <dd><a href="jobs.html">fix_diff_output</a></dd>
             <dd><a href="../../master/configuration/jobs.html">master</a></dd>
             <dd><a href="../../parallel_zfs_ops/configuration/jobs.html">parallel_zfs_ops</a></dd>

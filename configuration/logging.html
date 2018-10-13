@@ -98,9 +98,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Logging</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#default-configuration">Default Configuration</a></li>
@@ -121,9 +121,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -176,7 +176,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/configuration/logging.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/logging.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -198,16 +200,15 @@
 <div class="section" id="logging">
 <span id="id1"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
 <p>zrepl uses structured logging to provide users with easily processable log messages.</p>
-<p>Logging outlets are configured in the <code class="docutils literal"><span class="pre">global</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.
-Check out <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/random/logging_and_monitoring.yml">cmd/sampleconf/random/logging_and_monitoring.yml</a> for an example on how to configure multiple outlets:</p>
+<p>Logging outlets are configured in the <code class="docutils literal"><span class="pre">global</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">logging</span><span class="p">:</span>
 
-    <span class="o">-</span> <span class="n">outlet</span><span class="p">:</span> <span class="n">OUTLET_TYPE</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">OUTLET_TYPE</span>
       <span class="n">level</span><span class="p">:</span> <span class="n">MINIMUM_LEVEL</span>
       <span class="nb">format</span><span class="p">:</span> <span class="n">FORMAT</span>
 
-    <span class="o">-</span> <span class="n">outlet</span><span class="p">:</span> <span class="n">OUTLET_TYPE</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">OUTLET_TYPE</span>
       <span class="n">level</span><span class="p">:</span> <span class="n">MINIMUM_LEVEL</span>
       <span class="nb">format</span><span class="p">:</span> <span class="n">FORMAT</span>
 
@@ -227,7 +228,7 @@ Thus, the first outlet must be the one that always works and does not block, e.g
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">logging</span><span class="p">:</span>
 
-    <span class="o">-</span> <span class="n">outlet</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span>
       <span class="n">level</span><span class="p">:</span>  <span class="s2">&quot;warn&quot;</span>
       <span class="nb">format</span><span class="p">:</span> <span class="s2">&quot;human&quot;</span>
 </pre></div>
@@ -285,8 +286,8 @@ Thus, the first outlet must be the one that always works and does not block, e.g
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">human</span></code></td>
-<td>emphasizes context by putting job, task, step and other context variables into brackets
-before the actual message, followed by remaining fields in logfmt style|</td>
+<td>prints job and subsystem into brackets before the actual message,
+followed by remaining fields in logfmt style</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">logfmt</span></code></td>
 <td><a class="reference external" href="https://brandur.org/logfmt">logfmt</a> output. zrepl uses <a class="reference external" href="https://github.com/go-logfmt/logfmt">this Go package</a>.</td>
@@ -317,7 +318,7 @@ log aggregation or when processing state dumps.</td>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">outlet</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
 <td><code class="docutils literal"><span class="pre">stdout</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">level</span></code></td>
@@ -329,10 +330,13 @@ log aggregation or when processing state dumps.</td>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">time</span></code></td>
 <td>always include time in output (<code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>)</td>
 </tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">color</span></code></td>
+<td>colorize output according to log level (<code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>)</td>
+</tr>
 </tbody>
 </table>
 <p>Writes all log entries with minimum level <code class="docutils literal"><span class="pre">level</span></code> formatted by <code class="docutils literal"><span class="pre">format</span></code> to stdout.
-If stdout is a tty, interactive usage is assumed and the current time is included in the output.</p>
+If stdout is a tty, interactive usage is assumed and both <code class="docutils literal"><span class="pre">time</span></code> and <code class="docutils literal"><span class="pre">color</span></code> are set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
 <p>Can only be specified once.</p>
 </div>
 <div class="section" id="syslog-outlet">
@@ -348,7 +352,7 @@ If stdout is a tty, interactive usage is assumed and the current time is include
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">outlet</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
 <td><code class="docutils literal"><span class="pre">syslog</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">level</span></code></td>
@@ -379,7 +383,7 @@ On normal setups, you should not need to change the <code class="docutils litera
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">outlet</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
 <td><code class="docutils literal"><span class="pre">tcp</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">level</span></code></td>
@@ -402,10 +406,10 @@ On normal setups, you should not need to change the <code class="docutils litera
 </tr>
 </tbody>
 </table>
-<p>Establishes a TCP connection to <code class="docutils literal"><span class="pre">address</span></code> and sends log messages with minimum level <code class="docutils literal"><span class="pre">level</span></code> formatted by <code class="docutils literal"><span class="pre">format</span></code>.</p>
-<p>If <code class="docutils literal"><span class="pre">tls</span></code> is not specified, an unencrypted connection is established.</p>
-<p>If <code class="docutils literal"><span class="pre">tls</span></code> is specified, the TCP connection is secured with TLS + Client Authentication.
-This is particularly useful in combination with log aggregation services that run on an other machine.</p>
+<p>Establishes a TCP connection to <code class="docutils literal"><span class="pre">address</span></code> and sends log messages with minimum level <code class="docutils literal"><span class="pre">level</span></code> formatted by <code class="docutils literal"><span class="pre">format</span></code>.
+If <code class="docutils literal"><span class="pre">tls</span></code> is not specified, an unencrypted connection is established.
+If <code class="docutils literal"><span class="pre">tls</span></code> is specified, the TCP connection is secured with TLS + Client Authentication.
+The latter is particularly useful in combination with log aggregation services.</p>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="10%" />
@@ -465,7 +469,7 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -491,9 +495,11 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
             <dt>Tags</dt>
             <dd><a href="../0.0.2/configuration/logging.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/configuration/logging.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/configuration/logging.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/configuration/logging.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/configuration/logging.html">fix_diff_output</a></dd>
             <dd><a href="../master/configuration/logging.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/configuration/logging.html">parallel_zfs_ops</a></dd>

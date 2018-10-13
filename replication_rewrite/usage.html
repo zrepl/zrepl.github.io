@@ -105,9 +105,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -158,7 +158,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/replication_rewrite/docs/usage.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -186,8 +188,8 @@
 <h2>CLI Overview<a class="headerlink" href="#cli-overview" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">To avoid duplication, the zrepl binary is self-documenting:
-invoke any subcommand at any level with the <code class="docutils literal"><span class="pre">--help</span></code> flag to get information on the subcommand, available flags, etc.</p>
+<p class="last">The zrepl binary is self-documenting:
+run <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">help</span></code> for an overview of the available subcommands or <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">SUBCOMMAND</span> <span class="pre">--help</span></code> for information on available flags, etc.</p>
 </div>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
@@ -200,20 +202,23 @@ invoke any subcommand at any level with the <code class="docutils literal"><span
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">help</span></code></td>
+<td>show subcommand overview</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code></td>
 <td>run the daemon, required for all zrepl functionality</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span></code></td>
-<td>control / query the daemon</td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code></td>
+<td>show job activity, or with <code class="docutils literal"><span class="pre">--raw</span></code> for JSON output</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">control</span> <span class="pre">status</span></code></td>
-<td>show job activity / monitoring (<code class="docutils literal"><span class="pre">--format</span> <span class="pre">raw</span></code>)</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">test</span></code></td>
-<td>test configuration, try pattern syntax, dry run pruning policy, etc.</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span></code></td>
 <td>see <a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code></td>
+<td>manually trigger replication + pruning</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code></td>
+<td>check if config can be parsed without errors</td>
 </tr>
 </tbody>
 </table>
@@ -263,7 +268,7 @@ The daemon exits as soon as all jobs have reported shut down.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -289,9 +294,11 @@ The daemon exits as soon as all jobs have reported shut down.</p>
             <dt>Tags</dt>
             <dd><a href="../0.0.2/index.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/usage.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/usage.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/usage.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/usage.html">fix_diff_output</a></dd>
             <dd><a href="../master/usage.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/usage.html">parallel_zfs_ops</a></dd>

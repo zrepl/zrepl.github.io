@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Job Types &mdash; zrepl  documentation</title>
+  <title>Job Types &amp; Replication &mdash; zrepl  documentation</title>
   
 
   
@@ -98,15 +98,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Job Types</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source-job">Source Job</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pull-job">Pull Job</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#local-job">Local Job</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Job Types &amp; Replication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview-terminology">Overview &amp; Terminology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-the-active-side-works">How the Active Side Works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-the-passive-side-works">How the Passive Side Works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-replication-works">How Replication Works</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#taking-snaphots">Taking Snaphots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-push">Job Type <code class="docutils literal"><span class="pre">push</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-sink">Job Type <code class="docutils literal"><span class="pre">sink</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-pull">Job Type <code class="docutils literal"><span class="pre">pull</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-source">Job Type <code class="docutils literal"><span class="pre">source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-replication">Local replication</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="map_filter_syntax.html">Mapping &amp; Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
@@ -115,9 +123,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -164,13 +172,15 @@
         
           <li><a href="../configuration.html">Configuration</a> &raquo;</li>
         
-      <li>Job Types</li>
+      <li>Job Types &amp; Replication</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/configuration/jobs.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/jobs.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -189,20 +199,275 @@
 
 
 
-<div class="section" id="job-types">
-<span id="job"></span><h1>Job Types<a class="headerlink" href="#job-types" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="job-types-replication">
+<span id="job"></span><h1>Job Types &amp; Replication<a class="headerlink" href="#job-types-replication" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview-terminology">
+<h2>Overview &amp; Terminology<a class="headerlink" href="#overview-terminology" title="Permalink to this headline">¶</a></h2>
 <p>A <em>job</em> is the unit of activity tracked by the zrepl daemon and configured in the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.
-Every job has a unique <code class="docutils literal"><span class="pre">name</span></code>, a <code class="docutils literal"><span class="pre">type</span></code> and type-dependent fields which are documented on this page.
-Check out the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> and <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf//">cmd/sampleconf//</a> for examples on how job types are actually used.</p>
+Every job has a unique <code class="docutils literal"><span class="pre">name</span></code>, a <code class="docutils literal"><span class="pre">type</span></code> and type-dependent fields which are documented on this page.</p>
+<p>Replication always happens between a pair of jobs: one is the <strong>active side</strong>, and one the <strong>passive side</strong>.
+The active side executes the replication logic whereas the passive side responds to requests after checking the active side&#8217;s permissions.
+For communication, the active side connects to the passive side using a <a class="reference internal" href="transports.html#transport"><span class="std std-ref">transport</span></a> and starts issuing remote procedure calls (RPCs).</p>
+<p>The following table shows how different job types can be combined to achieve both push and pull mode setups:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="12%" />
+<col width="29%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Setup name</th>
+<th class="head">active side</th>
+<th class="head">passive side</th>
+<th class="head">use case</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Push mode</td>
+<td><code class="docutils literal"><span class="pre">push</span></code></td>
+<td><code class="docutils literal"><span class="pre">sink</span></code></td>
+<td><ul class="first last simple">
+<li>Laptop backup</li>
+<li>NAS behind NAT to offsite</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>Pull mode</td>
+<td><code class="docutils literal"><span class="pre">pull</span></code></td>
+<td><code class="docutils literal"><span class="pre">source</span></code></td>
+<td><ul class="first last simple">
+<li>Central backup-server for many nodes</li>
+<li>Remote server to NAS behind NAT</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>Local replication</td>
+<td colspan="2"><div class="first last line-block">
+<div class="line"><code class="docutils literal"><span class="pre">push</span></code> + <code class="docutils literal"><span class="pre">sink</span></code> in one config</div>
+<div class="line">with <a class="reference internal" href="transports.html#transport-local"><span class="std std-ref">local transport</span></a></div>
+</div>
+</td>
+<td><ul class="first last simple">
+<li>Backup FreeBSD boot pool</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="how-the-active-side-works">
+<h3>How the Active Side Works<a class="headerlink" href="#how-the-active-side-works" title="Permalink to this headline">¶</a></h3>
+<p>The active side (<a class="reference internal" href="#job-push"><span class="std std-ref">push</span></a> and <a class="reference internal" href="#job-pull"><span class="std std-ref">pull</span></a> job) executes the replication and pruning logic:</p>
+<ul class="simple">
+<li>Wakeup because of finished snapshotting (<code class="docutils literal"><span class="pre">push</span></code> job) or pull interval ticker (<code class="docutils literal"><span class="pre">pull</span></code> job).</li>
+<li>Connect to the corresponding passive side using a <a class="reference internal" href="transports.html#transport"><span class="std std-ref">transport</span></a> and instantiate an RPC client.</li>
+<li>Replicate data from the sending to the receiving side.</li>
+<li>Prune on sender &amp; receiver.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The progress of the active side can be watched live using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code> subcommand.</p>
+</div>
+</div>
+<div class="section" id="how-the-passive-side-works">
+<h3>How the Passive Side Works<a class="headerlink" href="#how-the-passive-side-works" title="Permalink to this headline">¶</a></h3>
+<p>The passive side (<a class="reference internal" href="#job-sink"><span class="std std-ref">sink</span></a> and <a class="reference internal" href="#job-source"><span class="std std-ref">source</span></a>) waits for connections from the corresponding active side,
+using the transport listener type specified in the <code class="docutils literal"><span class="pre">serve</span></code> field of the job configuration.
+Each transport listener provides a client&#8217;s identity to the passive side job.
+It uses the client identity for access control:</p>
+<ul class="simple">
+<li>The <code class="docutils literal"><span class="pre">sink</span></code> job only allows pushes to those ZFS filesystems to the active side that are located below <code class="docutils literal"><span class="pre">root_fs/${client_identity}</span></code>.</li>
+<li>The <code class="docutils literal"><span class="pre">source</span></code> job has a whitelist of client identities that are allowed pull access.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The implementation of the <code class="docutils literal"><span class="pre">sink</span></code> job requires that the connecting client identities be a valid ZFS filesystem name components.</p>
+</div>
+</div>
+<div class="section" id="how-replication-works">
+<h3>How Replication Works<a class="headerlink" href="#how-replication-works" title="Permalink to this headline">¶</a></h3>
+<p>One of the major design goals of the replication module is to avoid any duplication of the nontrivial logic.
+As such, the code works on abstract senders and receiver <strong>endpoints</strong>, where typically one will be implemented by a local program object and the other is an RPC client instance.
+Regardless of push- or pull-style setup, the logic executes on the active side, i.e. in the <code class="docutils literal"><span class="pre">push</span></code> or <code class="docutils literal"><span class="pre">pull</span></code> job.</p>
+<p>The following steps take place during replication and can be monitored using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code> subcommand:</p>
+<ul class="simple">
+<li>Plan the replication:<ul>
+<li>Compare sender and receiver filesystem snapshots</li>
+<li>Build the <strong>replication plan</strong><ul>
+<li>Per filesystem, compute a diff between sender and receiver snapshots</li>
+<li>Build a list of replication steps<ul>
+<li>If possible, use incremental sends (<code class="docutils literal"><span class="pre">zfs</span> <span class="pre">send</span> <span class="pre">-i</span></code>)</li>
+<li>Otherwise, use full send of most recent snapshot on sender</li>
+<li>Give up on filesystems that cannot be replicated without data loss</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Retry on errors that are likely temporary (i.e. network failures).</li>
+<li>Give up on filesystems where a permanent error was received over RPC.</li>
+</ul>
+</li>
+<li>Execute the plan<ul>
+<li>Perform replication steps in the following order:
+Among all filesystems with pending replication steps, pick the filesystem whose next replication step&#8217;s snapshot is the oldest.</li>
+<li>After a successful replication step, update the replication cursor bookmark (see below)</li>
+</ul>
+</li>
+</ul>
+<p>The idea behind the execution order of replication steps is that if the sender snapshots all filesystems simultaneously at fixed intervals, the receiver will have all filesystems snapshotted at time <code class="docutils literal"><span class="pre">T1</span></code> before the first snapshot at <code class="docutils literal"><span class="pre">T2</span> <span class="pre">=</span> <span class="pre">T1</span> <span class="pre">+</span> <span class="pre">$interval</span></code> is replicated.</p>
+<p id="replication-cursor-bookmark">The <strong>replication cursor bookmark</strong> <code class="docutils literal"><span class="pre">#zrepl_replication_cursor</span></code> is kept per filesystem on the sending side of a replication setup:
+It is a bookmark of the most recent successfully replicated snapshot to the receiving side.
+It is is used by the <a class="reference internal" href="prune.html#prune-keep-not-replicated"><span class="std std-ref">not_replicated</span></a> keep rule to identify all snapshots that have not yet been replicated to the receiving side.
+Regardless of whether that keep rule is used, the bookmark ensures that replication can always continue incrementally.</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">Currently, zrepl does not replicate filesystem properties.
 Whe receiving a filesystem, it is never mounted (<cite>-u</cite> flag)  and <cite>mountpoint=none</cite> is set.
 This is temporary and being worked on <a class="reference external" href="https://github.com/zrepl/zrepl/issues/24">issue #24</a>.</p>
 </div>
-<div class="section" id="source-job">
-<span id="job-source"></span><h2>Source Job<a class="headerlink" href="#source-job" title="Permalink to this headline">¶</a></h2>
-<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/pullbackup/productionhost.yml">cmd/sampleconf/pullbackup/productionhost.yml</a>.</p>
+</div>
+</div>
+<div class="section" id="taking-snaphots">
+<span id="job-snapshotting-spec"></span><h2>Taking Snaphots<a class="headerlink" href="#taking-snaphots" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">push</span></code> and <code class="docutils literal"><span class="pre">source</span></code> jobs can automatically take periodic snapshots of the filesystems matched by the <code class="docutils literal"><span class="pre">filesystems</span></code> filter field.
+The snapshot names are composed of a user-defined prefix followed by a UTC date formatted like <code class="docutils literal"><span class="pre">20060102_150405_000</span></code>.
+We use UTC because it will avoid name conflicts when switching time zones or between summer and winter time.</p>
+<p>For <code class="docutils literal"><span class="pre">push</span></code> jobs, replication is automatically triggered after all filesystems have been snapshotted.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;tmp&quot;</span><span class="p">:</span> <span class="n">false</span>
+  <span class="p">}</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">periodic</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>There is also a <code class="docutils literal"><span class="pre">manual</span></code> snapshotting type, which covers the following use cases:</p>
+<ul class="simple">
+<li>Existing infrastructure for automatic snapshots: you only want to use zrepl for replication.</li>
+<li>Run scripts before and after taking snapshots (like locking database tables).
+We are working on better integration for this use case: see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/74">issue #74</a>.</li>
+</ul>
+<p>Note that you will have to trigger replication manually using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand in that case.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;tmp&quot;</span><span class="p">:</span> <span class="n">false</span>
+  <span class="p">}</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">manual</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="job-type-push">
+<span id="job-push"></span><h2>Job Type <code class="docutils literal"><span class="pre">push</span></code><a class="headerlink" href="#job-type-push" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal"><span class="pre">push</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>unique name of the job</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">connect</span></code></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">connect specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">filesystems</span></code></td>
+<td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted and pushed to the sink</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">snapshotting</span></code></td>
+<td><a class="reference internal" href="#job-snapshotting-spec"><span class="std std-ref">snapshotting specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">pruning</span></code></td>
+<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">pruning specification</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/push.yml">config/samples/push.yml</a></p>
+</div>
+<div class="section" id="job-type-sink">
+<span id="job-sink"></span><h2>Job Type <code class="docutils literal"><span class="pre">sink</span></code><a class="headerlink" href="#job-type-sink" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal"><span class="pre">sink</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>unique name of the job</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">serve</span></code></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">serve specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">root_fs</span></code></td>
+<td>ZFS dataset path are received to
+<code class="docutils literal"><span class="pre">$root_fs/$client_identity</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/sink.yml">config/samples/sink.yml</a></p>
+</div>
+<div class="section" id="job-type-pull">
+<span id="job-pull"></span><h2>Job Type <code class="docutils literal"><span class="pre">pull</span></code><a class="headerlink" href="#job-type-pull" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal"><span class="pre">pull</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>unique name of the job</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">connect</span></code></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">connect specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">root_fs</span></code></td>
+<td>ZFS dataset path are received to
+<code class="docutils literal"><span class="pre">$root_fs/$client_identity</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">interval</span></code></td>
+<td>Interval at which to pull from the source job</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">pruning</span></code></td>
+<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">pruning specification</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/pull.yml">config/samples/pull.yml</a></p>
+</div>
+<div class="section" id="job-type-source">
+<span id="job-source"></span><h2>Job Type <code class="docutils literal"><span class="pre">source</span></code><a class="headerlink" href="#job-type-source" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="20%" />
@@ -221,182 +486,22 @@ This is temporary and being worked on <a class="reference external" href="https:
 <td>unique name of the job</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">serve</span></code></td>
-<td><a class="reference internal" href="transports.html#transport-ssh-stdinserver-serve"><span class="std std-ref">serve transport</span></a></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">serve specification</span></a></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">filesystems</span></code></td>
-<td><a class="reference internal" href="map_filter_syntax.html#pattern-filter"><span class="std std-ref">filter</span></a> for filesystems to expose to client</td>
+<td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted and exposed to connecting clients</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
-<td>prefix for ZFS snapshots taken by this job</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">interval</span></code></td>
-<td>snapshotting interval</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">prune</span></code></td>
-<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> for versions of filesytems in <code class="docutils literal"><span class="pre">filesystems</span></code>, versions prefixed with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">snapshotting</span></code></td>
+<td><a class="reference internal" href="#job-snapshotting-spec"><span class="std std-ref">snapshotting specification</span></a></td>
 </tr>
 </tbody>
 </table>
-<ul class="simple">
-<li>Snapshotting Task (every <code class="docutils literal"><span class="pre">interval</span></code>, <a class="reference internal" href="#job-term-patient"><span class="std std-ref">patient</span></a>)<ul>
-<li>A snapshot of filesystems matched by <code class="docutils literal"><span class="pre">filesystems</span></code> is taken every <code class="docutils literal"><span class="pre">interval</span></code> with prefix <code class="docutils literal"><span class="pre">snapshot_prefix</span></code>.</li>
-<li>A bookmark of that snapshot is created with the same name.</li>
-<li>The <code class="docutils literal"><span class="pre">prune</span></code> policy is evaluated for versions of filesystems matched by <code class="docutils literal"><span class="pre">filesystems</span></code>, versions prefixed with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code>.</li>
-</ul>
-</li>
-<li>Serve Task<ul>
-<li>Wait for connections from pull job using <code class="docutils literal"><span class="pre">serve</span></code>.</li>
-</ul>
-</li>
-</ul>
-<p>A source job is the counterpart to a <a class="reference internal" href="#job-pull"><span class="std std-ref">Pull Job</span></a>.</p>
-<p>Make sure you read the <a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy documentation.</p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/source.yml">config/samples/source.yml</a></p>
 </div>
-<div class="section" id="pull-job">
-<span id="job-pull"></span><h2>Pull Job<a class="headerlink" href="#pull-job" title="Permalink to this headline">¶</a></h2>
-<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/pullbackup/backuphost.yml">cmd/sampleconf/pullbackup/backuphost.yml</a></p>
-<table border="1" class="colwidths-given docutils">
-<colgroup>
-<col width="20%" />
-<col width="80%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Parameter</th>
-<th class="head">Comment</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
-<td>= <code class="docutils literal"><span class="pre">pull</span></code></td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">name</span></code></td>
-<td>unqiue name of the job</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">connect</span></code></td>
-<td><a class="reference internal" href="transports.html#transport-ssh-stdinserver-connect"><span class="std std-ref">connect transport</span></a></td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">interval</span></code></td>
-<td>Interval between pull attempts</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">mapping</span></code></td>
-<td><a class="reference internal" href="map_filter_syntax.html#pattern-mapping"><span class="std std-ref">mapping</span></a> for remote to local filesystems</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">initial_repl_policy</span></code></td>
-<td>default = <code class="docutils literal"><span class="pre">most_recent</span></code>, initial replication policy</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
-<td>prefix snapshots must match to be considered for replication &amp; pruning</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">prune</span></code></td>
-<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy for versions of filesystems of local filesystems reachable by <code class="docutils literal"><span class="pre">mapping</span></code>, versions prefixed with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
-</tr>
-</tbody>
-</table>
-<ul class="simple">
-<li>Main Task (every <code class="docutils literal"><span class="pre">interval</span></code>, <a class="reference internal" href="#job-term-patient"><span class="std std-ref">patient</span></a>)<ol class="arabic">
-<li>A connection to the remote source job is established using the strategy in <code class="docutils literal"><span class="pre">connect</span></code></li>
-<li><code class="docutils literal"><span class="pre">mapping</span></code> maps filesystems presented by the remote side to local <em>target filesystems</em></li>
-<li>Those remote filesystems with a local <em>target filesystem</em> are replicated<ol class="arabic">
-<li>Only snapshots with prefix <code class="docutils literal"><span class="pre">snapshot_prefix</span></code> are replicated.</li>
-<li>If possible, incremental replication takes place.</li>
-<li>If the local target filesystem does not exist, <code class="docutils literal"><span class="pre">initial_repl_policy</span></code> is used.</li>
-<li>On conflicts, an error is logged but replication of other filesystems with mapping continues.</li>
-</ol>
-</li>
-<li>The <code class="docutils literal"><span class="pre">prune</span></code> policy is evaluated for all <em>target filesystems</em></li>
-</ol>
-</li>
-</ul>
-<p>A pull job is the counterpart to a <a class="reference internal" href="#job-source"><span class="std std-ref">Source Job</span></a>.</p>
-<p>Make sure you read the <a class="reference internal" href="prune.html#prune"><span class="std std-ref">prune</span></a> policy documentation.</p>
-</div>
-<div class="section" id="local-job">
-<span id="job-local"></span><h2>Local Job<a class="headerlink" href="#local-job" title="Permalink to this headline">¶</a></h2>
-<p>Example: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/cmd/sampleconf/localbackup/host1.yml">cmd/sampleconf/localbackup/host1.yml</a></p>
-<table border="1" class="colwidths-given docutils">
-<colgroup>
-<col width="20%" />
-<col width="80%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Parameter</th>
-<th class="head">Comment</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
-<td>= <code class="docutils literal"><span class="pre">local</span></code></td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">name</span></code></td>
-<td>unqiue name of the job</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">mapping</span></code></td>
-<td><a class="reference internal" href="map_filter_syntax.html#pattern-mapping"><span class="std std-ref">mapping</span></a> from source to target filesystem (both local)</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">snapshot_prefix</span></code></td>
-<td>prefix for ZFS snapshots taken by this job</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">interval</span></code></td>
-<td>snapshotting &amp; replication interval</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">initial_repl_policy</span></code></td>
-<td>default = <code class="docutils literal"><span class="pre">most_recent</span></code>, initial replication policy</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">prune_lhs</span></code></td>
-<td>pruning policy on left-hand-side (source)</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">prune_rhs</span></code></td>
-<td>pruning policy on right-hand-side (target)</td>
-</tr>
-</tbody>
-</table>
-<ul class="simple">
-<li>Main Task (every <code class="docutils literal"><span class="pre">interval</span></code>, <a class="reference internal" href="#job-term-patient"><span class="std std-ref">patient</span></a>)<ol class="arabic">
-<li>Evaluate <code class="docutils literal"><span class="pre">mapping</span></code> for local filesystems, those with a <em>target filesystem</em> are called <em>mapped filesystems</em>.</li>
-<li>Snapshot <em>mapped filesystems</em> with <code class="docutils literal"><span class="pre">snapshot_prefix</span></code>.</li>
-<li>Bookmark the snapshot created above.</li>
-<li>Replicate <em>mapped filesystems</em> to their respective <em>target filesystems</em>:<ol class="arabic">
-<li>Only snapshots with prefix <code class="docutils literal"><span class="pre">snapshot_prefix</span></code> are replicated.</li>
-<li>If possible, incremental replication takes place.</li>
-<li>If the <em>target filesystem</em> does not exist, <code class="docutils literal"><span class="pre">initial_repl_policy</span></code> is used.</li>
-<li>On conflicts, an error is logged but replication of other <em>mapped filesystems</em> continues.</li>
-</ol>
-</li>
-<li>The <code class="docutils literal"><span class="pre">prune_lhs</span></code> policy is triggered for all <em>mapped filesystems</em></li>
-<li>The <code class="docutils literal"><span class="pre">prune_rhs</span></code> policy is triggered for all <em>target filesystems</em></li>
-</ol>
-</li>
-</ul>
-<p>A local job is combination of source &amp; pull job executed on the same machine.</p>
-</div>
-<div class="section" id="terminology">
-<h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
-<p>task</p>
-<blockquote>
-<div>A job consists of one or more tasks and a task consists of one or more steps.
-Some tasks may be periodic while others wait for an event to occur.</div></blockquote>
-<p>patient task</p>
-<blockquote>
-<div><p id="job-term-patient">A patient task is supposed to execute some task every <cite>interval</cite>.
-We call the start of the task an <em>invocation</em>.</p>
-<ul class="simple">
-<li>If the task completes in less than <cite>interval</cite>, the task is restarted at <cite>last_invocation + interval</cite>.</li>
-<li><dl class="first docutils">
-<dt>Otherwise, a patient job</dt>
-<dd><ul class="first last">
-<li>logs a warning as soon as a task exceeds its configured <cite>interval</cite></li>
-<li>waits for the last invocation to finish</li>
-<li>logs a warning with the effective task duration</li>
-<li>immediately starts a new invocation of the task</li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</div></blockquote>
-<p>filesystem version</p>
-<blockquote>
-<div>A snapshot or a bookmark.</div></blockquote>
+<div class="section" id="local-replication">
+<span id="replication-local"></span><h2>Local replication<a class="headerlink" href="#local-replication" title="Permalink to this headline">¶</a></h2>
+<p>If you have the need for local replication (most likely between two local storage pools), you can use the <a class="reference internal" href="transports.html#transport-local"><span class="std std-ref">local transport type</span></a> to connect a local push job to a local sink job.</p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/local.yml">config/samples/local.yml</a>.</p>
 </div>
 </div>
 
@@ -422,7 +527,7 @@ We call the start of the task an <em>invocation</em>.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -448,9 +553,11 @@ We call the start of the task an <em>invocation</em>.</p>
             <dt>Tags</dt>
             <dd><a href="../../0.0.2/configuration/jobs.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/configuration/jobs.html">0.0.3</a></dd>
+            <dd><a href="../../0.1.0-rc1/configuration/jobs.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../../anton_wip/configuration/jobs.html">anton_wip</a></dd>
             <dd><a href="../../fix_diff_output/configuration/jobs.html">fix_diff_output</a></dd>
             <dd><a href="jobs.html">master</a></dd>
             <dd><a href="../../parallel_zfs_ops/configuration/jobs.html">parallel_zfs_ops</a></dd>

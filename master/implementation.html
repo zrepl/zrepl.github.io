@@ -38,7 +38,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="zrepl  documentation" href="index.html"/>
-        <link rel="next" title="Changelog" href="changelog.html"/>
+        <link rel="next" title="Talks &amp; Presentations" href="pr.html"/>
         <link rel="prev" title="Usage" href="usage.html"/> 
 
   
@@ -106,9 +106,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#logging-transparency">Logging &amp; Transparency</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 </ul>
 
             
@@ -159,7 +159,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/implementation.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/implementation.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -182,9 +184,12 @@
 <span id="implementation-toc"></span><h1>Implementation Overview<a class="headerlink" href="#implementation-overview" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Incomplete / under construction</p>
+<p class="last">Incomplete and possibly outdated.
+Check out the <a class="reference internal" href="pr.html#pr-talks"><span class="std std-ref">talks about zrepl</span></a> at various conferences for up-to-date material.
+Alternatively, have a <a class="reference external" href="http://github.com/zrepl/zrepl">look at the source code</a> ;)</p>
 </div>
-<p>The following design aspects may convince you that <code class="docutils literal"><span class="pre">zrepl</span></code> is superior to a hacked-together shell script solution.</p>
+<p>The following design aspects may convince you that <code class="docutils literal"><span class="pre">zrepl</span></code> is superior to a hacked-together shell script solution.
+Also check out the <a class="reference internal" href="pr.html#pr-talks"><span class="std std-ref">talks about zrepl</span></a> at various conferences.</p>
 <div class="section" id="testability-performance">
 <h2>Testability &amp; Performance<a class="headerlink" href="#testability-performance" title="Permalink to this headline">¶</a></h2>
 <p>zrepl is written in Go, a real programming language with type safety,
@@ -201,7 +206,7 @@ software engineering.</p>
 <ul class="simple">
 <li>The snapshot streams need to be compatible.</li>
 <li>Communication is still unidirectional. Thus, you will most likely<ul>
-<li>either not take advantage of features such as <em>compressed send &amp; recv</em></li>
+<li>either not take advantage of advanced replication features such as <em>compressed send &amp; recv</em></li>
 <li>or issue additional <code class="docutils literal"><span class="pre">ssh</span></code> commands in advance to figure out what features are supported on the other side.</li>
 </ul>
 </li>
@@ -210,22 +215,20 @@ software engineering.</p>
 <p>zrepl takes a different approach:</p>
 <ul class="simple">
 <li>Define an RPC protocol.</li>
-<li>Establish an encrypted, authenticated, bidirectional communication channel...</li>
-<li>... with zrepl running at both ends of it.</li>
+<li>Establish an encrypted, authenticated, bidirectional communication channel.</li>
+<li>Run daemons on both sides of the setup and let them talk to each other.</li>
 </ul>
 <p>This has several obvious benefits:</p>
 <ul class="simple">
 <li>No blank root shell access is given to the other side.</li>
-<li>Instead, an <em>authenticated</em> peer can <em>request</em> filesystem lists, snapshot streams, etc.</li>
-<li>Requests are then checked against job-specific ACLs, limiting a client to the filesystems it is actually allowed to replicate.</li>
-<li>The <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">transport mechanism</span></a> is decoupled from the remaining logic, keeping it extensible.</li>
+<li>An <em>authenticated</em> peer <em>requests</em> filesystem lists, snapshot streams, etc.</li>
+<li>The server decides which filesystems it exposes to which peers.</li>
+<li>The <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">transport mechanism</span></a> is decoupled from the remaining logic, which allows us to painlessly offer multiple transport mechanisms.</li>
 </ul>
 <div class="section" id="protocol-implementation">
 <h3>Protocol Implementation<a class="headerlink" href="#protocol-implementation" title="Permalink to this headline">¶</a></h3>
-<p>zrepl implements its own RPC protocol.
-This is mostly due to the fact that existing solutions do not provide efficient means to transport large amounts of data.</p>
-<p>Package <a class="reference external" href="https://github.com/zrepl/zrepl/tree/master/rpc">github.com/zrepl/zrepl/rpc</a> builds a special-case handling around returning an <code class="docutils literal"><span class="pre">io.Reader</span></code> as part of a unary RPC call.</p>
-<p>Measurements show only a single memory-to-memory copy of a snapshot stream is made using <code class="docutils literal"><span class="pre">github.com/zrepl/zrepl/rpc</span></code>, and there is still potential for further optimizations.</p>
+<p>zrepl uses a custom RPC protol because, at the time of writing, existing solutions like gRPC do not provide efficient means to transport large amounts of data, whose size is unknown at send time (= zfs send streams).
+The package used is <a class="reference external" href="https://github.com/problame/go-streamrpc/tree/master">github.com/problame/go-streamrpc</a>.</p>
 </div>
 </div>
 <div class="section" id="logging-transparency">
@@ -244,7 +247,7 @@ This is mostly due to the fact that existing solutions do not provide efficient 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pr.html" class="btn btn-neutral float-right" title="Talks &amp; Presentations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="usage.html" class="btn btn-neutral" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -256,7 +259,7 @@ This is mostly due to the fact that existing solutions do not provide efficient 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz.
 
     </p>
   </div>
@@ -282,9 +285,11 @@ This is mostly due to the fact that existing solutions do not provide efficient 
             <dt>Tags</dt>
             <dd><a href="../0.0.2/implementation.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/implementation.html">0.0.3</a></dd>
+            <dd><a href="../0.1.0-rc1/implementation.html">0.1.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
+            <dd><a href="../anton_wip/implementation.html">anton_wip</a></dd>
             <dd><a href="../fix_diff_output/implementation.html">fix_diff_output</a></dd>
             <dd><a href="implementation.html">master</a></dd>
             <dd><a href="../parallel_zfs_ops/implementation.html">parallel_zfs_ops</a></dd>
