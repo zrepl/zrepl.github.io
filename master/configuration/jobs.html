@@ -352,7 +352,7 @@ We use UTC because it will avoid name conflicts when switching time zones or bet
 <li>Run scripts before and after taking snapshots (like locking database tables).
 We are working on better integration for this use case: see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/74">issue #74</a>.</li>
 </ul>
-<p>Note that you will have to trigger replication manually using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand in that case.</p>
+<p>Note that you will have to trigger replication manually using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand in that case.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
   <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
@@ -554,6 +554,8 @@ We are working on better integration for this use case: see <a class="reference 
             <dd><a href="../../0.0.2/configuration/jobs.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/configuration/jobs.html">0.0.3</a></dd>
             <dd><a href="../../0.1.0-rc1/configuration/jobs.html">0.1.0-rc1</a></dd>
+            <dd><a href="../../0.1.0-rc2/configuration/jobs.html">0.1.0-rc2</a></dd>
+            <dd><a href="../../0.1.0-rc3/configuration/jobs.html">0.1.0-rc3</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -562,6 +564,7 @@ We are working on better integration for this use case: see <a class="reference 
             <dd><a href="jobs.html">master</a></dd>
             <dd><a href="../../parallel_zfs_ops/configuration/jobs.html">parallel_zfs_ops</a></dd>
             <dd><a href="../../push/configuration/jobs.html">push</a></dd>
+            <dd><a href="../../replication_error_handling/configuration/jobs.html">replication_error_handling</a></dd>
             <dd><a href="../../replication_rewrite/configuration/jobs.html">replication_rewrite</a></dd>
         </dl>
     </div>

@@ -96,8 +96,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-zrepl">Install zrepl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configure-server-backups">Configure server <code class="docutils literal"><span class="pre">backups</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generate-tls-certificates">Generate TLS Certificates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configure-server-prod">Configure server <code class="docutils literal"><span class="pre">prod</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-configure-prod">Configure server <code class="docutils literal"><span class="pre">prod</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#apply-configuration-changes">Apply Configuration Changes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#watch-it-work">Watch it Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
@@ -183,7 +184,7 @@
 
 <div class="section" id="tutorial">
 <span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<p>This tutorial shows how zrepl can be used to implement a ZFS-based pull backup.
+<p>This tutorial shows how zrepl can be used to implement a ZFS-based push backup.
 We assume the following scenario:</p>
 <ul class="simple">
 <li>Production server <code class="docutils literal"><span class="pre">prod</span></code> with filesystems to back up:<ul>
@@ -193,14 +194,14 @@ We assume the following scenario:</p>
 </ul>
 </li>
 <li>Backup server <code class="docutils literal"><span class="pre">backups</span></code> with<ul>
-<li>Filesystem <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod</span></code> + children dedicated to backups of <code class="docutils literal"><span class="pre">prod</span></code></li>
+<li>Filesystem <code class="docutils literal"><span class="pre">storage/zrepl/sink/prod</span></code> + children dedicated to backups of <code class="docutils literal"><span class="pre">prod</span></code></li>
 </ul>
 </li>
 </ul>
 <p>Our backup solution should fulfill the following requirements:</p>
 <ul class="simple">
 <li>Periodically snapshot the filesystems on <code class="docutils literal"><span class="pre">prod</span></code> <em>every 10 minutes</em></li>
-<li>Incrementally replicate these snapshots to <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod/*</span></code> on <code class="docutils literal"><span class="pre">backups</span></code></li>
+<li>Incrementally replicate these snapshots to <code class="docutils literal"><span class="pre">storage/zrepl/sink/prod/*</span></code> on <code class="docutils literal"><span class="pre">backups</span></code></li>
 <li>Keep only very few snapshots on <code class="docutils literal"><span class="pre">prod</span></code> to save disk space</li>
 <li>Keep a fading history (24 hourly, 30 daily, 6 monthly) of snapshots on <code class="docutils literal"><span class="pre">backups</span></code></li>
 </ul>
@@ -208,66 +209,65 @@ We assume the following scenario:</p>
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>We can model this situation as two jobs:</p>
 <ul class="simple">
-<li>A <strong>source job</strong> on <code class="docutils literal"><span class="pre">prod</span></code><ul>
+<li>A <strong>push job</strong> on <code class="docutils literal"><span class="pre">prod</span></code><ul>
 <li>Creates the snapshots</li>
-<li>Keeps a short history of snapshots to enable incremental replication to <code class="docutils literal"><span class="pre">backups</span></code></li>
-<li>Accepts connections from <code class="docutils literal"><span class="pre">backups</span></code></li>
+<li>Keeps a short history of local snapshots to enable incremental replication to <code class="docutils literal"><span class="pre">backups</span></code></li>
+<li>Connects to the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code> process on <code class="docutils literal"><span class="pre">backups</span></code></li>
+<li>Pushes snapshots <code class="docutils literal"><span class="pre">backups</span></code></li>
+<li>Prunes snapshots on <code class="docutils literal"><span class="pre">backups</span></code> after replication is complete</li>
 </ul>
 </li>
-<li>A <strong>pull job</strong> on <code class="docutils literal"><span class="pre">backups</span></code><ul>
-<li>Connects to the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code> process on <code class="docutils literal"><span class="pre">prod</span></code></li>
-<li>Pulls the snapshots to <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod/*</span></code></li>
-<li>Fades out snapshots in <code class="docutils literal"><span class="pre">storage/zrepl/pull/prod/*</span></code> as they age</li>
+<li>A <strong>sink job</strong> on <code class="docutils literal"><span class="pre">backups</span></code><ul>
+<li>Accepts connections &amp; responds to requests from <code class="docutils literal"><span class="pre">prod</span></code></li>
+<li>Limits client <code class="docutils literal"><span class="pre">prod</span></code> access to filesystem sub-tree <code class="docutils literal"><span class="pre">storage/zrepl/sink/prod</span></code></li>
 </ul>
 </li>
 </ul>
-<p>Why doesn&#8217;t the <strong>pull job</strong> create the snapshots before pulling?</p>
-<p>As is the case with all distributed systems, the link between <code class="docutils literal"><span class="pre">prod</span></code> and <code class="docutils literal"><span class="pre">backups</span></code> might be down for an hour or two.
-We do not want to sacrifice our required backup resolution of 10 minute intervals for a temporary connection outage.</p>
-<p>When the link comes up again, <code class="docutils literal"><span class="pre">backups</span></code> will catch up with the snapshots taken by <code class="docutils literal"><span class="pre">prod</span></code> in the meantime, without a gap in our backup history.</p>
 </div>
 <div class="section" id="install-zrepl">
 <h2>Install zrepl<a class="headerlink" href="#install-zrepl" title="Permalink to this headline">¶</a></h2>
 <p>Follow the <a class="reference internal" href="installation.html#installation"><span class="std std-ref">OS-specific installation instructions</span></a> and come back here.</p>
 </div>
-<div class="section" id="configure-server-backups">
-<h2>Configure server <code class="docutils literal"><span class="pre">backups</span></code><a class="headerlink" href="#configure-server-backups" title="Permalink to this headline">¶</a></h2>
-<p>We define a <strong>pull job</strong> named <code class="docutils literal"><span class="pre">pull_prod</span></code> in <code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code> or <code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal"><span class="pre">backups</span></code> :</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">pull_prod</span>
-  <span class="nb">type</span><span class="p">:</span> <span class="n">pull</span>
-  <span class="n">connect</span><span class="p">:</span>
-    <span class="nb">type</span><span class="p">:</span> <span class="n">tcp</span>
-    <span class="n">address</span><span class="p">:</span> <span class="s2">&quot;192.168.2.20:2342&quot;</span>
-  <span class="n">root_fs</span><span class="p">:</span> <span class="s2">&quot;storage/zrepl/pull/prod&quot;</span>
-  <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
-  <span class="n">pruning</span><span class="p">:</span>
-    <span class="n">keep_sender</span><span class="p">:</span>
-    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">not_replicated</span>
-    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">last_n</span>
-      <span class="n">count</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="n">keep_receiver</span><span class="p">:</span>
-    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">grid</span>
-      <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">30</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">6</span><span class="n">x30d</span>
-      <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_&quot;</span>
-      <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
+<div class="section" id="generate-tls-certificates">
+<h2>Generate TLS Certificates<a class="headerlink" href="#generate-tls-certificates" title="Permalink to this headline">¶</a></h2>
+<p>We use the <cite>TLS client authentication transport &lt;transport-tcp+tlsclientauth&gt;</cite> to protect our data on the wire.
+To get things going quickly, we skip setting up a CA and generate two self-signed certificates as described <a class="reference internal" href="configuration/transports.html#transport-tcp-tlsclientauth-2machineopenssl"><span class="std std-ref">here</span></a>.
+Again, for convenience, We generate the key pairs on our local machine and distribute them using ssh:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>openssl req -x509 -sha256 -nodes <span class="se">\</span>
+   -newkey rsa:4096 <span class="se">\</span>
+   -days <span class="m">365</span> <span class="se">\</span>
+   -keyout backups.key <span class="se">\</span>
+   -out backups.crt
+<span class="hll"><span class="c1"># ... and use &quot;backups&quot; as Common Name (CN)</span>
+</span>
+openssl req -x509 -sha256 -nodes <span class="se">\</span>
+   -newkey rsa:4096 <span class="se">\</span>
+   -days <span class="m">365</span> <span class="se">\</span>
+   -keyout prod.key <span class="se">\</span>
+   -out prod.crt
+<span class="hll"><span class="c1"># ... and use &quot;prod&quot; as Common Name (CN)</span>
+</span>
+ssh root@backups <span class="s2">&quot;mkdir /etc/zrepl&quot;</span>
+scp  backups.key backups.crt prod.crt root@backups:/etc/zrepl
+
+ssh root@prod <span class="s2">&quot;mkdir /etc/zrepl&quot;</span>
+scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">connect</span></code> section instructs the zrepl daemon to use plain TCP transport.
-Check out the <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">transports</span></a> section for alternatives that support encryption.</p>
 </div>
 <div class="section" id="configure-server-prod">
-<span id="tutorial-configure-prod"></span><h2>Configure server <code class="docutils literal"><span class="pre">prod</span></code><a class="headerlink" href="#configure-server-prod" title="Permalink to this headline">¶</a></h2>
-<p>We define a corresponding <strong>source job</strong> named <code class="docutils literal"><span class="pre">source_backups</span></code> in <code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code> or <code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal"><span class="pre">prod</span></code> :</p>
+<h2>Configure server <code class="docutils literal"><span class="pre">prod</span></code><a class="headerlink" href="#configure-server-prod" title="Permalink to this headline">¶</a></h2>
+<p>We define a <strong>push job</strong> named <code class="docutils literal"><span class="pre">prod_to_backups</span></code> in <code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal"><span class="pre">prod</span></code> :</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">source_backups</span>
-  <span class="nb">type</span><span class="p">:</span> <span class="n">source</span>
-  <span class="n">serve</span><span class="p">:</span>
-    <span class="nb">type</span><span class="p">:</span> <span class="n">tcp</span>
-    <span class="n">listen</span><span class="p">:</span> <span class="s2">&quot;:2342&quot;</span>
-    <span class="n">clients</span><span class="p">:</span> <span class="p">{</span>
-      <span class="s2">&quot;192.168.2.10&quot;</span> <span class="p">:</span> <span class="s2">&quot;backups&quot;</span>
-    <span class="p">}</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">prod_to_backups</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
+  <span class="n">connect</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">tls</span>
+    <span class="n">address</span><span class="p">:</span> <span class="s2">&quot;backups.example.com:8888&quot;</span>
+    <span class="n">ca</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">backups</span><span class="o">.</span><span class="n">crt</span>
+    <span class="n">cert</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">prod</span><span class="o">.</span><span class="n">crt</span>
+    <span class="n">key</span><span class="p">:</span>  <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">prod</span><span class="o">.</span><span class="n">key</span>
+    <span class="n">server_cn</span><span class="p">:</span> <span class="s2">&quot;backups&quot;</span>
   <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;zroot/var/db:&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
     <span class="s2">&quot;zroot/usr/home&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
@@ -277,34 +277,63 @@ Check out the <a class="reference internal" href="configuration/transports.html#
     <span class="nb">type</span><span class="p">:</span> <span class="n">periodic</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
     <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
+  <span class="n">pruning</span><span class="p">:</span>
+    <span class="n">keep_sender</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">not_replicated</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">last_n</span>
+      <span class="n">count</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="n">keep_receiver</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">grid</span>
+      <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">30</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">6</span><span class="n">x30d</span>
+      <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_&quot;</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">serve</span></code> section whitelists <code class="docutils literal"><span class="pre">backups</span></code>&#8216;s IP address <code class="docutils literal"><span class="pre">192.168.2.10</span></code> and assigns it the client identity <code class="docutils literal"><span class="pre">backups</span></code> which will show up in the logs.
-Again, check the <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">docs for encrypted transports</span></a>.</p>
+</div>
+<div class="section" id="tutorial-configure-prod">
+<span id="id2"></span><h2>Configure server <code class="docutils literal"><span class="pre">prod</span></code><a class="headerlink" href="#tutorial-configure-prod" title="Permalink to this headline">¶</a></h2>
+<p>We define a corresponding <strong>sink job</strong> named <code class="docutils literal"><span class="pre">sink</span></code> in <code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal"><span class="pre">prod</span></code> :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">sink</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">sink</span>
+  <span class="n">serve</span><span class="p">:</span>
+     <span class="nb">type</span><span class="p">:</span> <span class="n">tls</span>
+     <span class="n">listen</span><span class="p">:</span> <span class="s2">&quot;:8888&quot;</span>
+     <span class="n">ca</span><span class="p">:</span> <span class="s2">&quot;/etc/zrepl/prod.crt&quot;</span>
+     <span class="n">cert</span><span class="p">:</span> <span class="s2">&quot;/etc/zrepl/backups.crt&quot;</span>
+     <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;/etc/zrepl/backups.key&quot;</span>
+     <span class="n">client_cns</span><span class="p">:</span>
+       <span class="o">-</span> <span class="s2">&quot;prod&quot;</span>
+  <span class="n">root_fs</span><span class="p">:</span> <span class="s2">&quot;storage/zrepl/sink&quot;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="apply-configuration-changes">
 <h2>Apply Configuration Changes<a class="headerlink" href="#apply-configuration-changes" title="Permalink to this headline">¶</a></h2>
-<p>We need to restart the zrepl daemon on <strong>both</strong> <code class="docutils literal"><span class="pre">prod</span></code> and <code class="docutils literal"><span class="pre">backups</span></code>.
-This is <a class="reference internal" href="usage.html#usage-zrepl-daemon-restarting"><span class="std std-ref">OS-specific</span></a>.</p>
+<p>We use <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> before to catch any configuration errors: no output indicates that everything is fine.
+If that is the case, restart the zrepl daemon on <strong>both</strong> <code class="docutils literal"><span class="pre">prod</span></code> and <code class="docutils literal"><span class="pre">backups</span></code> using <code class="docutils literal"><span class="pre">service</span> <span class="pre">zrepl</span> <span class="pre">restart</span></code> or <code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">zrepl</span></code>.</p>
 </div>
 <div class="section" id="watch-it-work">
 <h2>Watch it Work<a class="headerlink" href="#watch-it-work" title="Permalink to this headline">¶</a></h2>
-<p>Run <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code> on <code class="docutils literal"><span class="pre">prod</span></code> to monitor the replication and pruning activity.</p>
-<p>Additionally, you can check the detailed structured logs of the <cite>zrepl daemon</cite> process and use GNU <em>watch</em> to view the snapshots present on both machines.</p>
+<p>Run <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code> on <code class="docutils literal"><span class="pre">prod</span></code> to monitor the replication and pruning activity.
+To re-trigger replication (snapshots are separate!), use <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">prod_to_backups</span></code> on <code class="docutils literal"><span class="pre">prod</span></code>.</p>
 <p>If you like tmux, here is a handy script that works on FreeBSD:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pkg</span> <span class="n">install</span> <span class="n">gnu</span><span class="o">-</span><span class="n">watch</span> <span class="n">tmux</span>
-<span class="n">tmux</span> <span class="n">new</span><span class="o">-</span><span class="n">window</span>
-<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;tail -f /var/log/zrepl.log&quot;</span>
-<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;gnu-watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_&#39;&quot;</span>
-<span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="n">tiled</span>
+<span class="n">tmux</span> <span class="n">new</span> <span class="o">-</span><span class="n">s</span> <span class="n">zrepl</span> <span class="o">-</span><span class="n">d</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;tail -f /var/log/messages&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;gnu-watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_&#39;&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;zrepl status&quot;</span>
+<span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="n">tiled</span>
+<span class="n">tmux</span> <span class="n">attach</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span>
 </pre></div>
 </div>
 <p>The Linux equivalent might look like this:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># make sure tmux is installed &amp; let&#39;s assume you use systemd + journald</span>
-<span class="n">tmux</span> <span class="n">new</span><span class="o">-</span><span class="n">window</span>
-<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;journalctl -f -u zrepl.service&quot;</span>
-<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="s2">&quot;watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_&#39;&quot;</span>
-<span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="n">tiled</span>
+<span class="n">tmux</span> <span class="n">new</span> <span class="o">-</span><span class="n">s</span> <span class="n">zrepl</span> <span class="o">-</span><span class="n">d</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span>  <span class="s2">&quot;journalctl -f -u zrepl.service&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;watch &#39;zfs list -t snapshot -o name,creation -s creation | grep zrepl_&#39;&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;zrepl status&quot;</span>
+<span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="n">tiled</span>
+<span class="n">tmux</span> <span class="n">attach</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span>
 </pre></div>
 </div>
 </div>
@@ -368,6 +397,8 @@ This is <a class="reference internal" href="usage.html#usage-zrepl-daemon-restar
             <dd><a href="0.0.2/tutorial.html">0.0.2</a></dd>
             <dd><a href="0.0.3/tutorial.html">0.0.3</a></dd>
             <dd><a href="0.1.0-rc1/tutorial.html">0.1.0-rc1</a></dd>
+            <dd><a href="0.1.0-rc2/tutorial.html">0.1.0-rc2</a></dd>
+            <dd><a href="0.1.0-rc3/tutorial.html">0.1.0-rc3</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -376,6 +407,7 @@ This is <a class="reference internal" href="usage.html#usage-zrepl-daemon-restar
             <dd><a href="master/tutorial.html">master</a></dd>
             <dd><a href="parallel_zfs_ops/tutorial.html">parallel_zfs_ops</a></dd>
             <dd><a href="push/tutorial.html">push</a></dd>
+            <dd><a href="replication_error_handling/tutorial.html">replication_error_handling</a></dd>
             <dd><a href="replication_rewrite/tutorial.html">replication_rewrite</a></dd>
         </dl>
     </div>

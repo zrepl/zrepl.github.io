@@ -276,7 +276,7 @@ The <code class="docutils literal"><span class="pre">grid</span></code> field sp
 the left edge of the leftmost (first) interval is the <code class="docutils literal"><span class="pre">creation</span></code> date of the youngest snapshot.
 All intervals to its right describe time intervals further in the past.</p>
 <p>Each interval carries a maximum number of snapshots to keep.
-It is secified via <code class="docutils literal"><span class="pre">(keep=N)</span></code>, where <code class="docutils literal"><span class="pre">N</span></code> is either <code class="docutils literal"><span class="pre">all</span></code> (all snapshots are kept) or a positive integer.
+It is specified via <code class="docutils literal"><span class="pre">(keep=N)</span></code>, where <code class="docutils literal"><span class="pre">N</span></code> is either <code class="docutils literal"><span class="pre">all</span></code> (all snapshots are kept) or a positive integer.
 The default value is <strong>keep=1</strong>.</p>
 <p>The following procedure happens during pruning:</p>
 <ol class="arabic simple">
@@ -372,6 +372,8 @@ Like all other regular expression fields in prune policies, zrepl uses Go&#8217;
             <dd><a href="../../0.0.2/configuration/prune.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/configuration/prune.html">0.0.3</a></dd>
             <dd><a href="../../0.1.0-rc1/configuration/prune.html">0.1.0-rc1</a></dd>
+            <dd><a href="../../0.1.0-rc2/configuration/prune.html">0.1.0-rc2</a></dd>
+            <dd><a href="../../0.1.0-rc3/configuration/prune.html">0.1.0-rc3</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -380,6 +382,7 @@ Like all other regular expression fields in prune policies, zrepl uses Go&#8217;
             <dd><a href="prune.html">master</a></dd>
             <dd><a href="../../parallel_zfs_ops/configuration/prune.html">parallel_zfs_ops</a></dd>
             <dd><a href="../../push/configuration/prune.html">push</a></dd>
+            <dd><a href="../../replication_error_handling/configuration/prune.html">replication_error_handling</a></dd>
             <dd><a href="../../replication_rewrite/configuration/prune.html">replication_rewrite</a></dd>
         </dl>
     </div>
