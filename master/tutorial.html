@@ -98,7 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#install-zrepl">Install zrepl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#generate-tls-certificates">Generate TLS Certificates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configure-server-prod">Configure server <code class="docutils literal"><span class="pre">prod</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tutorial-configure-prod">Configure server <code class="docutils literal"><span class="pre">prod</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-server-backups">Configure server <code class="docutils literal"><span class="pre">backups</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#apply-configuration-changes">Apply Configuration Changes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#watch-it-work">Watch it Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
@@ -289,8 +289,8 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
 </pre></div>
 </div>
 </div>
-<div class="section" id="tutorial-configure-prod">
-<span id="id2"></span><h2>Configure server <code class="docutils literal"><span class="pre">prod</span></code><a class="headerlink" href="#tutorial-configure-prod" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configure-server-backups">
+<span id="tutorial-configure-prod"></span><h2>Configure server <code class="docutils literal"><span class="pre">backups</span></code><a class="headerlink" href="#configure-server-backups" title="Permalink to this headline">¶</a></h2>
 <p>We define a corresponding <strong>sink job</strong> named <code class="docutils literal"><span class="pre">sink</span></code> in <code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal"><span class="pre">prod</span></code> :</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">sink</span>
