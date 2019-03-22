@@ -17,45 +17,37 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="zrepl  documentation" href="../index.html"/>
-        <link rel="up" title="Configuration" href="../configuration.html"/>
-        <link rel="next" title="Logging" href="logging.html"/>
-        <link rel="prev" title="Filter Syntax" href="filter_syntax.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Logging" href="logging.html" />
+    <link rel="prev" title="Filter Syntax" href="filter_syntax.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -64,7 +56,7 @@
 
           
             
-            <img src="../_static/zrepl.svg" class="logo" />
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -102,10 +94,10 @@
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Pruning Policies</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#policy-not-replicated">Policy <code class="docutils literal"><span class="pre">not_replicated</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#policy-grid">Policy <code class="docutils literal"><span class="pre">grid</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#policy-last-n">Policy <code class="docutils literal"><span class="pre">last_n</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#policy-regex">Policy <code class="docutils literal"><span class="pre">regex</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#policy-not-replicated">Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#policy-grid">Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#policy-last-n">Policy <code class="docutils literal notranslate"><span class="pre">last_n</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#policy-regex">Policy <code class="docutils literal notranslate"><span class="pre">regex</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
@@ -129,7 +121,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">zrepl</a>
@@ -137,9 +129,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -205,7 +198,7 @@ On the receiving side, you may have more disk space available, or need to comply
 <strong>A snapshot that is not kept by any rule is destroyed.</strong>
 The keep rules are <strong>evaluated on the active side</strong> (<a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push</span></a> or <a class="reference internal" href="jobs.html#job-pull"><span class="std std-ref">pull job</span></a>) of the replication setup, for both active and passive side, after replication completed or was determined to have failed permanently.</p>
 <p>Example Configuration:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
   <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
     <span class="n">name</span><span class="p">:</span> <span class="o">...</span>
     <span class="n">connect</span><span class="p">:</span> <span class="o">...</span>
@@ -236,17 +229,17 @@ The keep rules are <strong>evaluated on the active side</strong> (<a class="refe
 <div class="admonition danger">
 <p class="first admonition-title">Danger</p>
 <p class="last">You might have <strong>existing snapshots</strong> of filesystems affected by pruning which you want to keep, i.e. not be destroyed by zrepl.
-Make sure to actually add the necessary <code class="docutils literal"><span class="pre">regex</span></code> keep rules on both sides, like with <code class="docutils literal"><span class="pre">manual</span></code> in the example above.</p>
+Make sure to actually add the necessary <code class="docutils literal notranslate"><span class="pre">regex</span></code> keep rules on both sides, like with <code class="docutils literal notranslate"><span class="pre">manual</span></code> in the example above.</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">It is currently not possible to define pruning on a source job.
-The source job creates snapshots, which means that extended replication downtime will fill up the source&#8217;s zpool with snapshots, since pruning is directed by the corresponding active side (pull job).
+The source job creates snapshots, which means that extended replication downtime will fill up the source’s zpool with snapshots, since pruning is directed by the corresponding active side (pull job).
 If this is a potential risk for you, consider using <a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push mode</span></a>.</p>
 </div>
 <div class="section" id="policy-not-replicated">
-<span id="prune-keep-not-replicated"></span><h2>Policy <code class="docutils literal"><span class="pre">not_replicated</span></code><a class="headerlink" href="#policy-not-replicated" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span id="prune-keep-not-replicated"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code><a class="headerlink" href="#policy-not-replicated" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
   <span class="n">pruning</span><span class="p">:</span>
     <span class="n">keep_sender</span><span class="p">:</span>
@@ -254,13 +247,13 @@ If this is a potential risk for you, consider using <a class="reference internal
   <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">not_replicated</span></code> keeps all snapshots that have not been replicated to the receiving side.
+<p><code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> keeps all snapshots that have not been replicated to the receiving side.
 It only makes sense to specify this rule on a sender (source or push job).
 The state required to evaluate this rule is stored in the <a class="reference internal" href="jobs.html#replication-cursor-bookmark"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
 </div>
 <div class="section" id="policy-grid">
-<span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span>jobs:
+<span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jobs:
 - type: pull
   pruning:
     keep_receiver:
@@ -275,31 +268,31 @@ The state required to evaluate this rule is stored in the <a class="reference in
 </pre></div>
 </div>
 <p>The retention grid can be thought of as a time-based sieve:
-The <code class="docutils literal"><span class="pre">grid</span></code> field specifies a list of adjacent time intervals:
-the left edge of the leftmost (first) interval is the <code class="docutils literal"><span class="pre">creation</span></code> date of the youngest snapshot.
+The <code class="docutils literal notranslate"><span class="pre">grid</span></code> field specifies a list of adjacent time intervals:
+the left edge of the leftmost (first) interval is the <code class="docutils literal notranslate"><span class="pre">creation</span></code> date of the youngest snapshot.
 All intervals to its right describe time intervals further in the past.</p>
 <p>Each interval carries a maximum number of snapshots to keep.
-It is specified via <code class="docutils literal"><span class="pre">(keep=N)</span></code>, where <code class="docutils literal"><span class="pre">N</span></code> is either <code class="docutils literal"><span class="pre">all</span></code> (all snapshots are kept) or a positive integer.
+It is specified via <code class="docutils literal notranslate"><span class="pre">(keep=N)</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is either <code class="docutils literal notranslate"><span class="pre">all</span></code> (all snapshots are kept) or a positive integer.
 The default value is <strong>keep=1</strong>.</p>
 <p>The following procedure happens during pruning:</p>
 <ol class="arabic simple">
-<li>The list of snapshots is filtered by the regular expression in <code class="docutils literal"><span class="pre">regex</span></code>.
+<li>The list of snapshots is filtered by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
 Only snapshots names that match the regex are considered for this rule, all others are not affected.</li>
-<li>The filtered list of snapshots is sorted by <code class="docutils literal"><span class="pre">creation</span></code></li>
-<li>The left edge of the first interval is aligned to the <code class="docutils literal"><span class="pre">creation</span></code> date of the youngest snapshot</li>
+<li>The filtered list of snapshots is sorted by <code class="docutils literal notranslate"><span class="pre">creation</span></code></li>
+<li>The left edge of the first interval is aligned to the <code class="docutils literal notranslate"><span class="pre">creation</span></code> date of the youngest snapshot</li>
 <li>A list of buckets is created, one for each interval</li>
 <li>The list of snapshots is split up into the buckets.</li>
 <li>For each bucket<ol class="arabic">
 <li>the contained snapshot list is sorted by creation.</li>
-<li>snapshots from the list, oldest first, are destroyed until the specified <code class="docutils literal"><span class="pre">keep</span></code> count is reached.</li>
+<li>snapshots from the list, oldest first, are destroyed until the specified <code class="docutils literal notranslate"><span class="pre">keep</span></code> count is reached.</li>
 <li>all remaining snapshots on the list are kept.</li>
 </ol>
 </li>
 </ol>
 </div>
 <div class="section" id="policy-last-n">
-<span id="prune-keep-last-n"></span><h2>Policy <code class="docutils literal"><span class="pre">last_n</span></code><a class="headerlink" href="#policy-last-n" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span id="prune-keep-last-n"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">last_n</span></code><a class="headerlink" href="#policy-last-n" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
   <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
     <span class="n">pruning</span><span class="p">:</span>
       <span class="n">keep_receiver</span><span class="p">:</span>
@@ -308,11 +301,11 @@ Only snapshots names that match the regex are considered for this rule, all othe
   <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">last_n</span></code> keeps the last <code class="docutils literal"><span class="pre">count</span></code> snapshots (last = youngest = most recent creation date).</p>
+<p><code class="docutils literal notranslate"><span class="pre">last_n</span></code> keeps the last <code class="docutils literal notranslate"><span class="pre">count</span></code> snapshots (last = youngest = most recent creation date).</p>
 </div>
 <div class="section" id="policy-regex">
-<span id="prune-keep-regex"></span><h2>Policy <code class="docutils literal"><span class="pre">regex</span></code><a class="headerlink" href="#policy-regex" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span id="prune-keep-regex"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">regex</span></code><a class="headerlink" href="#policy-regex" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
   <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
     <span class="n">pruning</span><span class="p">:</span>
       <span class="n">keep_receiver</span><span class="p">:</span>
@@ -321,16 +314,14 @@ Only snapshots names that match the regex are considered for this rule, all othe
  <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">regex</span></code> keeps all snapshots whose names are matched by the regular expressionin <code class="docutils literal"><span class="pre">regex</span></code>.
-Like all other regular expression fields in prune policies, zrepl uses Go&#8217;s <a class="reference external" href="https://golang.org/pkg/regexp/#Compile">regexp.Regexp</a> Perl-compatible regular expressions (<a class="reference external" href="https://golang.org/pkg/regexp/syntax">Syntax</a>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">regex</span></code> keeps all snapshots whose names are matched by the regular expressionin <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
+Like all other regular expression fields in prune policies, zrepl uses Go’s <a class="reference external" href="https://golang.org/pkg/regexp/#Compile">regexp.Regexp</a> Perl-compatible regular expressions (<a class="reference external" href="https://golang.org/pkg/regexp/syntax">Syntax</a>).</p>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -339,7 +330,7 @@ Like all other regular expression fields in prune policies, zrepl uses Go&#8217;
         <a href="logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="filter_syntax.html" class="btn btn-neutral" title="Filter Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="filter_syntax.html" class="btn btn-neutral float-left" title="Filter Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -348,11 +339,11 @@ Like all other regular expression fields in prune policies, zrepl uses Go&#8217;
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -374,54 +365,26 @@ Like all other regular expression fields in prune policies, zrepl uses Go&#8217;
             <dt>Tags</dt>
             <dd><a href="../../0.0.2/configuration/prune.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/configuration/prune.html">0.0.3</a></dd>
-            <dd><a href="../../0.1.0-rc1/configuration/prune.html">0.1.0-rc1</a></dd>
-            <dd><a href="../../0.1.0-rc2/configuration/prune.html">0.1.0-rc2</a></dd>
             <dd><a href="prune.html">0.1.0-rc3</a></dd>
+            <dd><a href="../../0.1.0-rc4/configuration/prune.html">0.1.0-rc4</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="../../anton_wip/configuration/prune.html">anton_wip</a></dd>
-            <dd><a href="../../fix_diff_output/configuration/prune.html">fix_diff_output</a></dd>
             <dd><a href="../../master/configuration/prune.html">master</a></dd>
-            <dd><a href="../../parallel_zfs_ops/configuration/prune.html">parallel_zfs_ops</a></dd>
-            <dd><a href="../../push/configuration/prune.html">push</a></dd>
-            <dd><a href="../../replication_error_handling/configuration/prune.html">replication_error_handling</a></dd>
-            <dd><a href="../../replication_rewrite/configuration/prune.html">replication_rewrite</a></dd>
         </dl>
     </div>
 </div>
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

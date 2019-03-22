@@ -11,10 +11,12 @@
 Job Types & Replication
 =======================
 
+.. _job-overview:
+
 Overview & Terminology
 ----------------------
 
-A *job* is the unit of activity tracked by the zrepl daemon and configured in the |mainconfig|.
+A *job* is the unit of activity tracked by the zrepl daemon.
 Every job has a unique ``name``, a ``type`` and type-dependent fields which are documented on this page.
 
 Replication always happens between a pair of jobs: one is the **active side**, and one the **passive side**.
@@ -23,18 +25,22 @@ For communication, the active side connects to the passive side using a :ref:`tr
 
 The following table shows how different job types can be combined to achieve both push and pull mode setups:
 
-+-----------------------+--------------+----------------------------------+-----------------------------------------------+
-| Setup name            | active side  | passive side                     | use case                                      |
-+=======================+==============+==================================+===============================================+
-| Push mode             | ``push``     | ``sink``                         | * Laptop backup                               |
-|                       |              |                                  | * NAS behind NAT to offsite                   |
-+-----------------------+--------------+----------------------------------+-----------------------------------------------+
-| Pull mode             | ``pull``     | ``source``                       | * Central backup-server for many nodes        |
-|                       |              |                                  | * Remote server to NAS behind NAT             |
-+-----------------------+--------------+----------------------------------+-----------------------------------------------+
-| Local replication     | | ``push`` + ``sink`` in one config             | * Backup FreeBSD boot pool                    |
-|                       | | with :ref:`local transport <transport-local>` |                                               |
-+-----------------------+--------------+----------------------------------+-----------------------------------------------+
++-----------------------+--------------+----------------------------------+------------------------------------------------------------------------------------+
+| Setup name            | active side  | passive side                     | use case                                                                           |
++=======================+==============+==================================+====================================================================================+
+| Push mode             | ``push``     | ``sink``                         | * Laptop backup                                                                    |
+|                       |              |                                  | * NAS behind NAT to offsite                                                        |
++-----------------------+--------------+----------------------------------+------------------------------------------------------------------------------------+
+| Pull mode             | ``pull``     | ``source``                       | * Central backup-server for many nodes                                             |
+|                       |              |                                  | * Remote server to NAS behind NAT                                                  |
++-----------------------+--------------+----------------------------------+------------------------------------------------------------------------------------+
+| Local replication     | | ``push`` + ``sink`` in one config             | * Backup FreeBSD boot pool                                                         |
+|                       | | with :ref:`local transport <transport-local>` |                                                                                    |
++-----------------------+--------------+----------------------------------+------------------------------------------------------------------------------------+
+| Snap & prune-only     | ``snap``     | N/A                              | * | Snapshots & pruning but no replication                                         |
+|                       |              |                                  |   | required                                                                       |
+|                       |              |                                  | * Workaround for :ref:`source-side pruning <prune-workaround-source-side-pruning>` |
++-----------------------+--------------+----------------------------------+------------------------------------------------------------------------------------+
 
 How the Active Side Works
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +63,7 @@ using the transport listener type specified in the ``serve`` field of the job co
 Each transport listener provides a client's identity to the passive side job.
 It uses the client identity for access control:
 
-* The ``sink`` job only allows pushes to those ZFS filesystems to the active side that are located below ``root_fs/${client_identity}``.
+* The ``sink`` job maps requests from different client identities to their respective sub-filesystem tree ``root_fs/${client_identity}``.
 * The ``source`` job has a whitelist of client identities that are allowed pull access.
 
 .. TIP::
@@ -91,7 +97,8 @@ The following steps take place during replication and can be monitored using the
 
   * Perform replication steps in the following order:
     Among all filesystems with pending replication steps, pick the filesystem whose next replication step's snapshot is the oldest.
-  * After a successful replication step, update the replication cursor bookmark (see below)
+  * Create placeholder filesystems on the receiving side to mirror the dataset paths on the sender to ``root_fs/${client_identity}``.
+  * After a successful replication step, update the replication cursor bookmark (see below).
    
 The idea behind the execution order of replication steps is that if the sender snapshots all filesystems simultaneously at fixed intervals, the receiver will have all filesystems snapshotted at time ``T1`` before the first snapshot at ``T2 = T1 + $interval`` is replicated.
 
@@ -101,6 +108,17 @@ The **replication cursor bookmark** ``#zrepl_replication_cursor`` is kept per fi
 It is a bookmark of the most recent successfully replicated snapshot to the receiving side.
 It is is used by the :ref:`not_replicated <prune-keep-not-replicated>` keep rule to identify all snapshots that have not yet been replicated to the receiving side.
 Regardless of whether that keep rule is used, the bookmark ensures that replication can always continue incrementally.
+Note that there is only one cursor bookmark per filesystem, which prohibits multiple jobs to replicate the same filesystem (:ref:`see below<jobs-multiple-jobs>`).
+
+.. _replication-placeholder-property:
+
+**Placeholder filesystems** on the receiving side are regular ZFS filesystems with the placeholder property ``zrepl:placeholder=on``.
+Placeholders allow the receiving side to mirror the sender's ZFS dataset hierachy without replicating every filesystem at every intermediary dataset path component.
+Consider the following example: ``S/H/J`` shall be replicated to ``R/sink/job/S/H/J``, but neither ``S/H`` nor ``S`` shall be replicated.
+ZFS requires the existence of ``R/sink/job/S`` and ``R/sink/job/S/H`` in order to receive into ``R/sink/job/S/H/J``.
+Thus, zrepl creates the parent filesystems as placeholders on the receiving side.
+If at some point ``S/H`` and ``S`` shall be replicated, the receiving side invalidates the placeholder flag automatically.
+The ``zrepl test placeholder`` command can be used to check whether a filesystem is a placeholder.
 
 .. ATTENTION::
 
@@ -114,7 +132,7 @@ Regardless of whether that keep rule is used, the bookmark ensures that replicat
 Taking Snaphots
 ---------------
 
-The ``push`` and ``source`` jobs can automatically take periodic snapshots of the filesystems matched by the ``filesystems`` filter field.
+The ``push``, ``source`` and ``snap`` jobs can automatically take periodic snapshots of the filesystems matched by the ``filesystems`` filter field.
 The snapshot names are composed of a user-defined prefix followed by a UTC date formatted like ``20060102_150405_000``.
 We use UTC because it will avoid name conflicts when switching time zones or between summer and winter time.
 
@@ -136,9 +154,10 @@ For ``push`` jobs, replication is automatically triggered after all filesystems 
 
 There is also a ``manual`` snapshotting type, which covers the following use cases:
 
-* Existing infrastructure for automatic snapshots: you only want to use zrepl for replication.
+* Existing infrastructure for automatic snapshots: you only want to use this zrepl job for replication.
 * Run scripts before and after taking snapshots (like locking database tables).
   We are working on better integration for this use case: see :issue:`74`.
+* Handling snapshotting through a separate ``snap`` job.
 
 Note that you will have to trigger replication manually using the ``zrepl signal wakeup JOB`` subcommand in that case.
 
@@ -153,6 +172,50 @@ Note that you will have to trigger replication manually using the ``zrepl signal
      snapshotting:
        type: manual
      ...
+
+.. _jobs-multiple-jobs:
+
+Multiple Jobs & More than 2 Machines
+------------------------------------
+
+.. ATTENTION::
+
+  When using multiple jobs across single or multiple machines, the following rules are critical to avoid race conditions & data loss:
+
+  1. The sets of ZFS filesystems matched by the ``filesystems`` filter fields must be disjoint across all jobs configured on a machine.
+  2. The ZFS filesystem subtrees of jobs with ``root_fs`` must be disjoint.
+  3. Across all zrepl instances on all machines in the replication domain, there must be a 1:1 correspondence between active and passive jobs.
+
+  Explanations & exceptions to above rules are detailed below.
+
+If you would like to see improvements to multi-job setups, please `open an issue on GitHub <https://github.com/zrepl/zrepl/issues/new>`_.
+
+No Overlapping
+~~~~~~~~~~~~~~
+
+Jobs run independently of each other.
+If two jobs match the same filesystem with their ``filesystems`` filter, they will operate on that filesystem independently and potentially in parallel.
+For example, if job A prunes snapshots that job B is planning to replicate, the replication will fail because B asssumed the snapshot to still be present.
+More subtle race conditions can occur with the :ref:`replication cursor bookmark <replication-cursor-bookmark>`, which currently only exists once per filesystem.
+
+N push jobs to 1 sink
+~~~~~~~~~~~~~~~~~~~~~
+
+The :ref:`sink job <job-sink>` namespaces by client identity.
+It is thus safe to push to one sink job with different client identities.
+If the push jobs have the same client identity, the filesystems matched by the push jobs must be disjoint to avoid races.
+
+N pull jobs from 1 source
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Multiple pull jobs pulling from the same source have potential for race conditions during pruning:
+each pull job prunes the source side independently, causing replication-prune and prune-prune races.
+
+There is currently no way for a pull job to filter which snapshots it should attempt to replicate.
+Thus, it is not possibe to just manually assert that the prune rules of all pull jobs are disjoint to avoid replication-prune and prune-prune races.
+
+
+------------------------------------------------------------------------------
 
 
 .. _job-push:
@@ -199,8 +262,8 @@ Job Type ``sink``
     * - ``serve``
       - |serve-transport|
     * - ``root_fs``
-      - ZFS dataset path are received to
-        ``$root_fs/$client_identity``
+      - ZFS filesystems are received to
+        ``$root_fs/$client_identity/$source_path``
 
 Example config: :sampleconf:`/sink.yml`
 
@@ -222,10 +285,11 @@ Job Type ``pull``
     * - ``connect``
       - |connect-transport|
     * - ``root_fs``
-      - ZFS dataset path are received to
-        ``$root_fs/$client_identity``
+      - ZFS filesystems are received to
+        ``$root_fs/$source_path``
     * - ``interval``
-      - Interval at which to pull from the source job
+      - | Interval at which to pull from the source job (e.g. ``10m``).
+        | ``manual`` disables periodic pulling, replication then only happens on :ref:`wakeup <cli-signal-wakeup>`.
     * - ``pruning``
       - |pruning-spec|
 
@@ -255,6 +319,7 @@ Job Type ``source``
 
 Example config: :sampleconf:`/source.yml`
 
+
 .. _replication-local:
 
 Local replication
@@ -265,3 +330,28 @@ If you have the need for local replication (most likely between two local storag
 Example config: :sampleconf:`/local.yml`.
 
 
+.. _job-snap:
+
+Job Type ``snap`` (snapshot & prune only)
+-----------------------------------------
+
+Job type that only takes snapshots and performs pruning on the local machine.
+
+.. list-table::
+    :widths: 20 80
+    :header-rows: 1
+
+    * - Parameter
+      - Comment
+    * - ``type``
+      - = ``snap``
+    * - ``name``
+      - unique name of the job
+    * - ``filesystems``
+      - |filter-spec| for filesystems to be snapshotted
+    * - ``snapshotting``
+      - |snapshotting-spec|
+    * - ``pruning``
+      - |pruning-spec|
+
+Example config: :sampleconf:`/snap.yml`

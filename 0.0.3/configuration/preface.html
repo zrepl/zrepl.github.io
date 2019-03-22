@@ -17,45 +17,37 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="zrepl  documentation" href="../index.html"/>
-        <link rel="up" title="Configuration" href="../configuration.html"/>
-        <link rel="next" title="Job Types" href="jobs.html"/>
-        <link rel="prev" title="Configuration" href="../configuration.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Job Types" href="jobs.html" />
+    <link rel="prev" title="Configuration" href="../configuration.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -64,7 +56,7 @@
 
           
             
-            <img src="../_static/zrepl.svg" class="logo" />
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -127,7 +119,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">zrepl</a>
@@ -135,9 +127,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -198,33 +191,31 @@
 <h2>Configuration File Path<a class="headerlink" href="#configuration-file-path" title="Permalink to this headline">¶</a></h2>
 <p>zrepl searches for its main configuration file in the following locations (in that order):</p>
 <ul class="simple">
-<li>If set, the location specified via the global <code class="docutils literal"><span class="pre">--config</span></code> flag</li>
-<li><code class="docutils literal"><span class="pre">/etc/zrepl/zrepl.yml</span></code></li>
-<li><code class="docutils literal"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code></li>
+<li>If set, the location specified via the global <code class="docutils literal notranslate"><span class="pre">--config</span></code> flag</li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code></li>
 </ul>
-<p>The examples in the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> or the <code class="docutils literal"><span class="pre">cmd/sampleconf</span></code> directory should provide a good starting point.</p>
+<p>The examples in the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> or the <code class="docutils literal notranslate"><span class="pre">cmd/sampleconf</span></code> directory should provide a good starting point.</p>
 </div>
 <div class="section" id="runtime-directories">
 <h2>Runtime Directories<a class="headerlink" href="#runtime-directories" title="Permalink to this headline">¶</a></h2>
-<p>zrepl requires runtime directories for various UNIX sockets &#8212; they are documented in the <a class="reference internal" href="misc.html#conf-runtime-directories"><span class="std std-ref">config file</span></a>.
+<p>zrepl requires runtime directories for various UNIX sockets — they are documented in the <a class="reference internal" href="misc.html#conf-runtime-directories"><span class="std std-ref">config file</span></a>.
 Your package maintainer / init script should take care of creating them.
 Alternatively, for default settings, the following should to the trick.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">stdinserver</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">stdinserver</span>
 <span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">0700</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="validating">
 <h2>Validating<a class="headerlink" href="#validating" title="Permalink to this headline">¶</a></h2>
-<p>The config can be validated using the <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">test</span></code> subcommand.</p>
+<p>The config can be validated using the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">test</span></code> subcommand.</p>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -233,7 +224,7 @@ Alternatively, for default settings, the following should to the trick.</p>
         <a href="jobs.html" class="btn btn-neutral float-right" title="Job Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../configuration.html" class="btn btn-neutral" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -242,11 +233,11 @@ Alternatively, for default settings, the following should to the trick.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -268,54 +259,26 @@ Alternatively, for default settings, the following should to the trick.</p>
             <dt>Tags</dt>
             <dd><a href="../../0.0.2/index.html">0.0.2</a></dd>
             <dd><a href="preface.html">0.0.3</a></dd>
-            <dd><a href="../../0.1.0-rc1/configuration/preface.html">0.1.0-rc1</a></dd>
-            <dd><a href="../../0.1.0-rc2/configuration/preface.html">0.1.0-rc2</a></dd>
             <dd><a href="../../0.1.0-rc3/configuration/preface.html">0.1.0-rc3</a></dd>
+            <dd><a href="../../0.1.0-rc4/configuration/preface.html">0.1.0-rc4</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="../../anton_wip/configuration/preface.html">anton_wip</a></dd>
-            <dd><a href="../../fix_diff_output/configuration/preface.html">fix_diff_output</a></dd>
             <dd><a href="../../master/configuration/preface.html">master</a></dd>
-            <dd><a href="../../parallel_zfs_ops/configuration/preface.html">parallel_zfs_ops</a></dd>
-            <dd><a href="../../push/configuration/preface.html">push</a></dd>
-            <dd><a href="../../replication_error_handling/configuration/preface.html">replication_error_handling</a></dd>
-            <dd><a href="../../replication_rewrite/configuration/preface.html">replication_rewrite</a></dd>
         </dl>
     </div>
 </div>
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

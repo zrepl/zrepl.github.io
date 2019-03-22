@@ -17,44 +17,37 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/banner.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="zrepl  documentation" href="index.html"/>
-        <link rel="next" title="Implementation Overview" href="implementation.html"/>
-        <link rel="prev" title="Miscellaneous" href="configuration/misc.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Implementation Overview" href="implementation.html" />
+    <link rel="prev" title="Miscellaneous" href="configuration/misc.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -63,7 +56,7 @@
 
           
             
-            <img src="_static/zrepl.svg" class="logo" />
+            <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -100,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#cli-overview">CLI Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#zrepl-daemon">zrepl daemon</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#restarting">Restarting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#systemd-unit-file">Systemd Unit File</a></li>
 </ul>
 </li>
 </ul>
@@ -119,7 +113,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">zrepl</a>
@@ -127,9 +121,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -186,9 +181,9 @@
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The zrepl binary is self-documenting:
-run <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">help</span></code> for an overview of the available subcommands or <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">SUBCOMMAND</span> <span class="pre">--help</span></code> for information on available flags, etc.</p>
+run <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">help</span></code> for an overview of the available subcommands or <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">SUBCOMMAND</span> <span class="pre">--help</span></code> for information on available flags, etc.</p>
 </div>
-<table border="1" class="colwidths-given docutils">
+<table border="1" class="colwidths-given docutils" id="cli-signal-wakeup">
 <colgroup>
 <col width="30%" />
 <col width="70%" />
@@ -199,26 +194,33 @@ run <code class="docutils literal"><span class="pre">zrepl</span> <span class="p
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">help</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">help</span></code></td>
 <td>show subcommand overview</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">daemon</span></code></td>
 <td>run the daemon, required for all zrepl functionality</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">status</span></code></td>
-<td>show job activity, or with <code class="docutils literal"><span class="pre">--raw</span></code> for JSON output</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code></td>
+<td>show job activity, or with <code class="docutils literal notranslate"><span class="pre">--raw</span></code> for JSON output</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">stdinserver</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">stdinserver</span></code></td>
 <td>see <a class="reference internal" href="configuration/transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code></td>
 <td>manually trigger replication + pruning of JOB</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">reset</span> <span class="pre">JOB</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">reset</span> <span class="pre">JOB</span></code></td>
 <td>manually abort current replication + pruning of JOB</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code></td>
 <td>check if config can be parsed without errors</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">migrate</span></code></td>
+<td><div class="first last line-block">
+<div class="line">perform on-disk state / ZFS property migrations</div>
+<div class="line">(see <a class="reference internal" href="changelog.html#changelog"><span class="std std-ref">changelog</span></a> for details)</div>
+</div>
+</td>
 </tr>
 </tbody>
 </table>
@@ -229,8 +231,8 @@ run <code class="docutils literal"><span class="pre">zrepl</span> <span class="p
 The daemon supports structured <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a> and provides <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring endpoints</span></a>.</p>
 <p>When installating from a package, the package maintainer should have provided an init script / systemd.service file.
 You should thus be able to start zrepl daemon using your init system.</p>
-<p>Alternatively, or for running zrepl in the foreground, simply execute <code class="docutils literal"><span class="pre">zrepl</span> <span class="pre">daemon</span></code>.
-Note that you won&#8217;t see much output with the <a class="reference internal" href="configuration/logging.html#logging-default-config"><span class="std std-ref">default logging configuration</span></a>:</p>
+<p>Alternatively, or for running zrepl in the foreground, simply execute <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">daemon</span></code>.
+Note that you won’t see much output with the <a class="reference internal" href="configuration/logging.html#logging-default-config"><span class="std std-ref">default logging configuration</span></a>:</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p>Make sure to actually monitor the error level output of zrepl: some configuration errors will not make the daemon exit.</p>
@@ -243,14 +245,18 @@ it will emit an error message but not exit because other tasks such as periodic 
 Graceful shutdown means at worst that a job will not be rescheduled for the next interval.
 The daemon exits as soon as all jobs have reported shut down.</p>
 </div>
+<div class="section" id="systemd-unit-file">
+<h3>Systemd Unit File<a class="headerlink" href="#systemd-unit-file" title="Permalink to this headline">¶</a></h3>
+<p>A systemd service defintion template is available in <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/dist/systemd">dist/systemd</a>.
+Note that some of the options only work on recent versions of systemd.
+Any help &amp; improvements are very welcome, see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/145">issue #145</a>.</p>
+</div>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -259,7 +265,7 @@ The daemon exits as soon as all jobs have reported shut down.</p>
         <a href="implementation.html" class="btn btn-neutral float-right" title="Implementation Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="configuration/misc.html" class="btn btn-neutral" title="Miscellaneous" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="configuration/misc.html" class="btn btn-neutral float-left" title="Miscellaneous" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -268,11 +274,11 @@ The daemon exits as soon as all jobs have reported shut down.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -294,54 +300,26 @@ The daemon exits as soon as all jobs have reported shut down.</p>
             <dt>Tags</dt>
             <dd><a href="0.0.2/index.html">0.0.2</a></dd>
             <dd><a href="0.0.3/usage.html">0.0.3</a></dd>
-            <dd><a href="0.1.0-rc1/usage.html">0.1.0-rc1</a></dd>
-            <dd><a href="0.1.0-rc2/usage.html">0.1.0-rc2</a></dd>
             <dd><a href="0.1.0-rc3/usage.html">0.1.0-rc3</a></dd>
+            <dd><a href="0.1.0-rc4/usage.html">0.1.0-rc4</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="anton_wip/usage.html">anton_wip</a></dd>
-            <dd><a href="fix_diff_output/usage.html">fix_diff_output</a></dd>
             <dd><a href="master/usage.html">master</a></dd>
-            <dd><a href="parallel_zfs_ops/usage.html">parallel_zfs_ops</a></dd>
-            <dd><a href="push/usage.html">push</a></dd>
-            <dd><a href="replication_error_handling/usage.html">replication_error_handling</a></dd>
-            <dd><a href="replication_rewrite/usage.html">replication_rewrite</a></dd>
         </dl>
     </div>
 </div>
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

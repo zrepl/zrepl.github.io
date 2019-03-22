@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Filter Syntax &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pruning Policies" href="prune.html" />
+    <link rel="prev" title="Transports" href="transports.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Filter Syntax</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#full-access">Full Access</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fine-grained">Fine-grained</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../configuration.html">Configuration</a> &raquo;</li>
+        
+      <li>Filter Syntax</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/zrepl/zrepl/blob/0.1.0-rc4/docs/configuration/filter_syntax.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+    
+    
+
+
+
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../master/configuration/filter_syntax.html"><b>Warning:</b> This document is for an old version of zrepl. The main version is master.</a></p>
+<div class="section" id="filter-syntax">
+<span id="pattern-filter"></span><h1>Filter Syntax<a class="headerlink" href="#filter-syntax" title="Permalink to this headline">¶</a></h1>
+<p>For <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source jobs</span></a> and <a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push jobs</span></a>, a filesystem filter must be defined (field <code class="docutils literal notranslate"><span class="pre">filesystems</span></code>).
+A filter takes a filesystem path (in the ZFS filesystem hierarchy) as parameter and returns <code class="docutils literal notranslate"><span class="pre">true</span></code> (pass) or <code class="docutils literal notranslate"><span class="pre">false</span></code> (block).</p>
+<p>A filter is specified as a <strong>YAML dictionary</strong> with patterns as keys and booleans as values.
+The following rules determine which result is chosen for a given filesystem path:</p>
+<ul class="simple">
+<li>More specific path patterns win over less specific ones</li>
+<li>Non-wildcard patterns (full path patterns) win over <em>subtree wildcards</em> (<cite>&lt;</cite> at end of pattern)</li>
+<li>If the path in question does not match any pattern, the result is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</li>
+</ul>
+<p>The <strong>subtree wildcard</strong> <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> means “the dataset left of <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and all its children”.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can try out patterns for a configured job using the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">test</span> <span class="pre">filesystems</span></code> subcommand for push and source jobs.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="full-access">
+<h3>Full Access<a class="headerlink" href="#full-access" title="Permalink to this headline">¶</a></h3>
+<p>The following configuration will allow access to all filesystems.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">source</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+  <span class="p">}</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fine-grained">
+<h3>Fine-grained<a class="headerlink" href="#fine-grained" title="Permalink to this headline">¶</a></h3>
+<p>The following configuration demonstrates all rules presented above.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">source</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;tank&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>          <span class="c1"># rule 1</span>
+    <span class="s2">&quot;tank/foo&lt;&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>     <span class="c1"># rule 2</span>
+    <span class="s2">&quot;tank/foo/bar&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>  <span class="c1"># rule 3</span>
+  <span class="p">}</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>Which rule applies to given path, and what is the result?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tank</span><span class="o">/</span><span class="n">foo</span><span class="o">/</span><span class="n">bar</span><span class="o">/</span><span class="n">loo</span> <span class="o">=&gt;</span> <span class="mi">2</span>    <span class="n">false</span>
+<span class="n">tank</span><span class="o">/</span><span class="n">bar</span>         <span class="o">=&gt;</span> <span class="mi">1</span>    <span class="n">true</span>
+<span class="n">tank</span><span class="o">/</span><span class="n">foo</span><span class="o">/</span><span class="n">bar</span>     <span class="o">=&gt;</span> <span class="mi">3</span>    <span class="n">true</span>
+<span class="n">zroot</span>            <span class="o">=&gt;</span> <span class="n">NONE</span> <span class="n">false</span>
+<span class="n">tank</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span>     <span class="o">=&gt;</span> <span class="mi">1</span>    <span class="n">true</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="prune.html" class="btn btn-neutral float-right" title="Pruning Policies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="transports.html" class="btn btn-neutral float-left" title="Transports" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Christian Schwarz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: 0.1.0-rc4
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../0.0.2/index.html">0.0.2</a></dd>
+            <dd><a href="../../0.0.3/index.html">0.0.3</a></dd>
+            <dd><a href="../../0.1.0-rc3/configuration/filter_syntax.html">0.1.0-rc3</a></dd>
+            <dd><a href="filter_syntax.html">0.1.0-rc4</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../master/configuration/filter_syntax.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

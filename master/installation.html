@@ -17,44 +17,37 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/banner.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="zrepl  documentation" href="index.html"/>
-        <link rel="next" title="Configuration" href="configuration.html"/>
-        <link rel="prev" title="Tutorial" href="tutorial.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -63,7 +56,7 @@
 
           
             
-            <img src="_static/zrepl.svg" class="logo" />
+            <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -120,7 +113,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">zrepl</a>
@@ -128,9 +121,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -213,7 +207,7 @@ The following list may be incomplete, feel free to submit a PR with an update:</
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>FreeBSD</td>
-<td><code class="docutils literal"><span class="pre">pkg</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">pkg</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></td>
 <td><a class="reference external" href="https://www.freshports.org/sysutils/zrepl/">https://www.freshports.org/sysutils/zrepl/</a></td>
 </tr>
 <tr class="row-odd"><td>Others</td>
@@ -224,13 +218,13 @@ The following list may be incomplete, feel free to submit a PR with an update:</
 </table>
 <div class="section" id="compile-from-source">
 <h3>Compile From Source<a class="headerlink" href="#compile-from-source" title="Permalink to this headline">¶</a></h3>
-<p>Producing a release requires <strong>Go 1.9</strong> or newer and <strong>Python 3</strong> + <strong>pip3</strong> + <code class="docutils literal"><span class="pre">docs/requirements.txt</span></code> for the Sphinx documentation.
+<p>Producing a release requires <strong>Go 1.9</strong> or newer and <strong>Python 3</strong> + <strong>pip3</strong> + <code class="docutils literal notranslate"><span class="pre">docs/requirements.txt</span></code> for the Sphinx documentation.
 A tutorial to install Go is available over at <a class="reference external" href="https://golang.org/doc/install">golang.org</a>.
-Python and pip3 should probably be installed via your distro&#8217;s package manager.</p>
+Python and pip3 should probably be installed via your distro’s package manager.</p>
 <p>Alternatively, you can use the Docker build process:
 it is used to produce the official zrepl <a class="reference external" href="https://github.com/zrepl/zrepl/releases">binary releases</a>
 and serves as a reference for build dependencies and procedure:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">git</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">git</span>
 <span class="n">cd</span> <span class="n">zrepl</span>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl_build</span> <span class="o">-</span><span class="n">f</span> <span class="n">build</span><span class="o">.</span><span class="n">Dockerfile</span> <span class="o">.</span>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> \
@@ -239,24 +233,28 @@ and serves as a reference for build dependencies and procedure:</p>
     <span class="n">zrepl_build</span> <span class="n">make</span> <span class="n">vendordeps</span> <span class="n">release</span>
 </pre></div>
 </div>
-<p>Alternatively, you can install build dependencies on your local system and then build in your <code class="docutils literal"><span class="pre">$GOPATH</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
+<p>Alternatively, you can install build dependencies on your local system and then build in your <code class="docutils literal notranslate"><span class="pre">$GOPATH</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">git</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
 <span class="n">cd</span> <span class="s2">&quot;$</span><span class="si">{GOPATH}</span><span class="s2">/src/github.com/zrepl/zrepl&quot;</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv3</span>
+<span class="n">source</span> <span class="n">venv3</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 <span class="o">./</span><span class="n">lazy</span><span class="o">.</span><span class="n">sh</span> <span class="n">devsetup</span>
 <span class="n">make</span> <span class="n">vendordeps</span> <span class="n">release</span>
 </pre></div>
 </div>
-<p>Build results are located in the <code class="docutils literal"><span class="pre">artifacts/</span></code> directory.</p>
+<p>The Python venv is used for the documentation build dependencies.
+If you just want to build the zrepl binary, leave it out and use <cite>./lazy.sh godep</cite> instead.
+Either way, all build results are located in the <code class="docutils literal notranslate"><span class="pre">artifacts/</span></code> directory.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is your job to install the apropriate binary in the zrepl users&#8217;s <code class="docutils literal"><span class="pre">$PATH</span></code>, e.g. <code class="docutils literal"><span class="pre">/usr/local/bin/zrepl</span></code>.
+<p class="last">It is your job to install the apropriate binary in the zrepl users’s <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">/usr/local/bin/zrepl</span></code>.
 Otherwise, the examples in the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> may need to be adjusted.</p>
 </div>
 </div>
 </div>
 <div class="section" id="what-next">
-<span id="mainconfigfile"></span><h2>What next?<a class="headerlink" href="#what-next" title="Permalink to this headline">¶</a></h2>
+<h2>What next?<a class="headerlink" href="#what-next" title="Permalink to this headline">¶</a></h2>
 <p>Read the <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">configuration chapter</span></a> and optionally create the <a class="reference internal" href="configuration/preface.html#configuration-preface"><span class="std std-ref">runtime directories</span></a>.
 Afterwards, continue with the <a class="reference internal" href="usage.html#usage"><span class="std std-ref">usage chapter</span></a>.</p>
 <p><strong>Reminder</strong>: If you want a quick introduction, please read the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a>.</p>
@@ -265,9 +263,7 @@ Afterwards, continue with the <a class="reference internal" href="usage.html#usa
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -276,7 +272,7 @@ Afterwards, continue with the <a class="reference internal" href="usage.html#usa
         <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tutorial.html" class="btn btn-neutral" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -285,11 +281,11 @@ Afterwards, continue with the <a class="reference internal" href="usage.html#usa
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -311,54 +307,26 @@ Afterwards, continue with the <a class="reference internal" href="usage.html#usa
             <dt>Tags</dt>
             <dd><a href="../0.0.2/installation.html">0.0.2</a></dd>
             <dd><a href="../0.0.3/installation.html">0.0.3</a></dd>
-            <dd><a href="../0.1.0-rc1/installation.html">0.1.0-rc1</a></dd>
-            <dd><a href="../0.1.0-rc2/installation.html">0.1.0-rc2</a></dd>
             <dd><a href="../0.1.0-rc3/installation.html">0.1.0-rc3</a></dd>
+            <dd><a href="../0.1.0-rc4/installation.html">0.1.0-rc4</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="../anton_wip/installation.html">anton_wip</a></dd>
-            <dd><a href="../fix_diff_output/installation.html">fix_diff_output</a></dd>
             <dd><a href="installation.html">master</a></dd>
-            <dd><a href="../parallel_zfs_ops/installation.html">parallel_zfs_ops</a></dd>
-            <dd><a href="../push/installation.html">push</a></dd>
-            <dd><a href="../replication_error_handling/installation.html">replication_error_handling</a></dd>
-            <dd><a href="../replication_rewrite/installation.html">replication_rewrite</a></dd>
         </dl>
     </div>
 </div>
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

@@ -17,45 +17,37 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="zrepl  documentation" href="../index.html"/>
-        <link rel="up" title="Configuration" href="../configuration.html"/>
-        <link rel="next" title="Monitoring" href="monitoring.html"/>
-        <link rel="prev" title="Pruning Policies" href="prune.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Monitoring" href="monitoring.html" />
+    <link rel="prev" title="Pruning Policies" href="prune.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -64,7 +56,7 @@
 
           
             
-            <img src="../_static/zrepl.svg" class="logo" />
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -110,9 +102,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#outlets">Outlets</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#stdout-outlet"><code class="docutils literal"><span class="pre">stdout</span></code> Outlet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#syslog-outlet"><code class="docutils literal"><span class="pre">syslog</span></code> Outlet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tcp-outlet"><code class="docutils literal"><span class="pre">tcp</span></code> Outlet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stdout-outlet"><code class="docutils literal notranslate"><span class="pre">stdout</span></code> Outlet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#syslog-outlet"><code class="docutils literal notranslate"><span class="pre">syslog</span></code> Outlet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tcp-outlet"><code class="docutils literal notranslate"><span class="pre">tcp</span></code> Outlet</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
@@ -135,7 +127,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">zrepl</a>
@@ -143,9 +135,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -200,8 +193,8 @@
 <div class="section" id="logging">
 <span id="id1"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
 <p>zrepl uses structured logging to provide users with easily processable log messages.</p>
-<p>Logging outlets are configured in the <code class="docutils literal"><span class="pre">global</span></code> section of the <a class="reference internal" href="../installation.html#mainconfigfile"><span class="std std-ref">main configuration file</span></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
+<p>Logging outlets are configured in the <code class="docutils literal notranslate"><span class="pre">global</span></code> section of the config file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">logging</span><span class="p">:</span>
 
     <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">OUTLET_TYPE</span>
@@ -220,12 +213,12 @@
 <div class="admonition attention" id="logging-error-outlet">
 <p class="first admonition-title">Attention</p>
 <p class="last">The <strong>first outlet is special</strong>: if an error writing to any outlet occurs, the first outlet receives the error and can print it.
-Thus, the first outlet must be the one that always works and does not block, e.g. <code class="docutils literal"><span class="pre">stdout</span></code>, which is the default.</p>
+Thus, the first outlet must be the one that always works and does not block, e.g. <code class="docutils literal notranslate"><span class="pre">stdout</span></code>, which is the default.</p>
 </div>
 <div class="section" id="default-configuration">
 <span id="logging-default-config"></span><h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
 <p>By default, the following logging configuration is used</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">logging</span><span class="p">:</span>
 
     <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span>
@@ -252,20 +245,20 @@ Thus, the first outlet must be the one that always works and does not block, e.g
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">error</span></code></td>
-<td><code class="docutils literal"><span class="pre">ERRO</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">error</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">ERRO</span></code></td>
 <td>immediate action required</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">warn</span></code></td>
-<td><code class="docutils literal"><span class="pre">WARN</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">warn</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">WARN</span></code></td>
 <td>symptoms for misconfiguration, soon expected failure, etc.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">info</span></code></td>
-<td><code class="docutils literal"><span class="pre">INFO</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">info</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">INFO</span></code></td>
 <td>explains what happens without too much detail</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">debug</span></code></td>
-<td><code class="docutils literal"><span class="pre">DEBG</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">debug</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">DEBG</span></code></td>
 <td>tracing information, state dumps, etc. useful for debugging.</td>
 </tr>
 </tbody>
@@ -285,16 +278,16 @@ Thus, the first outlet must be the one that always works and does not block, e.g
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">human</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">human</span></code></td>
 <td>prints job and subsystem into brackets before the actual message,
 followed by remaining fields in logfmt style</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">logfmt</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">logfmt</span></code></td>
 <td><a class="reference external" href="https://brandur.org/logfmt">logfmt</a> output. zrepl uses <a class="reference external" href="https://github.com/go-logfmt/logfmt">this Go package</a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">json</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">json</span></code></td>
 <td>JSON formatted output. Each line is a valid JSON document. Fields are marshaled by
-<code class="docutils literal"><span class="pre">encoding/json.Marshal()</span></code>, which is particularly useful for processing in
+<code class="docutils literal notranslate"><span class="pre">encoding/json.Marshal()</span></code>, which is particularly useful for processing in
 log aggregation or when processing state dumps.</td>
 </tr>
 </tbody>
@@ -306,7 +299,7 @@ log aggregation or when processing state dumps.</td>
 </div>
 </div>
 <div class="section" id="stdout-outlet">
-<span id="logging-outlet-stdout"></span><h2><code class="docutils literal"><span class="pre">stdout</span></code> Outlet<a class="headerlink" href="#stdout-outlet" title="Permalink to this headline">¶</a></h2>
+<span id="logging-outlet-stdout"></span><h2><code class="docutils literal notranslate"><span class="pre">stdout</span></code> Outlet<a class="headerlink" href="#stdout-outlet" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="10%" />
@@ -318,29 +311,29 @@ log aggregation or when processing state dumps.</td>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
-<td><code class="docutils literal"><span class="pre">stdout</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">stdout</span></code></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">level</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">level</span></code></td>
 <td>minimum  <a class="reference internal" href="#logging-levels"><span class="std std-ref">log level</span></a></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">format</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">format</span></code></td>
 <td>output <a class="reference internal" href="#logging-formats"><span class="std std-ref">format</span></a></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">time</span></code></td>
-<td>always include time in output (<code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>)</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">time</span></code></td>
+<td>always include time in output (<code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>)</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">color</span></code></td>
-<td>colorize output according to log level (<code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>)</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">color</span></code></td>
+<td>colorize output according to log level (<code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>)</td>
 </tr>
 </tbody>
 </table>
-<p>Writes all log entries with minimum level <code class="docutils literal"><span class="pre">level</span></code> formatted by <code class="docutils literal"><span class="pre">format</span></code> to stdout.
-If stdout is a tty, interactive usage is assumed and both <code class="docutils literal"><span class="pre">time</span></code> and <code class="docutils literal"><span class="pre">color</span></code> are set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
+<p>Writes all log entries with minimum level <code class="docutils literal notranslate"><span class="pre">level</span></code> formatted by <code class="docutils literal notranslate"><span class="pre">format</span></code> to stdout.
+If stdout is a tty, interactive usage is assumed and both <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">color</span></code> are set to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
 <p>Can only be specified once.</p>
 </div>
 <div class="section" id="syslog-outlet">
-<h2><code class="docutils literal"><span class="pre">syslog</span></code> Outlet<a class="headerlink" href="#syslog-outlet" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">syslog</span></code> Outlet<a class="headerlink" href="#syslog-outlet" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="10%" />
@@ -352,26 +345,29 @@ If stdout is a tty, interactive usage is assumed and both <code class="docutils 
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
-<td><code class="docutils literal"><span class="pre">syslog</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">syslog</span></code></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">level</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">level</span></code></td>
 <td>minimum  <a class="reference internal" href="#logging-levels"><span class="std std-ref">log level</span></a></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">format</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">format</span></code></td>
 <td>output <a class="reference internal" href="#logging-formats"><span class="std std-ref">format</span></a></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">retry_interval</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">facility</span></code></td>
+<td>Which syslog facility to use (default = <code class="docutils literal notranslate"><span class="pre">local0</span></code>)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">retry_interval</span></code></td>
 <td>Interval between reconnection attempts to syslog (default = 0)</td>
 </tr>
 </tbody>
 </table>
-<p>Writes all log entries formatted by <code class="docutils literal"><span class="pre">format</span></code> to syslog.
-On normal setups, you should not need to change the <code class="docutils literal"><span class="pre">retry_interval</span></code>.</p>
+<p>Writes all log entries formatted by <code class="docutils literal notranslate"><span class="pre">format</span></code> to syslog.
+On normal setups, you should not need to change the <code class="docutils literal notranslate"><span class="pre">retry_interval</span></code>.</p>
 <p>Can only be specified once.</p>
 </div>
 <div class="section" id="tcp-outlet">
-<h2><code class="docutils literal"><span class="pre">tcp</span></code> Outlet<a class="headerlink" href="#tcp-outlet" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">tcp</span></code> Outlet<a class="headerlink" href="#tcp-outlet" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="10%" />
@@ -383,32 +379,32 @@ On normal setups, you should not need to change the <code class="docutils litera
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
-<td><code class="docutils literal"><span class="pre">tcp</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">tcp</span></code></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">level</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">level</span></code></td>
 <td>minimum  <a class="reference internal" href="#logging-levels"><span class="std std-ref">log level</span></a></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">format</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">format</span></code></td>
 <td>output <a class="reference internal" href="#logging-formats"><span class="std std-ref">format</span></a></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">net</span></code></td>
-<td><code class="docutils literal"><span class="pre">tcp</span></code> in most cases</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">net</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">tcp</span></code> in most cases</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">address</span></code></td>
-<td>remote network, e.g. <code class="docutils literal"><span class="pre">logs.example.com:10202</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">address</span></code></td>
+<td>remote network, e.g. <code class="docutils literal notranslate"><span class="pre">logs.example.com:10202</span></code></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">retry_interval</span></code></td>
-<td>Interval between reconnection attempts to <code class="docutils literal"><span class="pre">address</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">retry_interval</span></code></td>
+<td>Interval between reconnection attempts to <code class="docutils literal notranslate"><span class="pre">address</span></code></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">tls</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">tls</span></code></td>
 <td>TLS config (see below)</td>
 </tr>
 </tbody>
 </table>
-<p>Establishes a TCP connection to <code class="docutils literal"><span class="pre">address</span></code> and sends log messages with minimum level <code class="docutils literal"><span class="pre">level</span></code> formatted by <code class="docutils literal"><span class="pre">format</span></code>.
-If <code class="docutils literal"><span class="pre">tls</span></code> is not specified, an unencrypted connection is established.
-If <code class="docutils literal"><span class="pre">tls</span></code> is specified, the TCP connection is secured with TLS + Client Authentication.
+<p>Establishes a TCP connection to <code class="docutils literal notranslate"><span class="pre">address</span></code> and sends log messages with minimum level <code class="docutils literal notranslate"><span class="pre">level</span></code> formatted by <code class="docutils literal notranslate"><span class="pre">format</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">tls</span></code> is not specified, an unencrypted connection is established.
+If <code class="docutils literal notranslate"><span class="pre">tls</span></code> is specified, the TCP connection is secured with TLS + Client Authentication.
 The latter is particularly useful in combination with log aggregation services.</p>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
@@ -421,13 +417,13 @@ The latter is particularly useful in combination with log aggregation services.<
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">ca</span></code></td>
-<td>PEM-encoded certificate authority that signed the remote server&#8217;s TLS certificate</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ca</span></code></td>
+<td>PEM-encoded certificate authority that signed the remote server’s TLS certificate</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cert</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cert</span></code></td>
 <td>PEM-encoded client certificate identifying this zrepl daemon toward the remote server</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">key</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">key</span></code></td>
 <td>PEM-encoded, unencrypted client private key identifying this zrepl daemon toward the remote server</td>
 </tr>
 </tbody>
@@ -436,12 +432,12 @@ The latter is particularly useful in combination with log aggregation services.<
 <p class="first admonition-title">Warning</p>
 <p>zrepl drops log messages to the TCP outlet if the underlying connection is not fast enough.
 Note that TCP buffering in the kernel must first run full becfore messages are dropped.</p>
-<p class="last">Make sure to always configure a <code class="docutils literal"><span class="pre">stdout</span></code> outlet as the special error outlet to be informed about problems
+<p class="last">Make sure to always configure a <code class="docutils literal notranslate"><span class="pre">stdout</span></code> outlet as the special error outlet to be informed about problems
 with the TCP outlet (see <a class="reference internal" href="#logging-error-outlet"><span class="std std-ref">above</span></a> ).</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">zrepl uses Go&#8217;s <code class="docutils literal"><span class="pre">crypto/tls</span></code> and <code class="docutils literal"><span class="pre">crypto/x509</span></code> packages and leaves all but the required fields in <code class="docutils literal"><span class="pre">tls.Config</span></code> at their default values.
+<p class="last">zrepl uses Go’s <code class="docutils literal notranslate"><span class="pre">crypto/tls</span></code> and <code class="docutils literal notranslate"><span class="pre">crypto/x509</span></code> packages and leaves all but the required fields in <code class="docutils literal notranslate"><span class="pre">tls.Config</span></code> at their default values.
 In case of a security defect in these packages, zrepl has to be rebuilt because Go binaries are statically linked.</p>
 </div>
 </div>
@@ -449,9 +445,7 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -460,7 +454,7 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
         <a href="monitoring.html" class="btn btn-neutral float-right" title="Monitoring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="prune.html" class="btn btn-neutral" title="Pruning Policies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="prune.html" class="btn btn-neutral float-left" title="Pruning Policies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -469,11 +463,11 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Christian Schwarz.
+        &copy; Copyright 2017-2018, Christian Schwarz
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -495,54 +489,26 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
             <dt>Tags</dt>
             <dd><a href="../../0.0.2/configuration/logging.html">0.0.2</a></dd>
             <dd><a href="../../0.0.3/configuration/logging.html">0.0.3</a></dd>
-            <dd><a href="../../0.1.0-rc1/configuration/logging.html">0.1.0-rc1</a></dd>
-            <dd><a href="../../0.1.0-rc2/configuration/logging.html">0.1.0-rc2</a></dd>
             <dd><a href="../../0.1.0-rc3/configuration/logging.html">0.1.0-rc3</a></dd>
+            <dd><a href="../../0.1.0-rc4/configuration/logging.html">0.1.0-rc4</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="../../anton_wip/configuration/logging.html">anton_wip</a></dd>
-            <dd><a href="../../fix_diff_output/configuration/logging.html">fix_diff_output</a></dd>
             <dd><a href="logging.html">master</a></dd>
-            <dd><a href="../../parallel_zfs_ops/configuration/logging.html">parallel_zfs_ops</a></dd>
-            <dd><a href="../../push/configuration/logging.html">push</a></dd>
-            <dd><a href="../../replication_error_handling/configuration/logging.html">replication_error_handling</a></dd>
-            <dd><a href="../../replication_rewrite/configuration/logging.html">replication_rewrite</a></dd>
         </dl>
     </div>
 </div>
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
