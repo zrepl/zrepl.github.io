@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Overview &amp; Terminology &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Job Types in Detail" href="jobs.html" />
+    <link rel="prev" title="Configuration" href="../configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview &amp; Terminology</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#config-file-structure">Config File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jobs-how-they-work-together">Jobs &amp; How They Work Together</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-the-active-side-works">How the Active Side Works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-the-passive-side-works">How the Passive Side Works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-replication-works">How Replication Works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#no-overlapping">No Overlapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#n-push-jobs-to-1-sink">N push jobs to 1 sink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#n-pull-jobs-from-1-source">N pull jobs from 1 source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../configuration.html">Configuration</a> &raquo;</li>
+        
+      <li>Overview &amp; Terminology</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/overview.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+
+
+
+<div class="section" id="overview-terminology">
+<h1>Overview &amp; Terminology<a class="headerlink" href="#overview-terminology" title="Permalink to this headline">¶</a></h1>
+<p>All work zrepl does is performed by the zrepl daemon which is configured in a single YAML configuration file loaded on startup.
+The following paths are considered:</p>
+<ul class="simple">
+<li>If set, the location specified via the global <code class="docutils literal notranslate"><span class="pre">--config</span></code> flag</li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> subcommand can be used to validate the configuration.
+The command will output nothing and exit with zero status code if the configuration is valid.
+The error messages vary in quality and usefulness: please report confusing config errors to the tracking <a class="reference external" href="https://github.com/zrepl/zrepl/issues/155">issue #155</a>.
+Full example configs such as in the <a class="reference internal" href="../tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a> or the <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/">config/samples/</a> directory might also be helpful.
+However, copy-pasting examples is no substitute for reading documentation!</p>
+<div class="section" id="config-file-structure">
+<h2>Config File Structure<a class="headerlink" href="#config-file-structure" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">global</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backup</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">push</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>zrepl is confgured using a single YAML configuration file with two main sections: <code class="docutils literal notranslate"><span class="pre">global</span></code> and <code class="docutils literal notranslate"><span class="pre">jobs</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">global</span></code> section is filled with sensible defaults and is covered later in this chapter.
+The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> section is a list of jobs which we are goind to explain now.</p>
+</div>
+<div class="section" id="jobs-how-they-work-together">
+<span id="job-overview"></span><h2>Jobs &amp; How They Work Together<a class="headerlink" href="#jobs-how-they-work-together" title="Permalink to this headline">¶</a></h2>
+<p>A <em>job</em> is the unit of activity tracked by the zrepl daemon.
+The <code class="docutils literal notranslate"><span class="pre">type</span></code> of a job determines its role in a replication setup and in snapshot management.
+Jobs are identified by their <code class="docutils literal notranslate"><span class="pre">name</span></code>, both in log files and the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> command.</p>
+<p>Replication always happens between a pair of jobs: one is the <strong>active side</strong>, and one the <strong>passive side</strong>.
+The active side connects to the passive side using a <a class="reference internal" href="transports.html#transport"><span class="std std-ref">transport</span></a> and starts executing the replication logic.
+The passive side responds to requests from the active side after checking its persmissions.</p>
+<p>The following table shows how different job types can be combined to achieve <strong>both push and pull mode setups</strong>.
+Note that snapshot-creation denoted by “(snap)” is orthogonal to whether a job is active or passive.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="9%" />
+<col width="22%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Setup name</th>
+<th class="head">active side</th>
+<th class="head">passive side</th>
+<th class="head">use case</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Push mode</td>
+<td><code class="docutils literal notranslate"><span class="pre">push</span></code>
+(snap)</td>
+<td><code class="docutils literal notranslate"><span class="pre">sink</span></code></td>
+<td><ul class="first last simple">
+<li>Laptop backup</li>
+<li>NAS behind NAT to offsite</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>Pull mode</td>
+<td><code class="docutils literal notranslate"><span class="pre">pull</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">source</span></code>
+(snap)</td>
+<td><ul class="first last simple">
+<li>Central backup-server for many nodes</li>
+<li>Remote server to NAS behind NAT</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>Local replication</td>
+<td colspan="2"><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">push</span></code> + <code class="docutils literal notranslate"><span class="pre">sink</span></code> in one config</div>
+<div class="line">with <a class="reference internal" href="transports.html#transport-local"><span class="std std-ref">local transport</span></a></div>
+</div>
+</td>
+<td><ul class="first last simple">
+<li>Backup FreeBSD boot pool</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>Snap &amp; prune-only</td>
+<td><code class="docutils literal notranslate"><span class="pre">snap</span></code>
+(snap)</td>
+<td>N/A</td>
+<td><ul class="first last">
+<li><div class="first line-block">
+<div class="line">Snapshots &amp; pruning but no replication</div>
+<div class="line">required</div>
+</div>
+</li>
+<li><p class="first">Workaround for <a class="reference internal" href="prune.html#prune-workaround-source-side-pruning"><span class="std std-ref">source-side pruning</span></a></p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="how-the-active-side-works">
+<h2>How the Active Side Works<a class="headerlink" href="#how-the-active-side-works" title="Permalink to this headline">¶</a></h2>
+<p>The active side (<a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push</span></a> and <a class="reference internal" href="jobs.html#job-pull"><span class="std std-ref">pull</span></a> job) executes the replication and pruning logic:</p>
+<ul class="simple">
+<li>Wakeup because of finished snapshotting (<code class="docutils literal notranslate"><span class="pre">push</span></code> job) or pull interval ticker (<code class="docutils literal notranslate"><span class="pre">pull</span></code> job).</li>
+<li>Connect to the corresponding passive side using a <a class="reference internal" href="transports.html#transport"><span class="std std-ref">transport</span></a> and instantiate an RPC client.</li>
+<li>Replicate data from the sending to the receiving side (see below).</li>
+<li>Prune on sender &amp; receiver.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The progress of the active side can be watched live using the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> subcommand.</p>
+</div>
+</div>
+<div class="section" id="how-the-passive-side-works">
+<h2>How the Passive Side Works<a class="headerlink" href="#how-the-passive-side-works" title="Permalink to this headline">¶</a></h2>
+<p>The passive side (<a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink</span></a> and <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source</span></a>) waits for connections from the corresponding active side,
+using the transport listener type specified in the <code class="docutils literal notranslate"><span class="pre">serve</span></code> field of the job configuration.
+Each transport listener provides a client’s identity to the passive side job.
+It uses the client identity for access control:</p>
+<ul class="simple">
+<li>The <code class="docutils literal notranslate"><span class="pre">sink</span></code> job maps requests from different client identities to their respective sub-filesystem tree <code class="docutils literal notranslate"><span class="pre">root_fs/${client_identity}</span></code>.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">source</span></code> job has a whitelist of client identities that are allowed pull access.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The implementation of the <code class="docutils literal notranslate"><span class="pre">sink</span></code> job requires that the connecting client identities be a valid ZFS filesystem name components.</p>
+</div>
+</div>
+<div class="section" id="how-replication-works">
+<h2>How Replication Works<a class="headerlink" href="#how-replication-works" title="Permalink to this headline">¶</a></h2>
+<p>One of the major design goals of the replication module is to avoid any duplication of the nontrivial logic.
+As such, the code works on abstract senders and receiver <strong>endpoints</strong>, where typically one will be implemented by a local program object and the other is an RPC client instance.
+Regardless of push- or pull-style setup, the logic executes on the active side, i.e. in the <code class="docutils literal notranslate"><span class="pre">push</span></code> or <code class="docutils literal notranslate"><span class="pre">pull</span></code> job.</p>
+<p>The following steps take place during replication and can be monitored using the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> subcommand:</p>
+<ul class="simple">
+<li>Plan the replication:<ul>
+<li>Compare sender and receiver filesystem snapshots</li>
+<li>Build the <strong>replication plan</strong><ul>
+<li>Per filesystem, compute a diff between sender and receiver snapshots</li>
+<li>Build a list of replication steps<ul>
+<li>If possible, use incremental sends (<code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span> <span class="pre">-i</span></code>)</li>
+<li>Otherwise, use full send of most recent snapshot on sender</li>
+<li>Give up on filesystems that cannot be replicated without data loss</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Retry on errors that are likely temporary (i.e. network failures).</li>
+<li>Give up on filesystems where a permanent error was received over RPC.</li>
+</ul>
+</li>
+<li>Execute the plan<ul>
+<li>Perform replication steps in the following order:
+Among all filesystems with pending replication steps, pick the filesystem whose next replication step’s snapshot is the oldest.</li>
+<li>Create placeholder filesystems on the receiving side to mirror the dataset paths on the sender to <code class="docutils literal notranslate"><span class="pre">root_fs/${client_identity}</span></code>.</li>
+<li>After a successful replication step, update the replication cursor bookmark (see below).</li>
+</ul>
+</li>
+</ul>
+<p>The idea behind the execution order of replication steps is that if the sender snapshots all filesystems simultaneously at fixed intervals, the receiver will have all filesystems snapshotted at time <code class="docutils literal notranslate"><span class="pre">T1</span></code> before the first snapshot at <code class="docutils literal notranslate"><span class="pre">T2</span> <span class="pre">=</span> <span class="pre">T1</span> <span class="pre">+</span> <span class="pre">$interval</span></code> is replicated.</p>
+<p id="replication-cursor-bookmark">The <strong>replication cursor bookmark</strong> <code class="docutils literal notranslate"><span class="pre">#zrepl_replication_cursor</span></code> is kept per filesystem on the sending side of a replication setup:
+It is a bookmark of the most recent successfully replicated snapshot to the receiving side.
+It is is used by the <a class="reference internal" href="prune.html#prune-keep-not-replicated"><span class="std std-ref">not_replicated</span></a> keep rule to identify all snapshots that have not yet been replicated to the receiving side.
+Regardless of whether that keep rule is used, the bookmark ensures that replication can always continue incrementally.
+Note that there is only one cursor bookmark per filesystem, which prohibits multiple jobs to replicate the same filesystem (<a class="reference internal" href="#jobs-multiple-jobs"><span class="std std-ref">see below</span></a>).</p>
+<p id="replication-placeholder-property"><strong>Placeholder filesystems</strong> on the receiving side are regular ZFS filesystems with the placeholder property <code class="docutils literal notranslate"><span class="pre">zrepl:placeholder=on</span></code>.
+Placeholders allow the receiving side to mirror the sender’s ZFS dataset hierachy without replicating every filesystem at every intermediary dataset path component.
+Consider the following example: <code class="docutils literal notranslate"><span class="pre">S/H/J</span></code> shall be replicated to <code class="docutils literal notranslate"><span class="pre">R/sink/job/S/H/J</span></code>, but neither <code class="docutils literal notranslate"><span class="pre">S/H</span></code> nor <code class="docutils literal notranslate"><span class="pre">S</span></code> shall be replicated.
+ZFS requires the existence of <code class="docutils literal notranslate"><span class="pre">R/sink/job/S</span></code> and <code class="docutils literal notranslate"><span class="pre">R/sink/job/S/H</span></code> in order to receive into <code class="docutils literal notranslate"><span class="pre">R/sink/job/S/H/J</span></code>.
+Thus, zrepl creates the parent filesystems as placeholders on the receiving side.
+If at some point <code class="docutils literal notranslate"><span class="pre">S/H</span></code> and <code class="docutils literal notranslate"><span class="pre">S</span></code> shall be replicated, the receiving side invalidates the placeholder flag automatically.
+The <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">test</span> <span class="pre">placeholder</span></code> command can be used to check whether a filesystem is a placeholder.</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Currently, zrepl does not replicate filesystem properties.
+Whe receiving a filesystem, it is never mounted (<cite>-u</cite> flag)  and <cite>mountpoint=none</cite> is set.
+This is temporary and being worked on <a class="reference external" href="https://github.com/zrepl/zrepl/issues/24">issue #24</a>.</p>
+</div>
+</div>
+<div class="section" id="multiple-jobs-more-than-2-machines">
+<span id="jobs-multiple-jobs"></span><h2>Multiple Jobs &amp; More than 2 Machines<a class="headerlink" href="#multiple-jobs-more-than-2-machines" title="Permalink to this headline">¶</a></h2>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p>When using multiple jobs across single or multiple machines, the following rules are critical to avoid race conditions &amp; data loss:</p>
+<ol class="arabic simple">
+<li>The sets of ZFS filesystems matched by the <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter fields must be disjoint across all jobs configured on a machine.</li>
+<li>The ZFS filesystem subtrees of jobs with <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> must be disjoint.</li>
+<li>Across all zrepl instances on all machines in the replication domain, there must be a 1:1 correspondence between active and passive jobs.</li>
+</ol>
+<p class="last">Explanations &amp; exceptions to above rules are detailed below.</p>
+</div>
+<p>If you would like to see improvements to multi-job setups, please <a class="reference external" href="https://github.com/zrepl/zrepl/issues/new">open an issue on GitHub</a>.</p>
+<div class="section" id="no-overlapping">
+<h3>No Overlapping<a class="headerlink" href="#no-overlapping" title="Permalink to this headline">¶</a></h3>
+<p>Jobs run independently of each other.
+If two jobs match the same filesystem with their <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter, they will operate on that filesystem independently and potentially in parallel.
+For example, if job A prunes snapshots that job B is planning to replicate, the replication will fail because B asssumed the snapshot to still be present.
+More subtle race conditions can occur with the <a class="reference internal" href="#replication-cursor-bookmark"><span class="std std-ref">replication cursor bookmark</span></a>, which currently only exists once per filesystem.</p>
+</div>
+<div class="section" id="n-push-jobs-to-1-sink">
+<h3>N push jobs to 1 sink<a class="headerlink" href="#n-push-jobs-to-1-sink" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink job</span></a> namespaces by client identity.
+It is thus safe to push to one sink job with different client identities.
+If the push jobs have the same client identity, the filesystems matched by the push jobs must be disjoint to avoid races.</p>
+</div>
+<div class="section" id="n-pull-jobs-from-1-source">
+<h3>N pull jobs from 1 source<a class="headerlink" href="#n-pull-jobs-from-1-source" title="Permalink to this headline">¶</a></h3>
+<p>Multiple pull jobs pulling from the same source have potential for race conditions during pruning:
+each pull job prunes the source side independently, causing replication-prune and prune-prune races.</p>
+<p>There is currently no way for a pull job to filter which snapshots it should attempt to replicate.
+Thus, it is not possibe to just manually assert that the prune rules of all pull jobs are disjoint to avoid replication-prune and prune-prune races.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="jobs.html" class="btn btn-neutral float-right" title="Job Types in Detail" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Christian Schwarz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: master
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v0.1.0/index.html">v0.1.0</a></dd>
+            <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
+            <dd><a href="../../v0.2.0-rc1/configuration/overview.html">v0.2.0-rc1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="overview.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

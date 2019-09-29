@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="_static/banner.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Preface" href="configuration/preface.html" />
+    <link rel="next" title="Overview &amp; Terminology" href="configuration/overview.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -89,10 +89,11 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration/preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types &amp; Replication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html">Overview &amp; Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/monitoring.html">Monitoring</a></li>
@@ -181,26 +182,21 @@
 <span id="configuration-toc"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="configuration/preface.html">Preface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration/preface.html#configuration-file-path">Configuration File Path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/preface.html#runtime-directories">Runtime Directories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/preface.html#validating">Validating</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/overview.html">Overview &amp; Terminology</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#config-file-structure">Config File Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#jobs-how-they-work-together">Jobs &amp; How They Work Together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-the-active-side-works">How the Active Side Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-the-passive-side-works">How the Passive Side Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-replication-works">How Replication Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#no-overlapping">No Overlapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#n-push-jobs-to-1-sink">N push jobs to 1 sink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#n-pull-jobs-from-1-source">N pull jobs from 1 source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="configuration/jobs.html">Job Types &amp; Replication</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#overview-terminology">Overview &amp; Terminology</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#how-the-active-side-works">How the Active Side Works</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#how-the-passive-side-works">How the Passive Side Works</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#how-replication-works">How Replication Works</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#taking-snaphots">Taking Snaphots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#no-overlapping">No Overlapping</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#n-push-jobs-to-1-sink">N push jobs to 1 sink</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/jobs.html#n-pull-jobs-from-1-source">N pull jobs from 1 source</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/jobs.html">Job Types in Detail</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#job-type-push">Job Type <code class="docutils literal notranslate"><span class="pre">push</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#job-type-sink">Job Type <code class="docutils literal notranslate"><span class="pre">sink</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html#job-type-pull">Job Type <code class="docutils literal notranslate"><span class="pre">pull</span></code></a></li>
@@ -233,6 +229,15 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html#examples">Examples</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration/filter_syntax.html#full-access">Full Access</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/filter_syntax.html#fine-grained">Fine-grained</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html#pre-and-post-snapshot-hooks">Pre- and Post-Snapshot Hooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/snapshotting.html#command-hooks"><code class="docutils literal notranslate"><span class="pre">command</span></code> Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/snapshotting.html#postgres-checkpoint-hook"><code class="docutils literal notranslate"><span class="pre">postgres-checkpoint</span></code> Hook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/snapshotting.html#mysql-lock-tables-hook"><code class="docutils literal notranslate"><span class="pre">mysql-lock-tables</span></code> Hook</a></li>
 </ul>
 </li>
 </ul>
@@ -283,7 +288,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="configuration/preface.html" class="btn btn-neutral float-right" title="Preface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="configuration/overview.html" class="btn btn-neutral float-right" title="Overview &amp; Terminology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -319,12 +324,9 @@
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="0.0.2/configuration.html">0.0.2</a></dd>
-            <dd><a href="0.0.3/configuration.html">0.0.3</a></dd>
-            <dd><a href="0.1.0-rc3/configuration.html">0.1.0-rc3</a></dd>
             <dd><a href="v0.1.0/configuration.html">v0.1.0</a></dd>
-            <dd><a href="v0.1.0-rc4/configuration.html">v0.1.0-rc4</a></dd>
             <dd><a href="v0.1.1/configuration.html">v0.1.1</a></dd>
+            <dd><a href="v0.2.0-rc1/configuration.html">v0.2.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

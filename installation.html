@@ -223,7 +223,7 @@ The following list may be incomplete, feel free to submit a PR with an update:</
 </table>
 <div class="section" id="compile-from-source">
 <h3>Compile From Source<a class="headerlink" href="#compile-from-source" title="Permalink to this headline">¶</a></h3>
-<p>Producing a release requires <strong>Go 1.9</strong> or newer and <strong>Python 3</strong> + <strong>pip3</strong> + <code class="docutils literal notranslate"><span class="pre">docs/requirements.txt</span></code> for the Sphinx documentation.
+<p>Producing a release requires <strong>Go 1.11</strong> or newer and <strong>Python 3</strong> + <strong>pip3</strong> + <code class="docutils literal notranslate"><span class="pre">docs/requirements.txt</span></code> for the Sphinx documentation.
 A tutorial to install Go is available over at <a class="reference external" href="https://golang.org/doc/install">golang.org</a>.
 Python and pip3 should probably be installed via your distro’s package manager.</p>
 <p>Alternatively, you can use the Docker build process:
@@ -233,9 +233,9 @@ and serves as a reference for build dependencies and procedure:</p>
 <span class="n">cd</span> <span class="n">zrepl</span>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl_build</span> <span class="o">-</span><span class="n">f</span> <span class="n">build</span><span class="o">.</span><span class="n">Dockerfile</span> <span class="o">.</span>
 <span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> \
-    <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;$</span><span class="si">{PWD}</span><span class="s2">:/go/src/github.com/zrepl/zrepl&quot;</span> \
+    <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;$</span><span class="si">{PWD}</span><span class="s2">:/src&quot;</span> \
     <span class="o">--</span><span class="n">user</span> <span class="s2">&quot;$(id -u):$(id -g)&quot;</span> \
-    <span class="n">zrepl_build</span> <span class="n">make</span> <span class="n">vendordeps</span> <span class="n">release</span>
+    <span class="n">zrepl_build</span> <span class="n">make</span> <span class="n">release</span>
 </pre></div>
 </div>
 <p>Alternatively, you can install build dependencies on your local system and then build in your <code class="docutils literal notranslate"><span class="pre">$GOPATH</span></code>:</p>
@@ -245,7 +245,7 @@ and serves as a reference for build dependencies and procedure:</p>
 <span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv3</span>
 <span class="n">source</span> <span class="n">venv3</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 <span class="o">./</span><span class="n">lazy</span><span class="o">.</span><span class="n">sh</span> <span class="n">devsetup</span>
-<span class="n">make</span> <span class="n">vendordeps</span> <span class="n">release</span>
+<span class="n">make</span> <span class="n">release</span>
 </pre></div>
 </div>
 <p>The Python venv is used for the documentation build dependencies.
@@ -260,8 +260,7 @@ Otherwise, the examples in the <a class="reference internal" href="tutorial.html
 </div>
 <div class="section" id="what-next">
 <h2>What next?<a class="headerlink" href="#what-next" title="Permalink to this headline">¶</a></h2>
-<p>Read the <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">configuration chapter</span></a> and optionally create the <a class="reference internal" href="configuration/preface.html#configuration-preface"><span class="std std-ref">runtime directories</span></a>.
-Afterwards, continue with the <a class="reference internal" href="usage.html#usage"><span class="std std-ref">usage chapter</span></a>.</p>
+<p>Read the <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">configuration chapter</span></a> and then continue with the <a class="reference internal" href="usage.html#usage"><span class="std std-ref">usage chapter</span></a>.</p>
 <p><strong>Reminder</strong>: If you want a quick introduction, please read the <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">Tutorial</span></a>.</p>
 </div>
 </div>
@@ -310,12 +309,9 @@ Afterwards, continue with the <a class="reference internal" href="usage.html#usa
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="0.0.2/installation.html">0.0.2</a></dd>
-            <dd><a href="0.0.3/installation.html">0.0.3</a></dd>
-            <dd><a href="0.1.0-rc3/installation.html">0.1.0-rc3</a></dd>
             <dd><a href="v0.1.0/installation.html">v0.1.0</a></dd>
-            <dd><a href="v0.1.0-rc4/installation.html">v0.1.0-rc4</a></dd>
             <dd><a href="v0.1.1/installation.html">v0.1.1</a></dd>
+            <dd><a href="v0.2.0-rc1/installation.html">v0.2.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

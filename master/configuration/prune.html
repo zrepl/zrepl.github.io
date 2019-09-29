@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Logging" href="logging.html" />
-    <link rel="prev" title="Filter Syntax" href="filter_syntax.html" /> 
+    <link rel="prev" title="Taking Snaphots" href="snapshotting.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,10 +89,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Pruning Policies</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#policy-not-replicated">Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#policy-grid">Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code></a></li>
@@ -245,7 +246,7 @@ Make sure to actually add the necessary <code class="docutils literal notranslat
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> keeps all snapshots that have not been replicated to the receiving side.
 It only makes sense to specify this rule on a sender (source or push job).
-The state required to evaluate this rule is stored in the <a class="reference internal" href="jobs.html#replication-cursor-bookmark"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
+The state required to evaluate this rule is stored in the <a class="reference internal" href="overview.html#replication-cursor-bookmark"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
 </div>
 <div class="section" id="policy-grid">
 <span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Permalink to this headline">¶</a></h2>
@@ -384,7 +385,7 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
         <a href="logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="filter_syntax.html" class="btn btn-neutral float-left" title="Filter Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="snapshotting.html" class="btn btn-neutral float-left" title="Taking Snaphots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -417,12 +418,9 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../0.0.2/configuration/prune.html">0.0.2</a></dd>
-            <dd><a href="../../0.0.3/configuration/prune.html">0.0.3</a></dd>
-            <dd><a href="../../0.1.0-rc3/configuration/prune.html">0.1.0-rc3</a></dd>
             <dd><a href="../../v0.1.0/configuration/prune.html">v0.1.0</a></dd>
-            <dd><a href="../../v0.1.0-rc4/configuration/prune.html">v0.1.0-rc4</a></dd>
             <dd><a href="../../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
+            <dd><a href="../../v0.2.0-rc1/configuration/prune.html">v0.2.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

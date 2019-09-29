@@ -213,7 +213,8 @@
 </ul>
 </li>
 <li><strong>Automatic snapshot management</strong><ul>
-<li>[x] Periodic filesystem snapshots</li>
+<li>[x] Periodic <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-spec"><span class="std std-ref">filesystem snapshots</span></a></li>
+<li>[x] Support for <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-hooks"><span class="std std-ref">pre- and post-snapshot hooks</span></a> with builtins for MySQL &amp; Postgres</li>
 <li>[x] Flexible <a class="reference internal" href="configuration/prune.html#prune"><span class="std std-ref">pruning rule system</span></a><ul>
 <li>[x] Age-based fading (grandfathering scheme)</li>
 <li>[x] Bookmarks to avoid divergence between sender and receiver</li>
@@ -286,10 +287,11 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration/preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types &amp; Replication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html">Overview &amp; Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/monitoring.html">Monitoring</a></li>
@@ -309,7 +311,7 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">0.1.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#id4">0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#previous-releases">Previous Releases</a></li>
@@ -364,12 +366,9 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="0.0.2/index.html">0.0.2</a></dd>
-            <dd><a href="0.0.3/index.html">0.0.3</a></dd>
-            <dd><a href="0.1.0-rc3/index.html">0.1.0-rc3</a></dd>
             <dd><a href="v0.1.0/index.html">v0.1.0</a></dd>
-            <dd><a href="v0.1.0-rc4/index.html">v0.1.0-rc4</a></dd>
             <dd><a href="v0.1.1/index.html">v0.1.1</a></dd>
+            <dd><a href="v0.2.0-rc1/index.html">v0.2.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

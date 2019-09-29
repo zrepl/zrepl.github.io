@@ -93,7 +93,7 @@
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">0.1.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">0.1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#notes-to-package-maintainers">Notes to Package Maintainers</a></li>
@@ -194,10 +194,39 @@ Note that even updating the package on both sides might not be sufficient, e.g. 
 <li>[DOCS] Change to the documentation.</li>
 </ul>
 <div class="section" id="id2">
-<h2>0.1.2<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2>0.2<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Linux ARM64 Docker build support &amp; binary builds</li>
+<li>[FEATURE] <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-hooks"><span class="std std-ref">Pre- and Post-Snapshot Hooks</span></a>
+with built-in support for MySQL and Postgres checkpointing
+as well as custom scripts (thanks, <a class="reference external" href="https://github.com/overhacked">&#64;overhacked</a>!)</li>
+<li>[FEATURE] Use <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">destroy</span> <span class="pre">pool/fs&#64;snap1,snap2,...</span></code> CLI feature if available</li>
+<li>[FEATURE] Linux ARM64 Docker build support &amp; binary builds</li>
+<li>[FEATURE] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> now displays snapshotting reports</li>
+<li>[FEATURE] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span> <span class="pre">--job</span> <span class="pre">&lt;JOBNAME&gt;</span></code> filter flag</li>
+<li>[BUG] i386 build</li>
+<li>[BUG] early validation of host:port tuples in config</li>
+<li>[BUG] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> now supports <code class="docutils literal notranslate"><span class="pre">TERM=screen</span></code> (tmux on FreeBSD / FreeNAS)</li>
+<li>[BUG] ignore <em>connection reset by peer</em> errors when shutting down connections</li>
+<li>[BUG] correct error messages when receive-side pool or <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> dataset is not imported</li>
+<li>[BUG] fail fast for misconfigured local transport</li>
+<li>[BUG] race condition in replication report generation would crash the daemon when running <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code></li>
+<li>[BUG] rpc goroutine leak in <code class="docutils literal notranslate"><span class="pre">push</span></code> mode if zfs recv fails on the <code class="docutils literal notranslate"><span class="pre">sink</span></code> side</li>
+<li>[MAINTAINER NOTICE] Go modules for dependency management both inside and outside of GOPATH
+(<code class="docutils literal notranslate"><span class="pre">lazy.sh</span></code> and <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> force <code class="docutils literal notranslate"><span class="pre">GO111MODULE=on</span></code>)</li>
+<li>[MAINTAINER NOTICE] <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">platformtest</span></code> target to check zrepl’s ZFS abstractions (screen scraping, etc.).
+These tests only work on a system with ZFS installed, and must be run as root because they create a file-backed pool for each test case.
+The pool name <code class="docutils literal notranslate"><span class="pre">zreplplatformtest</span></code> is reserved for this use case.
+Only run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">platformtest</span></code> on test systems, e.g. a FreeBSD VM image.</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="last line-block">
+<div class="line">zrepl is a spare-time project primarily developed by <a class="reference external" href="https://cschwarz.com">Christian Schwarz</a>.</div>
+<div class="line">You can support maintenance and feature development through one of the following services:</div>
+<div class="line"><a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fzrepl%2Fpledges&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/receives/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></div>
+<div class="line">For commerical support, please <a class="reference external" href="https://cschwarz.com">contact Christian directly</a>.</div>
+</div>
+</div>
 </div>
 <div class="section" id="id3">
 <h2>0.1.1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
@@ -240,7 +269,7 @@ Use your build system to package the Go program in <a class="reference external"
 <h3>Changes<a class="headerlink" href="#changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>[BREAK]</strong> <strong>[MIGRATION]</strong> Placeholder property representation changed<ul>
-<li>The <a class="reference internal" href="configuration/jobs.html#replication-placeholder-property"><span class="std std-ref">placeholder property</span></a> now uses <code class="docutils literal notranslate"><span class="pre">on|off</span></code> as values
+<li>The <a class="reference internal" href="configuration/overview.html#replication-placeholder-property"><span class="std std-ref">placeholder property</span></a> now uses <code class="docutils literal notranslate"><span class="pre">on|off</span></code> as values
 instead of hashes of the dataset path. This permits renames of the sink filesystem without
 updating all placeholder properties.</li>
 <li>Relevant for 0.0.X-0.1-rc* to 0.1 migrations</li>
@@ -270,12 +299,12 @@ Pruning errors are handled per FS, i.e., a prune RPC is attempted at least once 
 <li><strong>[BREAK]</strong> <strong>[CONFIG]</strong>: mappings are no longer supported<ul>
 <li>Receiving sides (<code class="docutils literal notranslate"><span class="pre">pull</span></code> and <code class="docutils literal notranslate"><span class="pre">sink</span></code> job) specify a single <code class="docutils literal notranslate"><span class="pre">root_fs</span></code>.
 Received filesystems are then stored <em>per client</em> in <code class="docutils literal notranslate"><span class="pre">${root_fs}/${client_identity}</span></code>.
-See <a class="reference internal" href="configuration/jobs.html#job-overview"><span class="std std-ref">Overview &amp; Terminology</span></a> for details.</li>
+See <a class="reference internal" href="configuration/overview.html#job-overview"><span class="std std-ref">Jobs &amp; How They Work Together</span></a> for details.</li>
 </ul>
 </li>
 <li>[FEATURE] <strong>[BREAK]</strong> <strong>[CONFIG]</strong> Manual snapshotting + triggering of replication<ul>
 <li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/69">issue #69</a>: include manually created snapshots in replication</li>
-<li><strong>[CONFIG]</strong> <code class="docutils literal notranslate"><span class="pre">manual</span></code> and <code class="docutils literal notranslate"><span class="pre">periodic</span></code> <a class="reference internal" href="configuration/jobs.html#job-snapshotting-spec"><span class="std std-ref">snapshotting types</span></a></li>
+<li><strong>[CONFIG]</strong> <code class="docutils literal notranslate"><span class="pre">manual</span></code> and <code class="docutils literal notranslate"><span class="pre">periodic</span></code> <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-spec"><span class="std std-ref">snapshotting types</span></a></li>
 <li>[FEATURE] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand to trigger replication + pruning</li>
 <li>[FEATURE] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">reset</span> <span class="pre">JOB</span></code> subcommand to abort current replication + pruning</li>
 </ul>
@@ -366,12 +395,9 @@ For the changelog of previous releases, use the version selection in the hosted 
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="0.0.2/changelog.html">0.0.2</a></dd>
-            <dd><a href="0.0.3/changelog.html">0.0.3</a></dd>
-            <dd><a href="0.1.0-rc3/changelog.html">0.1.0-rc3</a></dd>
             <dd><a href="v0.1.0/changelog.html">v0.1.0</a></dd>
-            <dd><a href="v0.1.0-rc4/changelog.html">v0.1.0-rc4</a></dd>
             <dd><a href="v0.1.1/changelog.html">v0.1.1</a></dd>
+            <dd><a href="v0.2.0-rc1/changelog.html">v0.2.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

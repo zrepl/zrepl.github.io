@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Filter Syntax" href="filter_syntax.html" />
-    <link rel="prev" title="Job Types &amp; Replication" href="jobs.html" /> 
+    <link rel="prev" title="Job Types in Detail" href="jobs.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,8 +89,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Transports</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#tcp-transport"><code class="docutils literal notranslate"><span class="pre">tcp</span></code> Transport</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#serve">Serve</a></li>
@@ -112,6 +112,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
@@ -512,6 +513,7 @@ The <code class="docutils literal notranslate"><span class="pre">client_identity
     type: <span class="nb">local</span>
     listener_name: localsink
     client_identity: local_backup
+    dial_timeout: 2s <span class="c1"># optional, 0 for no timeout</span>
   ...
 </pre></div>
 </div>
@@ -529,7 +531,7 @@ The <code class="docutils literal notranslate"><span class="pre">client_identity
         <a href="filter_syntax.html" class="btn btn-neutral float-right" title="Filter Syntax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="jobs.html" class="btn btn-neutral float-left" title="Job Types &amp; Replication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="jobs.html" class="btn btn-neutral float-left" title="Job Types in Detail" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -562,12 +564,9 @@ The <code class="docutils literal notranslate"><span class="pre">client_identity
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../0.0.2/configuration/transports.html">0.0.2</a></dd>
-            <dd><a href="../0.0.3/configuration/transports.html">0.0.3</a></dd>
-            <dd><a href="../0.1.0-rc3/configuration/transports.html">0.1.0-rc3</a></dd>
             <dd><a href="../v0.1.0/configuration/transports.html">v0.1.0</a></dd>
-            <dd><a href="../v0.1.0-rc4/configuration/transports.html">v0.1.0-rc4</a></dd>
             <dd><a href="../v0.1.1/configuration/transports.html">v0.1.1</a></dd>
+            <dd><a href="../v0.2.0-rc1/configuration/transports.html">v0.2.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

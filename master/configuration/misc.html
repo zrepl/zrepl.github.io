@@ -89,10 +89,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="preface.html">Preface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types &amp; Replication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
@@ -188,21 +189,25 @@
 <h1>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="runtime-directories-unix-sockets">
 <span id="conf-runtime-directories"></span><h2>Runtime Directories &amp; UNIX Sockets<a class="headerlink" href="#runtime-directories-unix-sockets" title="Permalink to this headline">¶</a></h2>
-<p>zrepl daemon creates various UNIX sockets to allow communicating with it:</p>
+<p>The zrepl daemon needs to open various UNIX sockets in a runtime directory:</p>
 <ul class="simple">
-<li>the <a class="reference internal" href="transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a> transport connects to a socket named after <code class="docutils literal notranslate"><span class="pre">client_identity</span></code> parameter</li>
-<li>the <code class="docutils literal notranslate"><span class="pre">control</span></code> CLI subcommand connects to a defined control socket</li>
+<li>a <code class="docutils literal notranslate"><span class="pre">control</span></code> socket that the CLI commands use to interact with the daemon</li>
+<li>the <a class="reference internal" href="transports.html#transport-ssh-stdinserver"><span class="std std-ref">ssh+stdinserver Transport</span></a> listener opens one socket per configured client, named after <code class="docutils literal notranslate"><span class="pre">client_identity</span></code> parameter</li>
 </ul>
-<p>There is no further authentication on these sockets.
-Therefore we have to make sure they can only be created and accessed by <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">daemon</span></code>.
-In fact, <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">daemon</span></code> will not bind a socket to a path in a directory that is world-accessible.</p>
-<p>The directories can be configured in the main configuration file, the defaults are provided below:</p>
+<p>There is no authentication on these sockets except the UNIX permissions.
+The zrepl daemon will refuse to bind any of the above sockets in a directory that is world-accessible.</p>
+<p>The following sections of the <code class="docutils literal notranslate"><span class="pre">global</span></code> config shows the default paths.
+The shell script below shows how the default runtime directory can be created.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
   <span class="n">control</span><span class="p">:</span>
     <span class="n">sockpath</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">control</span>
   <span class="n">serve</span><span class="p">:</span>
     <span class="n">stdinserver</span><span class="p">:</span>
       <span class="n">sockdir</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">stdinserver</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">stdinserver</span>
+<span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">0700</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">zrepl</span>
 </pre></div>
 </div>
 </div>
@@ -282,12 +287,9 @@ So just read the annotated comments ;)</p>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../0.0.2/configuration/misc.html">0.0.2</a></dd>
-            <dd><a href="../../0.0.3/configuration/misc.html">0.0.3</a></dd>
-            <dd><a href="../../0.1.0-rc3/configuration/misc.html">0.1.0-rc3</a></dd>
             <dd><a href="../../v0.1.0/configuration/misc.html">v0.1.0</a></dd>
-            <dd><a href="../../v0.1.0-rc4/configuration/misc.html">v0.1.0-rc4</a></dd>
             <dd><a href="../../v0.1.1/configuration/misc.html">v0.1.1</a></dd>
+            <dd><a href="../../v0.2.0-rc1/configuration/misc.html">v0.2.0-rc1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
