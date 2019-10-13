@@ -109,7 +109,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../implementation.html">Implementation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
@@ -290,13 +289,11 @@ The default is 30 seconds and may be specified in any units understood by <a cla
   <span class="o">...</span>
 </pre></div>
 </div>
-<p>The hook type <code class="docutils literal notranslate"><span class="pre">command</span></code> is the only currently supported hook type.
-Future versions of zrepl may support other hook types.
-The <code class="docutils literal notranslate"><span class="pre">path</span></code> to the hook executables must be absolute (e.g. <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/hooks/zrepl-notify.sh</span></code>).
+<p><code class="docutils literal notranslate"><span class="pre">command</span></code> hooks take a <code class="docutils literal notranslate"><span class="pre">path</span></code> to an executable script or binary to be executed before and after the snapshot.
+<code class="docutils literal notranslate"><span class="pre">path</span></code> must be absolute (e.g. <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/hooks/zrepl-notify.sh</span></code>).
 No arguments may be specified; create a wrapper script if zrepl must call an executable that requires arguments.
-zrepl will call the hook both before and after the snapshot, but with different values of the <code class="docutils literal notranslate"><span class="pre">ZREPL_HOOKTYPE</span></code> environment variable; see below.
-The process standard output is logged at level INFO. Standard error is logged at level WARN.</p>
-<p>zrepl sets a number of environment variables for the hook processes:</p>
+The process standard output is logged at level INFO. Standard error is logged at level WARN.
+The following environment variables are set:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">ZREPL_HOOKTYPE</span></code>: either “pre_snapshot” or “post_snapshot”</li>
 <li><code class="docutils literal notranslate"><span class="pre">ZREPL_FS</span></code>: the ZFS filesystem name being snapshotted</li>
@@ -406,7 +403,7 @@ as a means to produce a consistent backup of a MySQL DBMS installation (i.e., al
             <dt>Tags</dt>
             <dd><a href="../../v0.1.0/index.html">v0.1.0</a></dd>
             <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
-            <dd><a href="../../v0.2.0-rc1/configuration/snapshotting.html">v0.2.0-rc1</a></dd>
+            <dd><a href="../../v0.2.0/configuration/snapshotting.html">v0.2.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
