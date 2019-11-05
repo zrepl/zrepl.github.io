@@ -285,7 +285,7 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
 </div>
 <div class="section" id="configure-server-backups">
 <span id="tutorial-configure-prod"></span><h2>Configure server <code class="docutils literal notranslate"><span class="pre">backups</span></code><a class="headerlink" href="#configure-server-backups" title="Permalink to this headline">¶</a></h2>
-<p>We define a corresponding <strong>sink job</strong> named <code class="docutils literal notranslate"><span class="pre">sink</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal notranslate"><span class="pre">prod</span></code> :</p>
+<p>We define a corresponding <strong>sink job</strong> named <code class="docutils literal notranslate"><span class="pre">sink</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal notranslate"><span class="pre">backups</span></code> :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">sink</span>
   <span class="nb">type</span><span class="p">:</span> <span class="n">sink</span>
