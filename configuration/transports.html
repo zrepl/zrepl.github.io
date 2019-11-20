@@ -461,9 +461,9 @@ The connection client identity is the name of the socket, i.e. <code class="docu
     user: root
     port: <span class="m">22</span>
     identity_file: /etc/zrepl/ssh/identity
-    options: <span class="c1"># optional, default [], `-o` arguments passed to ssh</span>
-    - <span class="s2">&quot;Compression=on&quot;</span>
-    dial_timeout: <span class="c1"># optional, default 10s, max time.Duration until initial handshake is completed</span>
+    <span class="c1"># options: # optional, default [], `-o` arguments passed to ssh</span>
+    <span class="c1"># - &quot;Compression=yes&quot;</span>
+    <span class="c1"># dial_timeout: 10s # optional, default 10s, max time.Duration until initial handshake is completed</span>
 </pre></div>
 </div>
 <p>The connecting zrepl daemon</p>
@@ -566,6 +566,7 @@ The <code class="docutils literal notranslate"><span class="pre">client_identity
             <dd><a href="../v0.1.0/configuration/transports.html">v0.1.0</a></dd>
             <dd><a href="../v0.1.1/configuration/transports.html">v0.1.1</a></dd>
             <dd><a href="../v0.2.0/configuration/transports.html">v0.2.0</a></dd>
+            <dd><a href="../v0.2.1/configuration/transports.html">v0.2.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
