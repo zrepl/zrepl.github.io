@@ -86,13 +86,14 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Pruning Policies</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#policy-not-replicated">Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code></a></li>
@@ -186,13 +187,16 @@
   
 
 
+    
+    
 
 
 
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../v0.2.1/configuration/prune.html"><b>Warning:</b> This document is for the development version of zrepl. The latest version is v0.2.1.</a></p>
 <div class="section" id="pruning-policies">
 <span id="prune"></span><h1>Pruning Policies<a class="headerlink" href="#pruning-policies" title="Permalink to this headline">¶</a></h1>
 <p>In zrepl, <em>pruning</em> means <em>destroying snapshots</em>.
-Pruning must happen on both sides of a replication or the systems would inevitable run out of disk space at some point.</p>
+Pruning must happen on both sides of a replication or the systems would inevitably run out of disk space at some point.</p>
 <p>Typically, the requirements to temporal resolution and maximum retention time differ per side.
 For example, when using zrepl to back up a busy database server, you will want high temporal resolution (snapshots every 10 min) for the last 24h in case of administrative disasters, but cannot afford to store them for much longer because you might have high turnover volume in the database.
 On the receiving side, you may have more disk space available, or need to comply with other backup retention policies.</p>
@@ -245,7 +249,7 @@ Make sure to actually add the necessary <code class="docutils literal notranslat
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> keeps all snapshots that have not been replicated to the receiving side.
 It only makes sense to specify this rule on a sender (source or push job).
-The state required to evaluate this rule is stored in the <a class="reference internal" href="overview.html#replication-cursor-bookmark"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
+The state required to evaluate this rule is stored in the <a class="reference internal" href="overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
 </div>
 <div class="section" id="policy-grid">
 <span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Permalink to this headline">¶</a></h2>
@@ -320,7 +324,7 @@ Only snapshots names that match the regex are considered for this rule, all othe
         <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_.*&quot;</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">regex</span></code> keeps all snapshots whose names are matched by the regular expressionin <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
+<p><code class="docutils literal notranslate"><span class="pre">regex</span></code> keeps all snapshots whose names are matched by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
 Like all other regular expression fields in prune policies, zrepl uses Go’s <a class="reference external" href="https://golang.org/pkg/regexp/#Compile">regexp.Regexp</a> Perl-compatible regular expressions (<a class="reference external" href="https://golang.org/pkg/regexp/syntax">Syntax</a>).
 The optional <cite>negate</cite> boolean field inverts the semantics: Use it if you want to keep all snapshots that <em>do not</em> match the given regex.</p>
 </div>
@@ -417,10 +421,9 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.1.0/configuration/prune.html">v0.1.0</a></dd>
-            <dd><a href="../../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
-            <dd><a href="../../v0.2.0/configuration/prune.html">v0.2.0</a></dd>
+            <dd><a href="../../v0.3.0-rc1/configuration/prune.html">v0.3.0-rc1</a></dd>
             <dd><a href="../../v0.2.1/configuration/prune.html">v0.2.1</a></dd>
+            <dd><a href="../../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

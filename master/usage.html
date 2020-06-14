@@ -86,7 +86,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
@@ -171,9 +171,12 @@
   
 
 
+    
+    
 
 
 
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../v0.2.1/usage.html"><b>Warning:</b> This document is for the development version of zrepl. The latest version is v0.2.1.</a></p>
 <div class="section" id="usage">
 <span id="id1"></span><h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="cli-overview">
@@ -222,6 +225,9 @@ run <code class="docutils literal notranslate"><span class="pre">zrepl</span> <s
 </div>
 </td>
 </tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">zfs-abstraction</span></code></td>
+<td>list and remove zrepl’s abstractions on top of ZFS, e.g. holds and step bookmarks (see <a class="reference internal" href="configuration/overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">overview</span></a> )</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -229,7 +235,7 @@ run <code class="docutils literal notranslate"><span class="pre">zrepl</span> <s
 <span id="usage-zrepl-daemon"></span><h2>zrepl daemon<a class="headerlink" href="#zrepl-daemon" title="Permalink to this headline">¶</a></h2>
 <p>All actual work zrepl does is performed by a daemon process.
 The daemon supports structured <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a> and provides <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring endpoints</span></a>.</p>
-<p>When installating from a package, the package maintainer should have provided an init script / systemd.service file.
+<p>When installing from a package, the package maintainer should have provided an init script / systemd.service file.
 You should thus be able to start zrepl daemon using your init system.</p>
 <p>Alternatively, or for running zrepl in the foreground, simply execute <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">daemon</span></code>.
 Note that you won’t see much output with the <a class="reference internal" href="configuration/logging.html#logging-default-config"><span class="std std-ref">default logging configuration</span></a>:</p>
@@ -247,7 +253,7 @@ The daemon exits as soon as all jobs have reported shut down.</p>
 </div>
 <div class="section" id="systemd-unit-file">
 <h3>Systemd Unit File<a class="headerlink" href="#systemd-unit-file" title="Permalink to this headline">¶</a></h3>
-<p>A systemd service defintion template is available in <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/dist/systemd">dist/systemd</a>.
+<p>A systemd service definition template is available in <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/dist/systemd">dist/systemd</a>.
 Note that some of the options only work on recent versions of systemd.
 Any help &amp; improvements are very welcome, see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/145">issue #145</a>.</p>
 </div>
@@ -298,10 +304,9 @@ Any help &amp; improvements are very welcome, see <a class="reference external" 
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.1.0/usage.html">v0.1.0</a></dd>
-            <dd><a href="../v0.1.1/usage.html">v0.1.1</a></dd>
-            <dd><a href="../v0.2.0/usage.html">v0.2.0</a></dd>
+            <dd><a href="../v0.3.0-rc1/usage.html">v0.3.0-rc1</a></dd>
             <dd><a href="../v0.2.1/usage.html">v0.2.1</a></dd>
+            <dd><a href="../v0.1.1/usage.html">v0.1.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
