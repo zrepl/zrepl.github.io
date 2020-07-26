@@ -203,26 +203,29 @@ Note that even updating the package on both sides might not be sufficient, e.g. 
 <ul class="simple">
 <li><strong>Resumable Send &amp; Recv Support</strong>
 No knobs required, automatically used where supported.</li>
-<li><strong>Hold-Protected Send &amp; Recv</strong>
-Automatic ZFS holds to ensure that we can always use resumable send&amp;recv for a replication step.</li>
 <li><strong>Encrypted Send &amp; Recv Support</strong> for OpenZFS native encryption,
 <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-options"><span class="std std-ref">configurable</span></a> at the job level, i.e., for all filesystems a job is responsible for.</li>
-<li><strong>Receive-side hold on last received dataset</strong>
-The counterpart to the replication cursor bookmark on the send-side.
-Ensures that incremental replication will always be possible between a sender and receiver.</li>
+<li><strong>Replication Guarantees</strong>
+Automatic use of ZFS holds and bookmarks to protect a replicated filesystem from losing synchronization between sender and receiver.
+By default, zrepl guarantees that incremental replication will always be possible and interrupted steps will always be resumable.</li>
 </ul>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">We highly recommend studying the <a class="reference internal" href="configuration/overview.html#overview-how-replication-works"><span class="std std-ref">overview section of the configuration chapter</span></a> to understand how replication works.</p>
+<p class="last">We highly recommend studying the updated <a class="reference internal" href="configuration/overview.html#overview-how-replication-works"><span class="std std-ref">overview section of the configuration chapter</span></a> to understand how replication works.</p>
 </div>
+<p>Quick-start guides:</p>
+<ul class="simple">
+<li>We have added <a class="reference internal" href="quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">another quick-start guide for a typical workstation use case for zrepl</span></a>.
+Check it out to learn how you can use zrepl to back up your workstation’s OpenZFS natively-encrypted root filesystem to an external disk.</li>
+</ul>
 <p>Additional changelog:</p>
 <ul class="simple">
 <li><strong>[BREAK]</strong> <strong>[CONFIG]</strong> <strong>more restrictive job names than in prior zrepl versions</strong>
-Starting with this version, job names are going to be embedded into ZFS holds and bookmark names (see <a class="reference internal" href="configuration/overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">here</span></a> and <a class="reference internal" href="configuration/overview.html#step-holds-and-bookmarks"><span class="std std-ref">here</span></a>).
+Starting with this version, job names are going to be embedded into ZFS holds and bookmark names (see <a class="reference internal" href="configuration/overview.html#zrepl-zfs-abstractions"><span class="std std-ref">this section for details</span></a>).
 Therefore you might need to adjust your job names.
-<strong>Note that jobs</strong> <a class="reference external" href="https://github.com/zrepl/zrepl/issues/cannot be renamed easily">issue #cannot be renamed easily</a> <strong>once you start using zrepl 0.3.</strong></li>
+<strong>Note that jobs</strong> cannot be renamed easily <strong>once you start using zrepl 0.3.</strong></li>
 <li><strong>[BREAK]</strong> <strong>[MIGRATION]</strong> replication cursor representation changed<ul>
-<li>zrepl now manages the <a class="reference internal" href="configuration/overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> per job-filesystem tuple instead of a single replication cursor per filesystem.
+<li>zrepl now manages the <a class="reference internal" href="configuration/overview.html#zrepl-zfs-abstractions"><span class="std std-ref">replication cursor bookmark</span></a> per job-filesystem tuple instead of a single replication cursor per filesystem.
 In the future, this will permit multiple sending jobs to send from the same filesystems.</li>
 <li>ZFS does not allow bookmark renaming, thus we cannot migrate the old replication cursors.</li>
 <li>zrepl 0.3 will automatically create cursors in the new format for new replications, and warn if it still finds ones in the old format.</li>
@@ -461,7 +464,7 @@ For the changelog of previous releases, use the version selection in the hosted 
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0-rc1/changelog.html">v0.3.0-rc1</a></dd>
+            <dd><a href="../v0.3.0-rc2/changelog.html">v0.3.0-rc2</a></dd>
             <dd><a href="../v0.2.1/changelog.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/changelog.html">v0.1.1</a></dd>
         </dl>

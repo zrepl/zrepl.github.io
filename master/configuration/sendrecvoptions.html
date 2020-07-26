@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Taking Snaphots" href="snapshotting.html" />
+    <link rel="next" title="Replication Options" href="replication.html" />
     <link rel="prev" title="Filter Syntax" href="filter_syntax.html" /> 
 </head>
 
@@ -96,12 +96,12 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Send &amp; Recv Options</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#send-options">Send Options</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#encryption-option"><code class="docutils literal notranslate"><span class="pre">encryption</span></code> option</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-holds-disable-incremental-option"><code class="docutils literal notranslate"><span class="pre">step_holds.disable_incremental</span></code> option</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#recv-options">Recv Options</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
@@ -200,8 +200,6 @@
   <span class="n">filesystems</span><span class="p">:</span> <span class="o">...</span>
   <span class="n">send</span><span class="p">:</span>
     <span class="n">encrypted</span><span class="p">:</span> <span class="n">true</span>
-    <span class="n">step_holds</span><span class="p">:</span>
-      <span class="n">disable_incremental</span><span class="p">:</span> <span class="n">false</span>
   <span class="o">...</span>
 </pre></div>
 </div>
@@ -217,19 +215,6 @@ More specifically, if <code class="docutils literal notranslate"><span class="pr
 </ul>
 <p>Filesystems matched by <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> that are not encrypted are not sent and will cause error log messages.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">encryption=false</span></code>, zrepl expects that filesystems matching <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> are not encrypted or have loaded encryption keys.</p>
-</div>
-<div class="section" id="step-holds-disable-incremental-option">
-<span id="job-send-option-step-holds-disable-incremental"></span><h3><code class="docutils literal notranslate"><span class="pre">step_holds.disable_incremental</span></code> option<a class="headerlink" href="#step-holds-disable-incremental-option" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">step_holds.disable_incremental</span></code> variable controls whether the creation of <a class="reference internal" href="overview.html#step-holds-and-bookmarks"><span class="std std-ref">step holds</span></a> should be disabled for incremental replication.
-The default value is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
-<p>Disabling step holds has the disadvantage that steps <a class="reference internal" href="overview.html#step-holds-and-bookmarks"><span class="std std-ref">might not be resumable</span></a> if interrupted.
-Non-resumability means that replication progress is no longer monotonic which might result in a replication setup that never makes progress if mid-step interruptions are too frequent (e.g. frequent network outages).</p>
-<p>However, the advantage and <a class="reference external" href="https://github.com/zrepl/zrepl/issues/288">reason for existence</a> of this flag is that it allows the pruner to delete snapshots of interrupted replication steps
-which is useful if replication happens so rarely (or fails so frequently) that the amount of disk space exclusively referenced by the step’s snapshots becomes intolerable.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When setting this flag to <code class="docutils literal notranslate"><span class="pre">true</span></code>, existing step holds for the job will be destroyed on the next replication attempt.</p>
-</div>
 </div>
 </div>
 <div class="section" id="recv-options">
@@ -247,7 +232,7 @@ However, there are currently no variables to configure there.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="snapshotting.html" class="btn btn-neutral float-right" title="Taking Snaphots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="replication.html" class="btn btn-neutral float-right" title="Replication Options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="filter_syntax.html" class="btn btn-neutral float-left" title="Filter Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -283,7 +268,7 @@ However, there are currently no variables to configure there.</p>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.3.0-rc1/configuration/sendrecvoptions.html">v0.3.0-rc1</a></dd>
+            <dd><a href="../../v0.3.0-rc2/configuration/sendrecvoptions.html">v0.3.0-rc2</a></dd>
             <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
             <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
         </dl>

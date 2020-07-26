@@ -202,7 +202,7 @@ It is absolutely critical that only encrypted data leaves our workstation.
 <li>We want to be able to put off the backups for more than three weeks, i.e., longer than the lifetime of the automatically created snapshots on our workstation.
 <strong>zrepl should use bookmarks and holds to achieve this goal</strong>.</li>
 <li>When we yank out the drive during replication and go on a long vacation, we do <em>not</em> want the partially replicated snapshot to stick around as it would hold on to too much disk space over time.
-Therefore, we want zrepl to deviate from its <a class="reference internal" href="../configuration/overview.html#step-holds-and-bookmarks"><span class="std std-ref">default step-hold behavior</span></a> and sacrifice resumability, but nonetheless retain the ability to do incremental replication once we return from our vacation.
+Therefore, we want zrepl to deviate from its <a class="reference internal" href="../configuration/replication.html#replication-option-protection"><span class="std std-ref">default behavior</span></a> and sacrifice resumability, but nonetheless retain the ability to do incremental replication once we return from our vacation.
 <strong>zrepl should provide an easy config knob to disable step holds for incremental replication</strong>.</li>
 </ul>
 <p>The following config snippet implements the setup described above.
@@ -261,12 +261,15 @@ You will likely want to customize some aspects mentioned in the top comment in t
   <span class="p">}</span>
   <span class="n">send</span><span class="p">:</span>
     <span class="n">encrypted</span><span class="p">:</span> <span class="n">true</span>
-    <span class="c1"># disable incremental step holds so that</span>
-    <span class="c1"># - we can yank out the backup drive during replication</span>
-    <span class="c1"># - thereby sacrificing resumability</span>
-    <span class="c1"># - in exchange for the replicating snapshot not sticking around until we reconnect the backup drive</span>
-    <span class="n">step_holds</span><span class="p">:</span>
-      <span class="n">disable_incremental</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">replication</span><span class="p">:</span>
+    <span class="n">protection</span><span class="p">:</span>
+      <span class="n">initial</span><span class="p">:</span> <span class="n">guarantee_resumability</span>
+      <span class="c1"># Downgrade protection to guarantee_incremental which uses zfs bookmarks instead of zfs holds.</span>
+      <span class="c1"># Thus, when we yank out the backup drive during replication</span>
+      <span class="c1"># - we might not be able to resume the interrupted replication step because the partially received `to` snapshot of a `from`-&gt;`to` step may be pruned any time</span>
+      <span class="c1"># - but in exchange we get back the disk space allocated by `to` when we prune it</span>
+      <span class="c1"># - and because we still have the bookmarks created by `guarantee_incremental`, we can still do incremental replication of `from`-&gt;`to2` in the future</span>
+      <span class="n">incremental</span><span class="p">:</span> <span class="n">guarantee_incremental</span>
   <span class="n">snapshotting</span><span class="p">:</span>
     <span class="nb">type</span><span class="p">:</span> <span class="n">manual</span>
   <span class="n">pruning</span><span class="p">:</span>
@@ -341,7 +344,7 @@ You will likely want to customize some aspects mentioned in the top comment in t
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.3.0-rc1/quickstart/backup_to_external_disk.html">v0.3.0-rc1</a></dd>
+            <dd><a href="../../v0.3.0-rc2/quickstart/backup_to_external_disk.html">v0.3.0-rc2</a></dd>
             <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
             <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
         </dl>

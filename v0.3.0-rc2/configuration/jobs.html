@@ -1,0 +1,448 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Job Types in Detail &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Transports" href="transports.html" />
+    <link rel="prev" title="Overview &amp; Terminology" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Job Types in Detail</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-push">Job Type <code class="docutils literal notranslate"><span class="pre">push</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-sink">Job Type <code class="docutils literal notranslate"><span class="pre">sink</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-pull">Job Type <code class="docutils literal notranslate"><span class="pre">pull</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-source">Job Type <code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-replication">Local replication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-type-snap-snapshot-prune-only">Job Type <code class="docutils literal notranslate"><span class="pre">snap</span></code> (snapshot &amp; prune only)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../configuration.html">Configuration</a> &raquo;</li>
+        
+      <li>Job Types in Detail</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0-rc2/docs/configuration/jobs.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+    
+    
+
+
+
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../v0.2.1/configuration/jobs.html"><b>Warning:</b> This document is for an old version of zrepl. The latest version is v0.2.1.</a></p>
+<div class="section" id="job-types-in-detail">
+<span id="job"></span><h1>Job Types in Detail<a class="headerlink" href="#job-types-in-detail" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="job-type-push">
+<span id="job-push"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">push</span></code><a class="headerlink" href="#job-type-push" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal notranslate"><span class="pre">push</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">connect</span></code></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">connect specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">filesystems</span></code></td>
+<td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted and pushed to the sink</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">send</span></code></td>
+<td><a class="reference internal" href="sendrecvoptions.html#job-send-options"><span class="std std-ref">send options</span></a>, e.g. for encrypted sends</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">snapshotting</span></code></td>
+<td><a class="reference internal" href="snapshotting.html#job-snapshotting-spec"><span class="std std-ref">snapshotting specification</span></a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">pruning</span></code></td>
+<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">pruning specification</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/push.yml">config/samples/push.yml</a></p>
+</div>
+<div class="section" id="job-type-sink">
+<span id="job-sink"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">sink</span></code><a class="headerlink" href="#job-type-sink" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal notranslate"><span class="pre">sink</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">serve</span></code></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">serve specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">root_fs</span></code></td>
+<td>ZFS filesystems are received to
+<code class="docutils literal notranslate"><span class="pre">$root_fs/$client_identity/$source_path</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/sink.yml">config/samples/sink.yml</a></p>
+</div>
+<div class="section" id="job-type-pull">
+<span id="job-pull"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">pull</span></code><a class="headerlink" href="#job-type-pull" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal notranslate"><span class="pre">pull</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">connect</span></code></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">connect specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">root_fs</span></code></td>
+<td>ZFS filesystems are received to
+<code class="docutils literal notranslate"><span class="pre">$root_fs/$source_path</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">interval</span></code></td>
+<td><div class="first last line-block">
+<div class="line">Interval at which to pull from the source job (e.g. <code class="docutils literal notranslate"><span class="pre">10m</span></code>).</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">manual</span></code> disables periodic pulling, replication then only happens on <a class="reference internal" href="../usage.html#cli-signal-wakeup"><span class="std std-ref">wakeup</span></a>.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">pruning</span></code></td>
+<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">pruning specification</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/pull.yml">config/samples/pull.yml</a></p>
+</div>
+<div class="section" id="job-type-source">
+<span id="job-source"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">source</span></code><a class="headerlink" href="#job-type-source" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal notranslate"><span class="pre">source</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">serve</span></code></td>
+<td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">serve specification</span></a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">filesystems</span></code></td>
+<td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted and exposed to connecting clients</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">send</span></code></td>
+<td><a class="reference internal" href="sendrecvoptions.html#job-send-options"><span class="std std-ref">send options</span></a>, e.g. for encrypted sends</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">snapshotting</span></code></td>
+<td><a class="reference internal" href="snapshotting.html#job-snapshotting-spec"><span class="std std-ref">snapshotting specification</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/source.yml">config/samples/source.yml</a></p>
+</div>
+<div class="section" id="local-replication">
+<span id="replication-local"></span><h2>Local replication<a class="headerlink" href="#local-replication" title="Permalink to this headline">¶</a></h2>
+<p>If you have the need for local replication (most likely between two local storage pools), you can use the <a class="reference internal" href="transports.html#transport-local"><span class="std std-ref">local transport type</span></a> to connect a local push job to a local sink job.</p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/local.yml">config/samples/local.yml</a>.</p>
+</div>
+<div class="section" id="job-type-snap-snapshot-prune-only">
+<span id="job-snap"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">snap</span></code> (snapshot &amp; prune only)<a class="headerlink" href="#job-type-snap-snapshot-prune-only" title="Permalink to this headline">¶</a></h2>
+<p>Job type that only takes snapshots and performs pruning on the local machine.</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td>= <code class="docutils literal notranslate"><span class="pre">snap</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">filesystems</span></code></td>
+<td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">snapshotting</span></code></td>
+<td><a class="reference internal" href="snapshotting.html#job-snapshotting-spec"><span class="std std-ref">snapshotting specification</span></a></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">pruning</span></code></td>
+<td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">pruning specification</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/snap.yml">config/samples/snap.yml</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="transports.html" class="btn btn-neutral float-right" title="Transports" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview &amp; Terminology" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Christian Schwarz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v0.3.0-rc2
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="jobs.html">v0.3.0-rc2</a></dd>
+            <dd><a href="../../v0.2.1/configuration/jobs.html">v0.2.1</a></dd>
+            <dd><a href="../../v0.1.1/configuration/jobs.html">v0.1.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../master/configuration/jobs.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -94,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Pruning Policies</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#policy-not-replicated">Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code></a></li>
@@ -230,6 +231,8 @@ The keep rules are <strong>evaluated on the active side</strong> (<a class="refe
           <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">35</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">6</span><span class="n">x30d</span>
           <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_.*&quot;</span>
         <span class="c1"># manually created snapshots will be kept forever on receiver</span>
+        <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">regex</span>
+          <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^manual_.*&quot;</span>
 </pre></div>
 </div>
 <div class="admonition danger">
@@ -421,7 +424,7 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.3.0-rc1/configuration/prune.html">v0.3.0-rc1</a></dd>
+            <dd><a href="../../v0.3.0-rc2/configuration/prune.html">v0.3.0-rc2</a></dd>
             <dd><a href="../../v0.2.1/configuration/prune.html">v0.2.1</a></dd>
             <dd><a href="../../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
         </dl>

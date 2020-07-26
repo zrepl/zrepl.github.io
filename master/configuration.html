@@ -94,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
@@ -191,10 +192,8 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-the-active-side-works">How the Active Side Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-the-passive-side-works">How the Passive Side Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-replication-works">How Replication Works</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#placeholder-filesystems">Placeholder Filesystems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#zfs-background-knowledge">ZFS Background Knowledge</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#guaranteeing-that-incremental-sends-are-always-possible">Guaranteeing That Incremental Sends Are Always Possible</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#guaranteeing-that-sends-are-always-resumable">Guaranteeing That Sends Are Always Resumable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#zfs-abstractions-managed-by-zrepl">ZFS Abstractions Managed By zrepl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#limitations">Limitations</a></li>
 </ul>
 </li>
@@ -246,10 +245,13 @@
 <li class="toctree-l1"><a class="reference internal" href="configuration/sendrecvoptions.html">Send &amp; Recv Options</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#send-options">Send Options</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#encryption-option"><code class="docutils literal notranslate"><span class="pre">encryption</span></code> option</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#step-holds-disable-incremental-option"><code class="docutils literal notranslate"><span class="pre">step_holds.disable_incremental</span></code> option</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#recv-options">Recv Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/replication.html">Replication Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/replication.html#protection-option"><code class="docutils literal notranslate"><span class="pre">protection</span></code> option</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a><ul>
@@ -343,7 +345,7 @@
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0-rc1/configuration.html">v0.3.0-rc1</a></dd>
+            <dd><a href="../v0.3.0-rc2/configuration.html">v0.3.0-rc2</a></dd>
             <dd><a href="../v0.2.1/configuration.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/configuration.html">v0.1.1</a></dd>
         </dl>
