@@ -86,13 +86,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
@@ -162,7 +164,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.2.1/docs/configuration/monitoring.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/configuration/monitoring.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -189,7 +191,8 @@
 <span id="monitoring-prometheus"></span><h2>Prometheus &amp; Grafana<a class="headerlink" href="#prometheus-grafana" title="Permalink to this headline">¶</a></h2>
 <p>zrepl can expose <a class="reference external" href="https://prometheus.io/docs/instrumenting/exposition_formats/">Prometheus metrics</a> via HTTP.
 The <code class="docutils literal notranslate"><span class="pre">listen</span></code> attribute is a <a class="reference external" href="https://golang.org/pkg/net/#Listen">net.Listen</a>  string for tcp, e.g. <code class="docutils literal notranslate"><span class="pre">:9091</span></code> or <code class="docutils literal notranslate"><span class="pre">127.0.0.1:9091</span></code>.
-The Prometheues monitoring job appears in the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">control</span></code> job list and may be specified <strong>at most once</strong>.</p>
+The <code class="docutils literal notranslate"><span class="pre">listen_freebind</span></code> attribute is <a class="reference internal" href="transports.html#listen-freebind-explanation"><span class="std std-ref">explained here</span></a>.
+The Prometheus monitoring job appears in the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">control</span></code> job list and may be specified <strong>at most once</strong>.</p>
 <p>zrepl also ships with an importable <a class="reference external" href="https://grafana.com">Grafana</a> dashboard that consumes the Prometheus metrics:
 see <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/dist/grafana">dist/grafana</a>.
 The dashboard also contains some advice on which metrics are important to monitor.</p>
@@ -201,6 +204,7 @@ The dashboard also contains some advice on which metrics are important to monito
   <span class="n">monitoring</span><span class="p">:</span>
     <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">prometheus</span>
       <span class="n">listen</span><span class="p">:</span> <span class="s1">&#39;:9091&#39;</span>
+      <span class="n">listen_freebind</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># optional, default false</span>
 </pre></div>
 </div>
 </div>
@@ -244,13 +248,13 @@ The dashboard also contains some advice on which metrics are important to monito
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.2.1
+        v: v0.3.0
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0-rc2/configuration/monitoring.html">v0.3.0-rc2</a></dd>
+            <dd><a href="../v0.3.0/configuration/monitoring.html">v0.3.0</a></dd>
             <dd><a href="../v0.2.1/configuration/monitoring.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/configuration/monitoring.html">v0.1.1</a></dd>
         </dl>

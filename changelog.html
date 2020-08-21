@@ -86,16 +86,17 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">0.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">0.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">0.1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">0.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">0.1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#notes-to-package-maintainers">Notes to Package Maintainers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
 </ul>
@@ -157,7 +158,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.2.1/docs/changelog.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/changelog.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -194,7 +195,71 @@ Note that even updating the package on both sides might not be sufficient, e.g. 
 <li>[DOCS] Change to the documentation.</li>
 </ul>
 <div class="section" id="id2">
-<h2>0.2.1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2>0.3<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>This is a big one! Headlining features:</p>
+<ul class="simple">
+<li><strong>Resumable Send &amp; Recv Support</strong>
+No knobs required, automatically used where supported.</li>
+<li><strong>Encrypted Send &amp; Recv Support</strong> for OpenZFS native encryption,
+<a class="reference internal" href="configuration/sendrecvoptions.html#job-send-options"><span class="std std-ref">configurable</span></a> at the job level, i.e., for all filesystems a job is responsible for.</li>
+<li><strong>Replication Guarantees</strong>
+Automatic use of ZFS holds and bookmarks to protect a replicated filesystem from losing synchronization between sender and receiver.
+By default, zrepl guarantees that incremental replication will always be possible and interrupted steps will always be resumable.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">We highly recommend studying the updated <a class="reference internal" href="configuration/overview.html#overview-how-replication-works"><span class="std std-ref">overview section of the configuration chapter</span></a> to understand how replication works.</p>
+</div>
+<p>Quick-start guides:</p>
+<ul class="simple">
+<li>We have added <a class="reference internal" href="quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">another quick-start guide for a typical workstation use case for zrepl</span></a>.
+Check it out to learn how you can use zrepl to back up your workstation’s OpenZFS natively-encrypted root filesystem to an external disk.</li>
+</ul>
+<p>Additional changelog:</p>
+<ul class="simple">
+<li><strong>[BREAK]</strong> <strong>[CONFIG]</strong> <strong>more restrictive job names than in prior zrepl versions</strong>
+Starting with this version, job names are going to be embedded into ZFS holds and bookmark names (see <a class="reference internal" href="configuration/overview.html#zrepl-zfs-abstractions"><span class="std std-ref">this section for details</span></a>).
+Therefore you might need to adjust your job names.
+<strong>Note that jobs</strong> cannot be renamed easily <strong>once you start using zrepl 0.3.</strong></li>
+<li><strong>[BREAK]</strong> <strong>[MIGRATION]</strong> replication cursor representation changed<ul>
+<li>zrepl now manages the <a class="reference internal" href="configuration/overview.html#zrepl-zfs-abstractions"><span class="std std-ref">replication cursor bookmark</span></a> per job-filesystem tuple instead of a single replication cursor per filesystem.
+In the future, this will permit multiple sending jobs to send from the same filesystems.</li>
+<li>ZFS does not allow bookmark renaming, thus we cannot migrate the old replication cursors.</li>
+<li>zrepl 0.3 will automatically create cursors in the new format for new replications, and warn if it still finds ones in the old format.</li>
+<li>Run <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">migrate</span> <span class="pre">replication-cursor:v1-v2</span></code> to safely destroy old-format cursors.
+The migration will ensure that only those old-format cursors are destroyed that have been superseeded by new-format cursors.</li>
+</ul>
+</li>
+<li>[FEATURE] New option <code class="docutils literal notranslate"><span class="pre">listen_freebind</span></code> (tcp, tls, prometheus listener)</li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/341">issue #341</a> Prometheus metric for failing replications + corresponding Grafana panel</li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/265">issue #265</a> transport/tcp: support for CIDR masks in client IP whitelist</li>
+<li>[FEATURE] documented subcommand to generate <code class="docutils literal notranslate"><span class="pre">bash</span></code> and <code class="docutils literal notranslate"><span class="pre">zsh</span></code> completions</li>
+<li>[FEATURE] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/307">issue #307</a> <code class="docutils literal notranslate"><span class="pre">chrome://trace</span></code> -compatible activity tracing of zrepl daemon activity</li>
+<li>[FEATURE] logging: trace IDs for better log entry correlation with concurrent replication jobs</li>
+<li>[FEATURE] experimental environment variable for parallel replication (see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/306">issue #306</a> )</li>
+<li>[BUG] missing logger context vars in control connection handlers</li>
+<li>[BUG] improved error messages on <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code> errors</li>
+<li>[BUG] [DOCS] snapshotting: clarify sync-up behavior and warn about filesystems</li>
+<li>[BUG] transport/ssh: do not leak zombie ssh process on connection failures
+that will not be snapshotted until the sync-up phase is over</li>
+<li>[DOCS] Installation: <a class="reference internal" href="installation/freebsd-jail-with-iocage.html#installation-freebsd-jail-with-iocage"><span class="std std-ref">FreeBSD jail with iocage</span></a></li>
+<li>[DOCS] Document new replication features in the <a class="reference internal" href="configuration/overview.html#overview-how-replication-works"><span class="std std-ref">config overview</span></a> and <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/replication/design.md">replication/design.md</a>.</li>
+<li><strong>[MAINTAINER NOTICE]</strong> New platform tests in this version, please make sure you run them for your distro!</li>
+<li><strong>[MAINTAINER NOTICE]</strong> Please add the shell completions to the zrepl packages.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="last line-block">
+<div class="line">zrepl is a spare-time project primarily developed by <a class="reference external" href="https://cschwarz.com">Christian Schwarz</a>.</div>
+<div class="line">You can support maintenance and feature development through one of the following services:</div>
+<div class="line"><a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fzrepl%2Fpledges&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://github.com/sponsors/problame"><img alt="Donate via GitHub Sponsors" src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/patrons/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></div>
+<div class="line">Note that PayPal processing fees are relatively high for small donations.</div>
+<div class="line">For SEPA wire transfer and <strong>commercial support</strong>, please <a class="reference external" href="https://cschwarz.com">contact Christian directly</a>.</div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>0.2.1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[FEATURE] Illumos (and Solaris) compatibility and binary builds (thanks, <a class="reference external" href="https://mnx.io">MNX.io</a> )</li>
 <li>[FEATURE] 32bit binaries for Linux and FreeBSD (untested, though)</li>
@@ -204,8 +269,8 @@ Note that even updating the package on both sides might not be sufficient, e.g. 
 <li>[MAINTAINER NOTICE] <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> refactoring, see <a class="reference external" href="https://github.com/zrepl/zrepl/commit/080f2c0">commit 080f2c0</a></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>0.2<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>0.2<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[FEATURE] <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-hooks"><span class="std std-ref">Pre- and Post-Snapshot Hooks</span></a>
 with built-in support for MySQL and Postgres checkpointing
@@ -229,19 +294,9 @@ These tests only work on a system with ZFS installed, and must be run as root be
 The pool name <code class="docutils literal notranslate"><span class="pre">zreplplatformtest</span></code> is reserved for this use case.
 Only run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">platformtest</span></code> on test systems, e.g. a FreeBSD VM image.</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<div class="last line-block">
-<div class="line">zrepl is a spare-time project primarily developed by <a class="reference external" href="https://cschwarz.com">Christian Schwarz</a>.</div>
-<div class="line">You can support maintenance and feature development through one of the following services:</div>
-<div class="line"><a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fzrepl%2Fpledges&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/receives/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></div>
-<div class="line">Note that PayPal processing fees are relatively high for small donations.</div>
-<div class="line">For SEPA wire transfer and <strong>commerical support</strong>, please <a class="reference external" href="https://cschwarz.com">contact Christian directly</a>.</div>
 </div>
-</div>
-</div>
-<div class="section" id="id4">
-<h2>0.1.1<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>0.1.1<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/162">issue #162</a> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/d6304f4">commit d6304f4</a> : fix I/O timeout errors on variable receive rate<ul>
 <li>A significant reduction or sudden stall of the receive rate (e.g. recv pool has other I/O to do)
@@ -250,8 +305,8 @@ would cause a <code class="docutils literal notranslate"><span class="pre">write
 </li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h2>0.1<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h2>0.1<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <p>This release is a milestone for zrepl and required significant refactoring if not rewrites of substantial parts of the application.
 It breaks both configuration and transport format, and thus requires manual intervention and updates on both sides of a replication setup.</p>
 <div class="admonition danger">
@@ -401,13 +456,13 @@ For the changelog of previous releases, use the version selection in the hosted 
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.2.1
+        v: v0.3.0
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="v0.3.0-rc2/changelog.html">v0.3.0-rc2</a></dd>
+            <dd><a href="v0.3.0/changelog.html">v0.3.0</a></dd>
             <dd><a href="v0.2.1/changelog.html">v0.2.1</a></dd>
             <dd><a href="v0.1.1/changelog.html">v0.1.1</a></dd>
         </dl>

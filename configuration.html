@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Overview &amp; Terminology" href="configuration/overview.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="prev" title="What next?" href="installation/what-next.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,13 +86,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html">Overview &amp; Terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
@@ -157,7 +159,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.2.1/docs/configuration.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/configuration.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -186,7 +188,12 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#jobs-how-they-work-together">Jobs &amp; How They Work Together</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-the-active-side-works">How the Active Side Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-the-passive-side-works">How the Passive Side Works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-replication-works">How Replication Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-replication-works">How Replication Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#zfs-background-knowledge">ZFS Background Knowledge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#zfs-abstractions-managed-by-zrepl">ZFS Abstractions Managed By zrepl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#limitations">Limitations</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#no-overlapping">No Overlapping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#n-push-jobs-to-1-sink">N push jobs to 1 sink</a></li>
@@ -230,6 +237,18 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration/filter_syntax.html#fine-grained">Fine-grained</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/sendrecvoptions.html">Send &amp; Recv Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#send-options">Send Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#encryption-option"><code class="docutils literal notranslate"><span class="pre">encryption</span></code> option</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#recv-options">Recv Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/replication.html">Replication Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/replication.html#protection-option"><code class="docutils literal notranslate"><span class="pre">protection</span></code> option</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a><ul>
@@ -290,7 +309,7 @@
         <a href="configuration/overview.html" class="btn btn-neutral float-right" title="Overview &amp; Terminology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation/what-next.html" class="btn btn-neutral float-left" title="What next?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -317,13 +336,13 @@
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.2.1
+        v: v0.3.0
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="v0.3.0-rc2/configuration.html">v0.3.0-rc2</a></dd>
+            <dd><a href="v0.3.0/configuration.html">v0.3.0</a></dd>
             <dd><a href="v0.2.1/configuration.html">v0.2.1</a></dd>
             <dd><a href="v0.1.1/configuration.html">v0.1.1</a></dd>
         </dl>

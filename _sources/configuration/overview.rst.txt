@@ -12,7 +12,7 @@ The following paths are considered:
 The ``zrepl configcheck`` subcommand can be used to validate the configuration.
 The command will output nothing and exit with zero status code if the configuration is valid.
 The error messages vary in quality and usefulness: please report confusing config errors to the tracking :issue:`155`.
-Full example configs such as in the :ref:`tutorial` or the :sampleconf:`/` directory might also be helpful.
+Full example configs such as in the :ref:`quick-start guides <quickstart-toc>` or the :sampleconf:`/` directory might also be helpful.
 However, copy-pasting examples is no substitute for reading documentation!
 
 Config File Structure
@@ -26,9 +26,9 @@ Config File Structure
      type: push
    - ...
 
-zrepl is confgured using a single YAML configuration file with two main sections: ``global`` and ``jobs``.
+zrepl is configured using a single YAML configuration file with two main sections: ``global`` and ``jobs``.
 The ``global`` section is filled with sensible defaults and is covered later in this chapter.
-The ``jobs`` section is a list of jobs which we are goind to explain now.
+The ``jobs`` section is a list of jobs which we are going to explain now.
 
 .. _job-overview:
 
@@ -39,9 +39,13 @@ A *job* is the unit of activity tracked by the zrepl daemon.
 The ``type`` of a job determines its role in a replication setup and in snapshot management.
 Jobs are identified by their ``name``, both in log files and the ``zrepl status`` command.
 
+.. NOTE::
+   The job name is persisted in several places on disk and thus :issue:`cannot be changed easily<327>`.
+
+
 Replication always happens between a pair of jobs: one is the **active side**, and one the **passive side**.
 The active side connects to the passive side using a :ref:`transport <transport>` and starts executing the replication logic.
-The passive side responds to requests from the active side after checking its persmissions.
+The passive side responds to requests from the active side after checking its permissions.
 
 The following table shows how different job types can be combined to achieve **both push and pull mode setups**.
 Note that snapshot-creation denoted by "(snap)" is orthogonal to whether a job is active or passive.
@@ -90,6 +94,8 @@ It uses the client identity for access control:
 .. TIP::
    The implementation of the ``sink`` job requires that the connecting client identities be a valid ZFS filesystem name components.
 
+.. _overview-how-replication-works:
+
 How Replication Works
 ---------------------
 
@@ -97,7 +103,7 @@ One of the major design goals of the replication module is to avoid any duplicat
 As such, the code works on abstract senders and receiver **endpoints**, where typically one will be implemented by a local program object and the other is an RPC client instance.
 Regardless of push- or pull-style setup, the logic executes on the active side, i.e. in the ``push`` or ``pull`` job.
 
-The following steps take place during replication and can be monitored using the ``zrepl status`` subcommand:
+The following high-level steps take place during replication and can be monitored using the ``zrepl status`` subcommand:
 
 * Plan the replication:
 
@@ -105,11 +111,10 @@ The following steps take place during replication and can be monitored using the
   * Build the **replication plan**
 
     * Per filesystem, compute a diff between sender and receiver snapshots
-    * Build a list of replication steps
+    * Build a list of **replication steps**
 
-      * If possible, use incremental sends (``zfs send -i``)
+      * If possible, use incremental and resumable sends
       * Otherwise, use full send of most recent snapshot on sender
-      * Give up on filesystems that cannot be replicated without data loss
 
   * Retry on errors that are likely temporary (i.e. network failures).
   * Give up on filesystems where a permanent error was received over RPC.
@@ -119,32 +124,103 @@ The following steps take place during replication and can be monitored using the
   * Perform replication steps in the following order:
     Among all filesystems with pending replication steps, pick the filesystem whose next replication step's snapshot is the oldest.
   * Create placeholder filesystems on the receiving side to mirror the dataset paths on the sender to ``root_fs/${client_identity}``.
-  * After a successful replication step, update the replication cursor bookmark (see below).
+  * Acquire send-side *step-holds* on the step's `from` and `to` snapshots.
+  * Perform the replication step.
+  * Move the **replication cursor** bookmark on the sending side (see below).
+  * Move the **last-received-hold** on the receiving side (see below).
+  * Release the send-side step-holds.
    
 The idea behind the execution order of replication steps is that if the sender snapshots all filesystems simultaneously at fixed intervals, the receiver will have all filesystems snapshotted at time ``T1`` before the first snapshot at ``T2 = T1 + $interval`` is replicated.
 
-.. _replication-cursor-bookmark:
+ZFS Background Knowledge
+^^^^^^^^^^^^^^^^^^^^^^^^
+This section gives some background knowledge about ZFS features that zrepl uses to provide guarantees for a replication filesystem.
+Specifically, zrepl guarantees by default that **incremental replication is always possible and that started replication steps can always be resumed if they are interrupted.**
 
-The **replication cursor bookmark** ``#zrepl_replication_cursor`` is kept per filesystem on the sending side of a replication setup:
-It is a bookmark of the most recent successfully replicated snapshot to the receiving side.
-It is is used by the :ref:`not_replicated <prune-keep-not-replicated>` keep rule to identify all snapshots that have not yet been replicated to the receiving side.
-Regardless of whether that keep rule is used, the bookmark ensures that replication can always continue incrementally.
-Note that there is only one cursor bookmark per filesystem, which prohibits multiple jobs to replicate the same filesystem (:ref:`see below<jobs-multiple-jobs>`).
+**ZFS Send Modes & Bookmarks**
+ZFS supports full sends (``zfs send fs@to``) and incremental sends (``zfs send -i @from fs@to``).
+Full sends are used to create a new filesystem on the receiver with the send-side state of ``fs@to``.
+Incremental sends only transfer the delta between ``@from`` and ``@to``.
+Incremental sends require that ``@from`` be present on the receiving side when receiving the incremental stream.
+Incremental sends can also use a ZFS bookmark as *from* on the sending side (``zfs send -i #bm_from fs@to``), where ``#bm_from`` was created using ``zfs bookmark fs@from fs#bm_from``.
+The receiving side must always have the actual snapshot ``@from``, regardless of whether the sending side uses ``@from`` or a bookmark of it.
+
+**Resumable Send & Recv**
+The ``-s`` flag for ``zfs recv`` tells zfs to save the partially received send stream in case it is interrupted.
+To resume the replication, the receiving side filesystem's ``receive_resume_token`` must be passed to a new ``zfs send -t <value> | zfs recv`` command.
+A full send can only be resumed if ``@to`` still exists.
+An incremental send can only be resumed if ``@to`` still exists *and* either ``@from`` still exists *or* a bookmark ``#fbm`` of ``@from`` still exists.
+
+**ZFS Holds**
+ZFS holds prevent a snapshot from being deleted through ``zfs destroy``, letting the destroy fail with a ``datset is busy`` error.
+Holds are created and referred to by a *tag*. They can be thought of as a named, persistent lock on the snapshot.
+
+
+.. _zrepl-zfs-abstractions:
+
+ZFS Abstractions Managed By zrepl
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+With the background knowledge from the previous paragraph, we now summarize the different on-disk ZFS objects that zrepl manages to provide its functionality.
 
 .. _replication-placeholder-property:
 
 **Placeholder filesystems** on the receiving side are regular ZFS filesystems with the placeholder property ``zrepl:placeholder=on``.
-Placeholders allow the receiving side to mirror the sender's ZFS dataset hierachy without replicating every filesystem at every intermediary dataset path component.
+Placeholders allow the receiving side to mirror the sender's ZFS dataset hierarchy without replicating every filesystem at every intermediary dataset path component.
 Consider the following example: ``S/H/J`` shall be replicated to ``R/sink/job/S/H/J``, but neither ``S/H`` nor ``S`` shall be replicated.
 ZFS requires the existence of ``R/sink/job/S`` and ``R/sink/job/S/H`` in order to receive into ``R/sink/job/S/H/J``.
 Thus, zrepl creates the parent filesystems as placeholders on the receiving side.
 If at some point ``S/H`` and ``S`` shall be replicated, the receiving side invalidates the placeholder flag automatically.
 The ``zrepl test placeholder`` command can be used to check whether a filesystem is a placeholder.
 
+.. _replication-cursor-and-last-received-hold:
+
+The **replication cursor** bookmark and **last-received-hold** are managed by zrepl to ensure that future replications can always be done incrementally.
+The replication cursor is a send-side bookmark of the most recent successfully replicated snapshot,
+and the last-received-hold is a hold of that snapshot on the receiving side.
+Both are moved atomically after the receiving side has confirmed that a replication step is complete.
+
+The replication cursor has the format ``#zrepl_CUSOR_G_<GUID>_J_<JOBNAME>``.
+The last-received-hold tag has the format ``zrepl_last_received_J_<JOBNAME>``.
+Encoding the job name in the names ensures that multiple sending jobs can replicate the same filesystem to different receivers without interference.
+
+.. _tentative-replication-cursor-bookmarks:
+
+**Tentative replication cursor bookmarks** are short-lived boomkarks that protect the atomic moving-forward of the replication cursor and last-received-hold (see :issue:`this issue <340>`).
+They are only necessary if step holds are not used as per the :ref:`replication.protection <replication-option-protection>` setting.
+The tentative replication cursor has the format ``#zrepl_CUSORTENTATIVE_G_<GUID>_J_<JOBNAME>``.
+The ``zrepl zfs-abstraction list`` command provides a listing of all bookmarks and holds managed by zrepl.
+
+.. _step-holds:
+
+**Step holds** are zfs holds managed by zrepl to ensure that a replication step can always be resumed if it is interrupted, e.g., due to network outage.
+zrepl creates step holds before it attempts a replication step and releases them after the receiver confirms that the replication step is complete.
+For an initial replication ``full @initial_snap``, zrepl puts a zfs hold on ``@initial_snap``.
+For an incremental send ``@from -> @to``, zrepl puts a zfs hold on both ``@from`` and ``@to``.
+Note that ``@from`` is not strictly necessary for resumability -- a bookmark on the sending side would be sufficient --, but size-estimation in currently used OpenZFS versions only works if ``@from`` is a snapshot.
+The hold tag has the format ``zrepl_STEP_J_<JOBNAME>``.
+A job only ever has one active send per filesystem.
+Thus, there are never more than two step holds for a given pair of ``(job,filesystem)``.
+
+**Step bookmarks** are zrepl's equivalent for holds on bookmarks (ZFS does not support putting holds on bookmarks).
+They are intended for a situation where a replication step uses a bookmark ``#bm`` as incremental ``from`` where ``#bm`` is not managed by zrepl.
+To ensure resumability, zrepl copies ``#bm`` to step bookmark ``#zrepl_STEP_G_<GUID>_J_<JOBNAME>``.
+If the replication is interrupted and ``#bm`` is deleted by the user, the step bookmark remains as an incremental source for the resumable send.
+Note that zrepl does not yet support creating step bookmarks because the `corresponding ZFS feature for copying bookmarks <https://github.com/openzfs/zfs/pull/9571>`_ is not yet widely available .
+Subscribe to zrepl :issue:`326` for details.
+
+The ``zrepl zfs-abstraction list`` command provides a listing of all bookmarks and holds managed by zrepl.
+
+.. NOTE::
+
+    More details can be found in the design document :repomasterlink:`replication/design.md`.
+
+Limitations
+^^^^^^^^^^^
+
 .. ATTENTION::
 
     Currently, zrepl does not replicate filesystem properties.
-    Whe receiving a filesystem, it is never mounted (`-u` flag)  and `mountpoint=none` is set.
+    When receiving a filesystem, it is never mounted (`-u` flag)  and `mountpoint=none` is set.
     This is temporary and being worked on :issue:`24`.
 
 
@@ -166,26 +242,26 @@ Multiple Jobs & More than 2 Machines
 If you would like to see improvements to multi-job setups, please `open an issue on GitHub <https://github.com/zrepl/zrepl/issues/new>`_.
 
 No Overlapping
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 Jobs run independently of each other.
 If two jobs match the same filesystem with their ``filesystems`` filter, they will operate on that filesystem independently and potentially in parallel.
-For example, if job A prunes snapshots that job B is planning to replicate, the replication will fail because B asssumed the snapshot to still be present.
-More subtle race conditions can occur with the :ref:`replication cursor bookmark <replication-cursor-bookmark>`, which currently only exists once per filesystem.
+For example, if job A prunes snapshots that job B is planning to replicate, the replication will fail because B assumed the snapshot to still be present.
+However, the next replication attempt will re-examine the situation from scratch and should work.
 
 N push jobs to 1 sink
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 The :ref:`sink job <job-sink>` namespaces by client identity.
 It is thus safe to push to one sink job with different client identities.
 If the push jobs have the same client identity, the filesystems matched by the push jobs must be disjoint to avoid races.
 
 N pull jobs from 1 source
-~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Multiple pull jobs pulling from the same source have potential for race conditions during pruning:
 each pull job prunes the source side independently, causing replication-prune and prune-prune races.
 
 There is currently no way for a pull job to filter which snapshots it should attempt to replicate.
-Thus, it is not possibe to just manually assert that the prune rules of all pull jobs are disjoint to avoid replication-prune and prune-prune races.
+Thus, it is not possible to just manually assert that the prune rules of all pull jobs are disjoint to avoid replication-prune and prune-prune races.
 

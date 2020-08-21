@@ -86,13 +86,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Pruning Policies</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#policy-not-replicated">Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code></a></li>
@@ -169,7 +171,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.2.1/docs/configuration/prune.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/configuration/prune.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -192,7 +194,7 @@
 <div class="section" id="pruning-policies">
 <span id="prune"></span><h1>Pruning Policies<a class="headerlink" href="#pruning-policies" title="Permalink to this headline">¶</a></h1>
 <p>In zrepl, <em>pruning</em> means <em>destroying snapshots</em>.
-Pruning must happen on both sides of a replication or the systems would inevitable run out of disk space at some point.</p>
+Pruning must happen on both sides of a replication or the systems would inevitably run out of disk space at some point.</p>
 <p>Typically, the requirements to temporal resolution and maximum retention time differ per side.
 For example, when using zrepl to back up a busy database server, you will want high temporal resolution (snapshots every 10 min) for the last 24h in case of administrative disasters, but cannot afford to store them for much longer because you might have high turnover volume in the database.
 On the receiving side, you may have more disk space available, or need to comply with other backup retention policies.</p>
@@ -226,6 +228,8 @@ The keep rules are <strong>evaluated on the active side</strong> (<a class="refe
           <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">35</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">6</span><span class="n">x30d</span>
           <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_.*&quot;</span>
         <span class="c1"># manually created snapshots will be kept forever on receiver</span>
+        <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">regex</span>
+          <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^manual_.*&quot;</span>
 </pre></div>
 </div>
 <div class="admonition danger">
@@ -245,7 +249,7 @@ Make sure to actually add the necessary <code class="docutils literal notranslat
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> keeps all snapshots that have not been replicated to the receiving side.
 It only makes sense to specify this rule on a sender (source or push job).
-The state required to evaluate this rule is stored in the <a class="reference internal" href="overview.html#replication-cursor-bookmark"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
+The state required to evaluate this rule is stored in the <a class="reference internal" href="overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
 </div>
 <div class="section" id="policy-grid">
 <span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Permalink to this headline">¶</a></h2>
@@ -256,28 +260,25 @@ The state required to evaluate this rule is stored in the <a class="reference in
     - type: grid
       regex: &quot;^zrepl_.*&quot;
       grid: 1x1h(keep=all) | 24x1h | 35x1d | 6x30d
-            │                │
-            └─ one hour interval
-                             │
-                             └─ 24 adjacent one-hour intervals
+            │                │               │
+            └─ 1 repetition of a one-hour interval with keep=all
+                             │               │
+                             └─ 24 repetitions of a one-hour interval with keep=1
+                                             │
+                                             └─ 6 repetitions of a 30-day interval with keep=1
   ...
 </pre></div>
 </div>
-<p>The retention grid can be thought of as a time-based sieve:
-The <code class="docutils literal notranslate"><span class="pre">grid</span></code> field specifies a list of adjacent time intervals:
-the left edge of the leftmost (first) interval is the <code class="docutils literal notranslate"><span class="pre">creation</span></code> date of the youngest snapshot.
-All intervals to its right describe time intervals further in the past.</p>
-<p>Each interval carries a maximum number of snapshots to keep.
-It is specified via <code class="docutils literal notranslate"><span class="pre">(keep=N)</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is either <code class="docutils literal notranslate"><span class="pre">all</span></code> (all snapshots are kept) or a positive integer.
-The default value is <strong>keep=1</strong>.</p>
-<p>The following procedure happens during pruning:</p>
+<p>The retention grid can be thought of as a time-based sieve that thins out snapshots as they get older.
+The <code class="docutils literal notranslate"><span class="pre">grid</span></code> field specifies a list of adjacent time intervals.
+The following procedure happens during pruning:</p>
 <ol class="arabic simple">
 <li>The list of snapshots is filtered by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
 Only snapshots names that match the regex are considered for this rule, all others are not affected.</li>
-<li>The filtered list of snapshots is sorted by <code class="docutils literal notranslate"><span class="pre">creation</span></code></li>
-<li>The left edge of the first interval is aligned to the <code class="docutils literal notranslate"><span class="pre">creation</span></code> date of the youngest snapshot</li>
-<li>A list of buckets is created, one for each interval</li>
-<li>The list of snapshots is split up into the buckets.</li>
+<li>The filtered list of snapshots is sorted by <code class="docutils literal notranslate"><span class="pre">creation</span></code>.</li>
+<li>The left edge of the first interval is aligned to the <code class="docutils literal notranslate"><span class="pre">creation</span></code> date of the youngest snapshot.</li>
+<li>A list of buckets is created, one for each interval.</li>
+<li>The snapshots are placed into the bucket that matches their <code class="docutils literal notranslate"><span class="pre">creation</span></code> date.</li>
 <li>For each bucket<ol class="arabic">
 <li>the contained snapshot list is sorted by creation.</li>
 <li>snapshots from the list, oldest first, are destroyed until the specified <code class="docutils literal notranslate"><span class="pre">keep</span></code> count is reached.</li>
@@ -285,6 +286,55 @@ Only snapshots names that match the regex are considered for this rule, all othe
 </ol>
 </li>
 </ol>
+<p>The syntax to describe the list of time intervals (“buckets”) is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Repeat</span> <span class="n">x</span> <span class="n">Duration</span> <span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>The <strong>duration</strong> specifies the length of the interval.</li>
+<li>The <strong>keep</strong> count specifies the number of snapshots that fit into the bucket.
+It can be either a positive integer or <code class="docutils literal notranslate"><span class="pre">all</span></code> (all snapshots are kept).</li>
+<li>The <strong>repeat</strong> count repeats the bucket definition for the specified number of times.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>This grid spec produces the following list of adjacent buckets. For the sake of simplicity,
+we subject all snapshots to the grid pruning policy by settings `regex: .*`.
+
+`
+ grid: 1x1h(keep=all) | 2x2h | 1x3h
+ regex: .*
+`
+
+0h         1h         2h         3h         4h         5h         6h         7h         8h
+|          |          |          |          |          |          |          |          |
+|-Bucket 1-|------Bucket 2-------|-------Bucket 3------|------------Bucket 4------------|
+| keep=all |       keep=1        |        keep=1       |             keep=1             |
+
+
+
+Let us consider the following set of snapshots @a-zA-C , taken at an interval of ~15min:
+
+
+|  a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  A  B  C |
+
+
+The `grid` algorithm maps them to their respective buckets:
+
+Bucket 1: a, b, c
+Bucket 2: d,e,f,g,h,i,j
+Bucket 3: k,l,m,n,o,p,q,r
+Bucket 4: q,r,s,t,u,v,w,x,y,z,A,B,C
+
+It then applies the per-bucket pruning logic described above which resulting in the
+following list of remaining snapshots.
+
+|  a  b  c  d                    k                       s                               |
+
+Note that it only makes sense to grow (not shorten) the interval duration for buckets
+further in the past since each bucket acts like a low-pass filter for incoming snapshots
+and adding a less-low-pass-filter after a low-pass one has no effect.
+</pre></div>
+</div>
 </div>
 <div class="section" id="policy-last-n">
 <span id="prune-keep-last-n"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">last_n</span></code><a class="headerlink" href="#policy-last-n" title="Permalink to this headline">¶</a></h2>
@@ -320,7 +370,7 @@ Only snapshots names that match the regex are considered for this rule, all othe
         <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_.*&quot;</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">regex</span></code> keeps all snapshots whose names are matched by the regular expressionin <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
+<p><code class="docutils literal notranslate"><span class="pre">regex</span></code> keeps all snapshots whose names are matched by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
 Like all other regular expression fields in prune policies, zrepl uses Go’s <a class="reference external" href="https://golang.org/pkg/regexp/#Compile">regexp.Regexp</a> Perl-compatible regular expressions (<a class="reference external" href="https://golang.org/pkg/regexp/syntax">Syntax</a>).
 The optional <cite>negate</cite> boolean field inverts the semantics: Use it if you want to keep all snapshots that <em>do not</em> match the given regex.</p>
 </div>
@@ -411,13 +461,13 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.2.1
+        v: v0.3.0
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0-rc2/configuration/prune.html">v0.3.0-rc2</a></dd>
+            <dd><a href="../v0.3.0/configuration/prune.html">v0.3.0</a></dd>
             <dd><a href="../v0.2.1/configuration/prune.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
         </dl>

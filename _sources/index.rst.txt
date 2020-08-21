@@ -5,7 +5,7 @@
 
 .. include:: global.rst.inc
 
-|GitHub license| |Language: Go| |Twitter| |Donate via Patreon| |Donate via Liberapay| |Donate via PayPal| 
+|GitHub license| |Language: Go| |Twitter| |Donate via Patreon| |Donate via GitHub Sponsors| |Donate via Liberapay| |Donate via PayPal|
 
 
 zrepl - ZFS replication
@@ -44,7 +44,7 @@ zrepl - ZFS replication
 Getting started
 ~~~~~~~~~~~~~~~
 
-The :ref:`10 minutes tutorial setup <tutorial>` gives you a first impression.
+The :ref:`10 minute quick-start guides <quickstart-toc>` give you a first impression.
 
 Main Features
 ~~~~~~~~~~~~~
@@ -57,9 +57,11 @@ Main Features
   * Advanced replication features
 
     * [x] Automatic retries for temporary network errors
-    * [ ] Resumable send & receive
+    * [x] Automatic resumable send & receive
+    * [x] Automatic ZFS holds during send & receive
+    * [x] Automatic bookmark \& hold management for guaranteed incremental send & recv 
+    * [x] Encrypted raw send & receive to untrusted receivers (OpenZFS native encryption)
     * [ ] Compressed send & receive
-    * [ ] Raw encrypted send & receive
 
 * **Automatic snapshot management**
 
@@ -83,6 +85,7 @@ Main Features
 * **Maintainable implementation in Go**
 
   * [x] Cross platform
+  * [x] Dynamic feature checking
   * [x] Type safe & testable code
 
 
@@ -122,7 +125,7 @@ Table of Contents
    :maxdepth: 2
    :caption: Contents:
 
-   tutorial
+   quickstart
    installation
    configuration
    usage

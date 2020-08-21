@@ -86,13 +86,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Logging</a><ul>
@@ -171,7 +173,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.2.1/docs/configuration/logging.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/configuration/logging.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -432,7 +434,7 @@ The latter is particularly useful in combination with log aggregation services.<
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>zrepl drops log messages to the TCP outlet if the underlying connection is not fast enough.
-Note that TCP buffering in the kernel must first run full becfore messages are dropped.</p>
+Note that TCP buffering in the kernel must first run full before messages are dropped.</p>
 <p class="last">Make sure to always configure a <code class="docutils literal notranslate"><span class="pre">stdout</span></code> outlet as the special error outlet to be informed about problems
 with the TCP outlet (see <a class="reference internal" href="#logging-error-outlet"><span class="std std-ref">above</span></a> ).</p>
 </div>
@@ -482,13 +484,13 @@ In case of a security defect in these packages, zrepl has to be rebuilt because 
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.2.1
+        v: v0.3.0
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0-rc2/configuration/logging.html">v0.3.0-rc2</a></dd>
+            <dd><a href="../v0.3.0/configuration/logging.html">v0.3.0</a></dd>
             <dd><a href="../v0.2.1/configuration/logging.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/configuration/logging.html">v0.1.1</a></dd>
         </dl>

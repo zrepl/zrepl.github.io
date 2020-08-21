@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Taking Snaphots" href="snapshotting.html" />
+    <link rel="next" title="Send &amp; Recv Options" href="sendrecvoptions.html" />
     <link rel="prev" title="Transports" href="transports.html" /> 
 </head>
 
@@ -86,7 +86,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
@@ -100,6 +100,8 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
@@ -166,7 +168,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.2.1/docs/configuration/filter_syntax.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/configuration/filter_syntax.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -188,7 +190,7 @@
 
 <div class="section" id="filter-syntax">
 <span id="pattern-filter"></span><h1>Filter Syntax<a class="headerlink" href="#filter-syntax" title="Permalink to this headline">¶</a></h1>
-<p>For <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source jobs</span></a> and <a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push jobs</span></a>, a filesystem filter must be defined (field <code class="docutils literal notranslate"><span class="pre">filesystems</span></code>).
+<p>For <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source</span></a>, <a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push</span></a> and <a class="reference internal" href="jobs.html#job-snap"><span class="std std-ref">snap</span></a> jobs, a filesystem filter must be defined (field <code class="docutils literal notranslate"><span class="pre">filesystems</span></code>).
 A filter takes a filesystem path (in the ZFS filesystem hierarchy) as parameter and returns <code class="docutils literal notranslate"><span class="pre">true</span></code> (pass) or <code class="docutils literal notranslate"><span class="pre">false</span></code> (block).</p>
 <p>A filter is specified as a <strong>YAML dictionary</strong> with patterns as keys and booleans as values.
 The following rules determine which result is chosen for a given filesystem path:</p>
@@ -249,7 +251,7 @@ The following rules determine which result is chosen for a given filesystem path
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="snapshotting.html" class="btn btn-neutral float-right" title="Taking Snaphots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="sendrecvoptions.html" class="btn btn-neutral float-right" title="Send &amp; Recv Options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="transports.html" class="btn btn-neutral float-left" title="Transports" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -279,13 +281,13 @@ The following rules determine which result is chosen for a given filesystem path
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.2.1
+        v: v0.3.0
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0-rc2/configuration/filter_syntax.html">v0.3.0-rc2</a></dd>
+            <dd><a href="../v0.3.0/configuration/filter_syntax.html">v0.3.0</a></dd>
             <dd><a href="../v0.2.1/configuration/filter_syntax.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/configuration/filter_syntax.html">v0.1.1</a></dd>
         </dl>

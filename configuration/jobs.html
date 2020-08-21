@@ -86,7 +86,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
@@ -101,6 +101,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
@@ -167,7 +169,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.2.1/docs/configuration/jobs.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/configuration/jobs.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -206,7 +208,7 @@
 <td>= <code class="docutils literal notranslate"><span class="pre">push</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
-<td>unique name of the job</td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">connect</span></code></td>
 <td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">connect specification</span></a></td>
@@ -214,10 +216,13 @@
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">filesystems</span></code></td>
 <td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted and pushed to the sink</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">snapshotting</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">send</span></code></td>
+<td><a class="reference internal" href="sendrecvoptions.html#job-send-options"><span class="std std-ref">send options</span></a>, e.g. for encrypted sends</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">snapshotting</span></code></td>
 <td><a class="reference internal" href="snapshotting.html#job-snapshotting-spec"><span class="std std-ref">snapshotting specification</span></a></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">pruning</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">pruning</span></code></td>
 <td><a class="reference internal" href="prune.html#prune"><span class="std std-ref">pruning specification</span></a></td>
 </tr>
 </tbody>
@@ -241,7 +246,7 @@
 <td>= <code class="docutils literal notranslate"><span class="pre">sink</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
-<td>unique name of the job</td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">serve</span></code></td>
 <td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">serve specification</span></a></td>
@@ -271,7 +276,7 @@
 <td>= <code class="docutils literal notranslate"><span class="pre">pull</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
-<td>unique name of the job</td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">connect</span></code></td>
 <td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">connect specification</span></a></td>
@@ -311,7 +316,7 @@
 <td>= <code class="docutils literal notranslate"><span class="pre">source</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
-<td>unique name of the job</td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">serve</span></code></td>
 <td><a class="reference internal" href="transports.html#transport"><span class="std std-ref">serve specification</span></a></td>
@@ -319,7 +324,10 @@
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">filesystems</span></code></td>
 <td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted and exposed to connecting clients</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">snapshotting</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">send</span></code></td>
+<td><a class="reference internal" href="sendrecvoptions.html#job-send-options"><span class="std std-ref">send options</span></a>, e.g. for encrypted sends</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">snapshotting</span></code></td>
 <td><a class="reference internal" href="snapshotting.html#job-snapshotting-spec"><span class="std std-ref">snapshotting specification</span></a></td>
 </tr>
 </tbody>
@@ -349,7 +357,7 @@
 <td>= <code class="docutils literal notranslate"><span class="pre">snap</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">name</span></code></td>
-<td>unique name of the job</td>
+<td>unique name of the job <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">(must not change)</a></td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">filesystems</span></code></td>
 <td><a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> for filesystems to be snapshotted</td>
@@ -404,13 +412,13 @@
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.2.1
+        v: v0.3.0
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0-rc2/configuration/jobs.html">v0.3.0-rc2</a></dd>
+            <dd><a href="../v0.3.0/configuration/jobs.html">v0.3.0</a></dd>
             <dd><a href="../v0.2.1/configuration/jobs.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/configuration/jobs.html">v0.1.1</a></dd>
         </dl>
