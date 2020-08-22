@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick Start by Use Case &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Continuous Backup of a Server" href="quickstart/continuous_server_backup.html" />
+    <link rel="prev" title="zrepl - ZFS replication" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start by Use Case</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-zrepl">Install zrepl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-how-zrepl-works">Overview Of How zrepl Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-examples">Configuration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart/continuous_server_backup.html">Continuous Backup of a Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart/backup_to_external_disk.html">Local Snapshots + Offline Backup to an External Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#apply-configuration-changes">Apply Configuration Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#watch-it-work">Watch it Work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-next">What Next?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supporters.html">Supporters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">zrepl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Quick Start by Use Case</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/zrepl/zrepl/blob/stable/docs/quickstart.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+
+
+
+<div class="section" id="quick-start-by-use-case">
+<span id="quickstart-toc"></span><h1>Quick Start by Use Case<a class="headerlink" href="#quick-start-by-use-case" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this quick-start guide is to give you an impression of how zrepl can accomodate your use case.</p>
+<div class="section" id="install-zrepl">
+<h2>Install zrepl<a class="headerlink" href="#install-zrepl" title="Permalink to this headline">¶</a></h2>
+<p>Follow the <a class="reference internal" href="installation.html#installation-toc"><span class="std std-ref">OS-specific installation instructions</span></a> and come back here.</p>
+</div>
+<div class="section" id="overview-of-how-zrepl-works">
+<h2>Overview Of How zrepl Works<a class="headerlink" href="#overview-of-how-zrepl-works" title="Permalink to this headline">¶</a></h2>
+<p>Check out the <a class="reference internal" href="configuration/overview.html#job-overview"><span class="std std-ref">overview section</span></a> to get a rough idea of what you are going to configure in the next step, then come back here.</p>
+</div>
+<div class="section" id="configuration-examples">
+<h2>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Permalink to this headline">¶</a></h2>
+<p>zrepl is configured through a YAML configuration file in <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code>.
+We have prepared example use cases that show-case typical deployments and different functionality of zrepl.
+We encourage you to read through all of the examples to get an idea of what zrepl has to offer, and how you can mix-and-match configurations for your use case.
+Keep the <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">full config documentation</span></a> handy if a config snippet is unclear.</p>
+<p><strong>Example Use Cases</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/continuous_server_backup.html">Continuous Backup of a Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/backup_to_external_disk.html">Local Snapshots + Offline Backup to an External Disk</a></li>
+</ul>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> to validate your configuration.
+No output indicates that everything is fine.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please open an issue on GitHub if your use case for zrepl is significantly different from those listed above.
+Or even better, write it up in the same style as above and open a PR!</p>
+</div>
+</div>
+<div class="section" id="apply-configuration-changes">
+<span id="quickstart-apply-config"></span><h2>Apply Configuration Changes<a class="headerlink" href="#apply-configuration-changes" title="Permalink to this headline">¶</a></h2>
+<p>We hope that you have found a configuration that fits your use case.
+Use <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> once again to make sure the config is correct (output indicates that everything is fine).
+Then restart the zrepl daemon on all systems involved in the replication, likely using <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">zrepl</span> <span class="pre">restart</span></code> or <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">zrepl</span></code>.</p>
+</div>
+<div class="section" id="watch-it-work">
+<h2>Watch it Work<a class="headerlink" href="#watch-it-work" title="Permalink to this headline">¶</a></h2>
+<p>Run <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> on the active side of the replication setup to monitor snaphotting, replication and pruning activity.
+To re-trigger replication (snapshots are separate!), use <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOBNAME</span></code>.
+(refer to the example use case document if you are uncertain which job you want to wake up).</p>
+<p>You can also use basic UNIX tools to inspect see what’s going on.
+If you like tmux, here is a handy script that works on FreeBSD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pkg</span> <span class="n">install</span> <span class="n">gnu</span><span class="o">-</span><span class="n">watch</span> <span class="n">tmux</span>
+<span class="n">tmux</span> <span class="n">new</span> <span class="o">-</span><span class="n">s</span> <span class="n">zrepl</span> <span class="o">-</span><span class="n">d</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;tail -f /var/log/messages&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;gnu-watch &#39;zfs list -t snapshot -o name,creation -s creation&#39;&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;zrepl status&quot;</span>
+<span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="n">tiled</span>
+<span class="n">tmux</span> <span class="n">attach</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span>
+</pre></div>
+</div>
+<p>The Linux equivalent might look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># make sure tmux is installed &amp; let&#39;s assume you use systemd + journald</span>
+<span class="n">tmux</span> <span class="n">new</span> <span class="o">-</span><span class="n">s</span> <span class="n">zrepl</span> <span class="o">-</span><span class="n">d</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span>  <span class="s2">&quot;journalctl -f -u zrepl.service&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;watch &#39;zfs list -t snapshot -o name,creation -s creation&#39;&quot;</span>
+<span class="n">tmux</span> <span class="n">split</span><span class="o">-</span><span class="n">window</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="s2">&quot;zrepl status&quot;</span>
+<span class="n">tmux</span> <span class="n">select</span><span class="o">-</span><span class="n">layout</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span> <span class="n">tiled</span>
+<span class="n">tmux</span> <span class="n">attach</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-next">
+<h2>What Next?<a class="headerlink" href="#what-next" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Read more about <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">configuration format, options &amp; job types</span></a></li>
+<li>Configure <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a> &amp; <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring</span></a>.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="quickstart/continuous_server_backup.html" class="btn btn-neutral float-right" title="Continuous Backup of a Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="zrepl - ZFS replication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Christian Schwarz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: stable
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../v0.3.0/quickstart.html">v0.3.0</a></dd>
+            <dd><a href="../v0.2.1/index.html">v0.2.1</a></dd>
+            <dd><a href="../v0.1.1/index.html">v0.1.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../master/quickstart.html">master</a></dd>
+            <dd><a href="quickstart.html">stable</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

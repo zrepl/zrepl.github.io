@@ -158,7 +158,7 @@
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/v0.3.0/docs/changelog.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/stable/docs/changelog.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -210,6 +210,13 @@ By default, zrepl guarantees that incremental replication will always be possibl
 <p class="first admonition-title">Tip</p>
 <p class="last">We highly recommend studying the updated <a class="reference internal" href="configuration/overview.html#overview-how-replication-works"><span class="std std-ref">overview section of the configuration chapter</span></a> to understand how replication works.</p>
 </div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Go 1.15 changed the default TLS validation policy to <strong>require Subject Alternative Names (SAN) in certificates</strong>.
+The openssl commands we provided in the quick-start guides up to and including the zrepl 0.3 docs seem not to work properly.
+If you encounter certificate validation errors regarding SAN and wish to continue to use your old certificates, start the zrepl daemon with env var <code class="docutils literal notranslate"><span class="pre">GODEBUG=x509ignoreCN=0</span></code>.
+Alternatively, generate new certificates with SANs (see <a class="reference internal" href="configuration/transports.html#transport-tcp-tlsclientauth-certgen"><span class="std std-ref">both options int the TLS transport docs</span></a> ).</p>
+</div>
 <p>Quick-start guides:</p>
 <ul class="simple">
 <li>We have added <a class="reference internal" href="quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">another quick-start guide for a typical workstation use case for zrepl</span></a>.
@@ -217,6 +224,7 @@ Check it out to learn how you can use zrepl to back up your workstation’s Open
 </ul>
 <p>Additional changelog:</p>
 <ul class="simple">
+<li><strong>[BREAK]</strong> Go 1.15 TLS changes mentioned above.</li>
 <li><strong>[BREAK]</strong> <strong>[CONFIG]</strong> <strong>more restrictive job names than in prior zrepl versions</strong>
 Starting with this version, job names are going to be embedded into ZFS holds and bookmark names (see <a class="reference internal" href="configuration/overview.html#zrepl-zfs-abstractions"><span class="std std-ref">this section for details</span></a>).
 Therefore you might need to adjust your job names.
@@ -456,7 +464,7 @@ For the changelog of previous releases, use the version selection in the hosted 
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Other Versions</span>
-        v: v0.3.0
+        v: stable
         <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
@@ -469,6 +477,7 @@ For the changelog of previous releases, use the version selection in the hosted 
         <dl>
             <dt>Branches</dt>
             <dd><a href="master/changelog.html">master</a></dd>
+            <dd><a href="stable/changelog.html">stable</a></dd>
         </dl>
     </div>
 </div>
