@@ -380,6 +380,16 @@ Incremental sends only transfer the delta between <code class="docutils literal 
 Incremental sends require that <code class="docutils literal notranslate"><span class="pre">&#64;from</span></code> be present on the receiving side when receiving the incremental stream.
 Incremental sends can also use a ZFS bookmark as <em>from</em> on the sending side (<code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span> <span class="pre">-i</span> <span class="pre">#bm_from</span> <span class="pre">fs&#64;to</span></code>), where <code class="docutils literal notranslate"><span class="pre">#bm_from</span></code> was created using <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">bookmark</span> <span class="pre">fs&#64;from</span> <span class="pre">fs#bm_from</span></code>.
 The receiving side must always have the actual snapshot <code class="docutils literal notranslate"><span class="pre">&#64;from</span></code>, regardless of whether the sending side uses <code class="docutils literal notranslate"><span class="pre">&#64;from</span></code> or a bookmark of it.</p>
+<p id="zfs-background-knowledge-plain-vs-raw-sends"><strong>Plain and raw sends</strong>
+By default, <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code> sends the most generic, backwards-compatible data stream format (so-called ‘plain send’).
+If the sent uses newer features, e.g. compression or encryption, <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code> has to un-do these operations on the fly to produce the plain send stream.
+If the receiver uses newer features (e.g. compression or encryption inherited from the parent FS), it applies the necessary transformations again on the fly during <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">recv</span></code>.</p>
+<p>Flags such as <code class="docutils literal notranslate"><span class="pre">-e</span></code>, <code class="docutils literal notranslate"><span class="pre">-c</span></code> and <code class="docutils literal notranslate"><span class="pre">-L</span></code>  tell ZFS to produce a send stream that is closer to how the data is stored on disk.
+Sending with those flags removes computational overhead from sender and receiver.
+However, the receiver will not apply certain transformations, e.g., it will not compress with the receive-side <code class="docutils literal notranslate"><span class="pre">compression</span></code> algorithm.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-w</span></code> (<code class="docutils literal notranslate"><span class="pre">--raw</span></code>) flag produces a send stream that is as <em>raw</em> as possible.
+For unencrypted datasets, its current effect is the same as <code class="docutils literal notranslate"><span class="pre">-Lce</span></code>.</p>
+<p>Encrypted datasets can only be sent plain (unencrypted) or raw (encrypted) using the <code class="docutils literal notranslate"><span class="pre">-w</span></code> flag.</p>
 <p><strong>Resumable Send &amp; Recv</strong>
 The <code class="docutils literal notranslate"><span class="pre">-s</span></code> flag for <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">recv</span></code> tells zfs to save the partially received send stream in case it is interrupted.
 To resume the replication, the receiving side filesystem’s <code class="docutils literal notranslate"><span class="pre">receive_resume_token</span></code> must be passed to a new <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span> <span class="pre">-t</span> <span class="pre">&lt;value&gt;</span> <span class="pre">|</span> <span class="pre">zfs</span> <span class="pre">recv</span></code> command.
@@ -406,7 +416,7 @@ Both are moved atomically after the receiving side has confirmed that a replicat
 <p>The replication cursor has the format <code class="docutils literal notranslate"><span class="pre">#zrepl_CUSOR_G_&lt;GUID&gt;_J_&lt;JOBNAME&gt;</span></code>.
 The last-received-hold tag has the format <code class="docutils literal notranslate"><span class="pre">zrepl_last_received_J_&lt;JOBNAME&gt;</span></code>.
 Encoding the job name in the names ensures that multiple sending jobs can replicate the same filesystem to different receivers without interference.</p>
-<p id="tentative-replication-cursor-bookmarks"><strong>Tentative replication cursor bookmarks</strong> are short-lived boomkarks that protect the atomic moving-forward of the replication cursor and last-received-hold (see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/340">this issue</a>).
+<p id="tentative-replication-cursor-bookmarks"><strong>Tentative replication cursor bookmarks</strong> are short-lived bookmarks that protect the atomic moving-forward of the replication cursor and last-received-hold (see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/340">this issue</a>).
 They are only necessary if step holds are not used as per the <a class="reference internal" href="replication.html#replication-option-protection"><span class="std std-ref">replication.protection</span></a> setting.
 The tentative replication cursor has the format <code class="docutils literal notranslate"><span class="pre">#zrepl_CUSORTENTATIVE_G_&lt;GUID&gt;_J_&lt;JOBNAME&gt;</span></code>.
 The <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">zfs-abstraction</span> <span class="pre">list</span></code> command provides a listing of all bookmarks and holds managed by zrepl.</p>
@@ -463,7 +473,7 @@ Otherwise, concurrently running jobs might interfere when operating on the same 
 <ul class="simple">
 <li>all <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter specifications are disjoint</li>
 <li>no <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is a prefix or equal to another <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></li>
-<li>no <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter maches any <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></li>
+<li>no <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter matches any <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></li>
 </ul>
 <p><strong>Exceptions to the rule</strong>:</p>
 <ul class="simple">
