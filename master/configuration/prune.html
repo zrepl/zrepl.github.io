@@ -272,24 +272,23 @@ The state required to evaluate this rule is stored in the <a class="reference in
   ...
 </pre></div>
 </div>
-<p>The retention grid can be thought of as a time-based sieve that thins out snapshots as they get older.
-The <code class="docutils literal notranslate"><span class="pre">grid</span></code> field specifies a list of adjacent time intervals.
+<p>The retention grid can be thought of as a time-based sieve that thins out snapshots as they get older.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> field specifies a list of adjacent time intervals.
+Each interval is a bucket with a maximum capacity of <code class="docutils literal notranslate"><span class="pre">keep</span></code> snapshots.
 The following procedure happens during pruning:</p>
 <ol class="arabic simple">
 <li>The list of snapshots is filtered by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
-Only snapshots names that match the regex are considered for this rule, all others are not affected.</li>
-<li>The filtered list of snapshots is sorted by <code class="docutils literal notranslate"><span class="pre">creation</span></code>.</li>
-<li>The left edge of the first interval is aligned to the <code class="docutils literal notranslate"><span class="pre">creation</span></code> date of the youngest snapshot.</li>
-<li>A list of buckets is created, one for each interval.</li>
-<li>The snapshots are placed into the bucket that matches their <code class="docutils literal notranslate"><span class="pre">creation</span></code> date.</li>
-<li>For each bucket<ol class="arabic">
-<li>the contained snapshot list is sorted by creation.</li>
-<li>snapshots from the list, oldest first, are destroyed until the specified <code class="docutils literal notranslate"><span class="pre">keep</span></code> count is reached.</li>
-<li>all remaining snapshots on the list are kept.</li>
+Only snapshots names that match the regex are considered for this rule, all others will be pruned unless another rule keeps them.</li>
+<li>The snapshots that match <code class="docutils literal notranslate"><span class="pre">regex</span></code> are placed onto a time axis according to their <code class="docutils literal notranslate"><span class="pre">creation</span></code> date.
+The youngest snapshot is on the left, the oldest on the right.</li>
+<li>The first buckets are placed “under” that axis so that the <code class="docutils literal notranslate"><span class="pre">grid</span></code> spec’s first bucket’s left edge aligns with youngest snapshot.</li>
+<li>All subsequent buckets are placed adjacent to their predecessor bucket.</li>
+<li>Now each snapshot on the axis either falls into one bucket or it is older than our rightmost bucket.
+Buckets are left-inclusive and right-exclusive which means that a snapshot on the edge of bucket will always ‘fall into the right one’.</li>
+<li>Snapshots older than the rightmost bucket <strong>not kept</strong> by this gridspec.</li>
+<li>For each bucket, we only keep the <code class="docutils literal notranslate"><span class="pre">keep</span></code> oldest snapshots.</li>
 </ol>
-</li>
-</ol>
-<p>The syntax to describe the list of time intervals (“buckets”) is as follows:</p>
+<p>The syntax to describe the bucket list is as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Repeat</span> <span class="n">x</span> <span class="n">Duration</span> <span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -308,30 +307,30 @@ we subject all snapshots to the grid pruning policy by settings `regex: .*`.
  regex: .*
 `
 
-0h         1h         2h         3h         4h         5h         6h         7h         8h
-|          |          |          |          |          |          |          |          |
-|-Bucket 1-|------Bucket 2-------|-------Bucket 3------|------------Bucket 4------------|
-| keep=all |       keep=1        |        keep=1       |             keep=1             |
+0h        1h        2h        3h        4h        5h        6h        7h        8h        9h
+|         |         |         |         |         |         |         |         |         |
+|-Bucket1-|-----Bucket 2------|------Bucket 3-----|-----------Bucket 4----------|
+| keep=all|      keep=1       |       keep=1      |            keep=1           |
 
 
 
-Let us consider the following set of snapshots @a-zA-C , taken at an interval of ~15min:
+Let us consider the following set of snapshots @a-zA-C:
 
 
-|  a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  A  B  C |
-
+|  a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z  A  B  C  D        |
 
 The `grid` algorithm maps them to their respective buckets:
 
 Bucket 1: a, b, c
 Bucket 2: d,e,f,g,h,i,j
-Bucket 3: k,l,m,n,o,p,q,r
-Bucket 4: q,r,s,t,u,v,w,x,y,z,A,B,C
+Bucket 3: k,l,m,n,o,p
+Bucket 4: q,r, q,r,s,t,u,v,w,x,y,z
+None:     A,B,C,D
 
 It then applies the per-bucket pruning logic described above which resulting in the
 following list of remaining snapshots.
 
-|  a  b  c  d                    k                       s                               |
+|  a  b  c                    j                 p                             z                    |
 
 Note that it only makes sense to grow (not shorten) the interval duration for buckets
 further in the past since each bucket acts like a low-pass filter for incoming snapshots
@@ -341,16 +340,18 @@ and adding a less-low-pass-filter after a low-pass one has no effect.
 </div>
 <div class="section" id="policy-last-n">
 <span id="prune-keep-last-n"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">last_n</span></code><a class="headerlink" href="#policy-last-n" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
-  <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
-    <span class="n">pruning</span><span class="p">:</span>
-      <span class="n">keep_receiver</span><span class="p">:</span>
-      <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">last_n</span>
-        <span class="n">count</span><span class="p">:</span> <span class="mi">10</span>
-  <span class="o">...</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jobs:
+  - type: push
+    pruning:
+      keep_receiver:
+      - type: last_n
+        count: 10
+        regex: ^zrepl_.*$ # optional
+  ...
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">last_n</span></code> keeps the last <code class="docutils literal notranslate"><span class="pre">count</span></code> snapshots (last = youngest = most recent creation date).</p>
+<p><code class="docutils literal notranslate"><span class="pre">last_n</span></code> filters the snapshot list by <code class="docutils literal notranslate"><span class="pre">regex</span></code>, then keeps the last <code class="docutils literal notranslate"><span class="pre">count</span></code> snapshots in that list (last = youngest = most recent creation date)
+All snapshots that don’t match <code class="docutils literal notranslate"><span class="pre">regex</span></code> or exceed <code class="docutils literal notranslate"><span class="pre">count</span></code> in the filtered list are destroyed unless matched by other rules.</p>
 </div>
 <div class="section" id="policy-regex">
 <span id="prune-keep-regex"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">regex</span></code><a class="headerlink" href="#policy-regex" title="Permalink to this headline">¶</a></h2>
@@ -470,7 +471,8 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.3.0/configuration/prune.html">v0.3.0</a></dd>
+            <dd><a href="../../v0.4.0/configuration/prune.html">v0.4.0</a></dd>
+            <dd><a href="../../v0.3.1/configuration/prune.html">v0.3.1</a></dd>
             <dd><a href="../../v0.2.1/configuration/prune.html">v0.2.1</a></dd>
             <dd><a href="../../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
         </dl>

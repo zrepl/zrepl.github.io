@@ -168,7 +168,7 @@
 
 
     <p class="scv-banner scv-sphinx_rtd_theme"><a href="../stable/index.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is stable.</a></p>
-<p><a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/zrepl/zrepl.svg" /></a> <a class="reference external" href="https://golang.org/"><img alt="Language: Go" src="https://img.shields.io/badge/language-Go-6ad7e5.svg" /></a> <a class="reference external" href="https://twitter.com/intent/tweet?text=Wow:&amp;url=https%3A%2F%2Fgithub.com%2Fzrepl%2Fzrepl"><img alt="Twitter" src="https://img.shields.io/twitter/url/https/github.com/zrepl/zrepl.svg?style=social" /></a> <a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fzrepl%2Fpledges&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://github.com/sponsors/problame"><img alt="Donate via GitHub Sponsors" src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/patrons/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></p>
+<p><a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/zrepl/zrepl.svg" /></a> <a class="reference external" href="https://golang.org/"><img alt="Language: Go" src="https://img.shields.io/badge/language-Go-6ad7e5.svg" /></a> <a class="reference external" href="https://twitter.com/intent/tweet?text=Wow:&amp;url=https%3A%2F%2Fgithub.com%2Fzrepl%2Fzrepl"><img alt="Twitter" src="https://img.shields.io/twitter/url/https/github.com/zrepl/zrepl.svg?style=social" /></a> <a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/badge/dynamic/json?color=yellow&amp;label=Patreon&amp;query=data.attributes.patron_count&amp;suffix=%20patrons&amp;url=https%3A%2F%2Fwww.patreon.com%2Fapi%2Fcampaigns%2F3095079" /></a> <a class="reference external" href="https://github.com/sponsors/problame"><img alt="Donate via GitHub Sponsors" src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/patrons/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></p>
 <div class="section" id="zrepl-zfs-replication">
 <h1>zrepl - ZFS replication<a class="headerlink" href="#zrepl-zfs-replication" title="Permalink to this headline">¶</a></h1>
 <p><strong>zrepl</strong> is a one-stop, integrated solution for ZFS replication.</p>
@@ -211,7 +211,11 @@
 <li>[x] Automatic ZFS holds during send &amp; receive</li>
 <li>[x] Automatic bookmark &amp; hold management for guaranteed incremental send &amp; recv</li>
 <li>[x] Encrypted raw send &amp; receive to untrusted receivers (OpenZFS native encryption)</li>
-<li>[ ] Compressed send &amp; receive</li>
+<li>[x] Properties send &amp; receive</li>
+<li>[x] Compressed send &amp; receive</li>
+<li>[x] Large blocks send &amp; receive</li>
+<li>[x] Embedded data send &amp; receive</li>
+<li>[x] Resume state send &amp; receive</li>
 </ul>
 </li>
 </ul>
@@ -287,6 +291,7 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 <li class="toctree-l2"><a class="reference internal" href="installation/user-privileges.html">User Privileges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation/packages.html">Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation/apt-repos.html">Debian / Ubuntu APT repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation/rpm-repos.html">RPM repositories</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation/compile-from-source.html">Compile From Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation/freebsd-jail-with-iocage.html">FreeBSD Jail With iocage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation/what-next.html">What next?</a></li>
@@ -313,11 +318,13 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">0.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id4">0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id5">0.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-0-3">0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id5">0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id7">0.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id8">0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#previous-releases">Previous Releases</a></li>
 </ul>
 </li>
@@ -370,7 +377,8 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0/index.html">v0.3.0</a></dd>
+            <dd><a href="../v0.4.0/index.html">v0.4.0</a></dd>
+            <dd><a href="../v0.3.1/index.html">v0.3.1</a></dd>
             <dd><a href="../v0.2.1/index.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/index.html">v0.1.1</a></dd>
         </dl>

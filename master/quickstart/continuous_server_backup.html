@@ -237,20 +237,18 @@
 <p>We use the <a class="reference internal" href="../configuration/transports.html#transport-tcp-tlsclientauth"><span class="std std-ref">TLS client authentication transport</span></a> to protect our data on the wire.
 To get things going quickly, we skip setting up a CA and generate two self-signed certificates as described <a class="reference internal" href="../configuration/transports.html#transport-tcp-tlsclientauth-2machineopenssl"><span class="std std-ref">here</span></a>.
 For convenience, we generate the key pairs on our local machine and distribute them using ssh:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>openssl req -x509 -sha256 -nodes <span class="se">\</span>
-   -newkey rsa:4096 <span class="se">\</span>
-   -days <span class="m">365</span> <span class="se">\</span>
-   -keyout backups.key <span class="se">\</span>
-   -out backups.crt
-<span class="hll"><span class="c1"># ... and use &quot;backups&quot; as Common Name (CN)</span>
-</span>
-openssl req -x509 -sha256 -nodes <span class="se">\</span>
-   -newkey rsa:4096 <span class="se">\</span>
-   -days <span class="m">365</span> <span class="se">\</span>
-   -keyout prod.key <span class="se">\</span>
-   -out prod.crt
-<span class="hll"><span class="c1"># ... and use &quot;prod&quot; as Common Name (CN)</span>
-</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="nv">name</span><span class="o">=</span>backups<span class="p">;</span> openssl req -x509 -sha256 -nodes <span class="se">\</span>
+ -newkey rsa:4096 <span class="se">\</span>
+ -days <span class="m">365</span> <span class="se">\</span>
+ -keyout <span class="nv">$name</span>.key <span class="se">\</span>
+ -out <span class="nv">$name</span>.crt -addext <span class="s2">&quot;subjectAltName = DNS:</span><span class="nv">$name</span><span class="s2">&quot;</span> -subj <span class="s2">&quot;/CN=</span><span class="nv">$name</span><span class="s2">&quot;</span><span class="o">)</span>
+
+<span class="o">(</span><span class="nv">name</span><span class="o">=</span>prod<span class="p">;</span> openssl req -x509 -sha256 -nodes <span class="se">\</span>
+ -newkey rsa:4096 <span class="se">\</span>
+ -days <span class="m">365</span> <span class="se">\</span>
+ -keyout <span class="nv">$name</span>.key <span class="se">\</span>
+ -out <span class="nv">$name</span>.crt -addext <span class="s2">&quot;subjectAltName = DNS:</span><span class="nv">$name</span><span class="s2">&quot;</span> -subj <span class="s2">&quot;/CN=</span><span class="nv">$name</span><span class="s2">&quot;</span><span class="o">)</span>
+
 ssh root@backups <span class="s2">&quot;mkdir /etc/zrepl&quot;</span>
 scp  backups.key backups.crt prod.crt root@backups:/etc/zrepl
 
@@ -362,7 +360,8 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.3.0/quickstart/continuous_server_backup.html">v0.3.0</a></dd>
+            <dd><a href="../../v0.4.0/quickstart/continuous_server_backup.html">v0.4.0</a></dd>
+            <dd><a href="../../v0.3.1/quickstart/continuous_server_backup.html">v0.3.1</a></dd>
             <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
             <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
         </dl>

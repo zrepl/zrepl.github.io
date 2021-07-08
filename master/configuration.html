@@ -198,9 +198,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#no-overlapping">No Overlapping</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#n-push-jobs-to-1-sink">N push jobs to 1 sink</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#n-pull-jobs-from-1-source">N pull jobs from 1 source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#multiple-jobs-on-one-machine">Multiple Jobs on one Machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#more-than-2-machines">More Than 2 Machines</a></li>
 </ul>
 </li>
 </ul>
@@ -223,7 +222,8 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html#tls-transport"><code class="docutils literal notranslate"><span class="pre">tls</span></code> Transport</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#id1">Serve</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#id2">Connect</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#self-signed-certificates">Self-Signed Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#mutual-tls-between-two-machines">Mutual-TLS between Two Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/transports.html#certificate-authority-using-easyrsa">Certificate Authority using EasyRSA</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/transports.html#ssh-stdinserver-transport"><code class="docutils literal notranslate"><span class="pre">ssh+stdinserver</span></code> Transport</a><ul>
@@ -244,14 +244,27 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/sendrecvoptions.html">Send &amp; Recv Options</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#send-options">Send Options</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#encryption-option"><code class="docutils literal notranslate"><span class="pre">encryption</span></code> option</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#encrypted"><code class="docutils literal notranslate"><span class="pre">encrypted</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#properties"><code class="docutils literal notranslate"><span class="pre">properties</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#backup-properties"><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#large-blocks"><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#recv-options">Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#recv-options">Recv Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#job-recv-options-inherit-and-override"><code class="docutils literal notranslate"><span class="pre">properties</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#a-note-on-property-replication">A Note on Property Replication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#mount-behaviour">Mount behaviour</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#systemd">Systemd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#encryption">Encryption</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/replication.html">Replication Options</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/replication.html#protection-option"><code class="docutils literal notranslate"><span class="pre">protection</span></code> option</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/replication.html#concurrency-option"><code class="docutils literal notranslate"><span class="pre">concurrency</span></code> option</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a><ul>
@@ -345,7 +358,8 @@
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.3.0/configuration.html">v0.3.0</a></dd>
+            <dd><a href="../v0.4.0/configuration.html">v0.4.0</a></dd>
+            <dd><a href="../v0.3.1/configuration.html">v0.3.1</a></dd>
             <dd><a href="../v0.2.1/configuration.html">v0.2.1</a></dd>
             <dd><a href="../v0.1.1/configuration.html">v0.1.1</a></dd>
         </dl>

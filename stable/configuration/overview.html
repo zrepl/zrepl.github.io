@@ -101,9 +101,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#no-overlapping">No Overlapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#n-push-jobs-to-1-sink">N push jobs to 1 sink</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#n-pull-jobs-from-1-source">N pull jobs from 1 source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiple-jobs-on-one-machine">Multiple Jobs on one Machine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#more-than-2-machines">More Than 2 Machines</a></li>
 </ul>
 </li>
 </ul>
@@ -282,6 +281,7 @@ Note that snapshot-creation denoted by “(snap)” is orthogonal to whether a j
 </div>
 </td>
 <td><ul class="first last simple">
+<li>Backup to <a class="reference internal" href="../quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">locally attached disk</span></a></li>
 <li>Backup FreeBSD boot pool</li>
 </ul>
 </td>
@@ -319,14 +319,15 @@ Note that snapshot-creation denoted by “(snap)” is orthogonal to whether a j
 </div>
 </div>
 <div class="section" id="how-the-passive-side-works">
-<h2>How the Passive Side Works<a class="headerlink" href="#how-the-passive-side-works" title="Permalink to this headline">¶</a></h2>
+<span id="overview-passive-side-client-identity"></span><h2>How the Passive Side Works<a class="headerlink" href="#how-the-passive-side-works" title="Permalink to this headline">¶</a></h2>
 <p>The passive side (<a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink</span></a> and <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source</span></a>) waits for connections from the corresponding active side,
 using the transport listener type specified in the <code class="docutils literal notranslate"><span class="pre">serve</span></code> field of the job configuration.
-Each transport listener provides a client’s identity to the passive side job.
-It uses the client identity for access control:</p>
+When a client connects, the transport listener performS listener-specific access control (cert validation, IP ACLs, etc)
+and determines the <em>client identity</em>.
+The passive side job then uses this client identity as follows:</p>
 <ul class="simple">
 <li>The <code class="docutils literal notranslate"><span class="pre">sink</span></code> job maps requests from different client identities to their respective sub-filesystem tree <code class="docutils literal notranslate"><span class="pre">root_fs/${client_identity}</span></code>.</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">source</span></code> job has a whitelist of client identities that are allowed pull access.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">source</span></code> might, in the future, embed the client identity in <a class="reference internal" href="#zrepl-zfs-abstractions"><span class="std std-ref">zrepl’s ZFS abstraction names</span></a> in order to support multi-host replication.</li>
 </ul>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -391,7 +392,7 @@ Holds are created and referred to by a <em>tag</em>. They can be thought of as a
 <div class="section" id="zfs-abstractions-managed-by-zrepl">
 <span id="zrepl-zfs-abstractions"></span><h3>ZFS Abstractions Managed By zrepl<a class="headerlink" href="#zfs-abstractions-managed-by-zrepl" title="Permalink to this headline">¶</a></h3>
 <p>With the background knowledge from the previous paragraph, we now summarize the different on-disk ZFS objects that zrepl manages to provide its functionality.</p>
-<p id="replication-placeholder-property"><strong>Placeholder filesystems</strong> on the receiving side are regular ZFS filesystems with the placeholder property <code class="docutils literal notranslate"><span class="pre">zrepl:placeholder=on</span></code>.
+<p id="replication-placeholder-property"><strong>Placeholder filesystems</strong> on the receiving side are regular ZFS filesystems with the ZFS property <code class="docutils literal notranslate"><span class="pre">zrepl:placeholder=on</span></code>.
 Placeholders allow the receiving side to mirror the sender’s ZFS dataset hierarchy without replicating every filesystem at every intermediary dataset path component.
 Consider the following example: <code class="docutils literal notranslate"><span class="pre">S/H/J</span></code> shall be replicated to <code class="docutils literal notranslate"><span class="pre">R/sink/job/S/H/J</span></code>, but neither <code class="docutils literal notranslate"><span class="pre">S/H</span></code> nor <code class="docutils literal notranslate"><span class="pre">S</span></code> shall be replicated.
 ZFS requires the existence of <code class="docutils literal notranslate"><span class="pre">R/sink/job/S</span></code> and <code class="docutils literal notranslate"><span class="pre">R/sink/job/S/H</span></code> in order to receive into <code class="docutils literal notranslate"><span class="pre">R/sink/job/S/H/J</span></code>.
@@ -441,36 +442,52 @@ This is temporary and being worked on <a class="reference external" href="https:
 </div>
 <div class="section" id="multiple-jobs-more-than-2-machines">
 <span id="jobs-multiple-jobs"></span><h2>Multiple Jobs &amp; More than 2 Machines<a class="headerlink" href="#multiple-jobs-more-than-2-machines" title="Permalink to this headline">¶</a></h2>
+<p>The quick-start guides focus on simple setups with a single sender and a single receiver.
+This section documents considerations for more complex setups.</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p>When using multiple jobs across single or multiple machines, the following rules are critical to avoid race conditions &amp; data loss:</p>
-<ol class="arabic simple">
-<li>The sets of ZFS filesystems matched by the <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter fields must be disjoint across all jobs configured on a machine.</li>
-<li>The ZFS filesystem subtrees of jobs with <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> must be disjoint.</li>
-<li>Across all zrepl instances on all machines in the replication domain, there must be a 1:1 correspondence between active and passive jobs.</li>
-</ol>
-<p class="last">Explanations &amp; exceptions to above rules are detailed below.</p>
+<p class="last">Before you continue, make sure you have a working understanding of <a class="reference internal" href="#overview-how-replication-works"><span class="std std-ref">how zrepl works</span></a>
+and <a class="reference internal" href="#zrepl-zfs-abstractions"><span class="std std-ref">what zrepl does to ensure</span></a> that replication between sender and receiver is always
+possible without conflicts.
+This will help you understand why certain kinds of multi-machine setups do not (yet) work.</p>
 </div>
-<p>If you would like to see improvements to multi-job setups, please <a class="reference external" href="https://github.com/zrepl/zrepl/issues/new">open an issue on GitHub</a>.</p>
-<div class="section" id="no-overlapping">
-<h3>No Overlapping<a class="headerlink" href="#no-overlapping" title="Permalink to this headline">¶</a></h3>
-<p>Jobs run independently of each other.
-If two jobs match the same filesystem with their <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter, they will operate on that filesystem independently and potentially in parallel.
-For example, if job A prunes snapshots that job B is planning to replicate, the replication will fail because B assumed the snapshot to still be present.
-However, the next replication attempt will re-examine the situation from scratch and should work.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you can’t find your desired configuration, have questions or would like to see improvements to multi-job setups, please <a class="reference external" href="https://github.com/zrepl/zrepl/issues/new">open an issue on GitHub</a>.</p>
 </div>
-<div class="section" id="n-push-jobs-to-1-sink">
-<h3>N push jobs to 1 sink<a class="headerlink" href="#n-push-jobs-to-1-sink" title="Permalink to this headline">¶</a></h3>
-<p>The <a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink job</span></a> namespaces by client identity.
-It is thus safe to push to one sink job with different client identities.
-If the push jobs have the same client identity, the filesystems matched by the push jobs must be disjoint to avoid races.</p>
+<div class="section" id="multiple-jobs-on-one-machine">
+<h3>Multiple Jobs on one Machine<a class="headerlink" href="#multiple-jobs-on-one-machine" title="Permalink to this headline">¶</a></h3>
+<p>As a general rule, multiple jobs configured on one machine <strong>must operate on disjoint sets of filesystems</strong>.
+Otherwise, concurrently running jobs might interfere when operating on the same filesystem.</p>
+<p>On your setup, ensure that</p>
+<ul class="simple">
+<li>all <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter specifications are disjoint</li>
+<li>no <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is a prefix or equal to another <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></li>
+<li>no <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter maches any <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></li>
+</ul>
+<p><strong>Exceptions to the rule</strong>:</p>
+<ul class="simple">
+<li>A <code class="docutils literal notranslate"><span class="pre">snap</span></code> and <code class="docutils literal notranslate"><span class="pre">push</span></code> job on the same machine can match the same <code class="docutils literal notranslate"><span class="pre">filesystems</span></code>.
+To avoid interference, only one of the jobs should be pruning snapshots on the sender, the other one should keep all snapshots.
+Since the jobs won’t coordinate, errors in the log are to be expected, but <a class="reference internal" href="#zrepl-zfs-abstractions"><span class="std std-ref">zrepl’s ZFS abstractions</span></a> ensure that <code class="docutils literal notranslate"><span class="pre">push</span></code> and <code class="docutils literal notranslate"><span class="pre">sink</span></code> can always replicate incrementally.
+This scenario is detailed in one of the <a class="reference internal" href="../quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">quick-start guides</span></a>.</li>
+</ul>
 </div>
-<div class="section" id="n-pull-jobs-from-1-source">
-<h3>N pull jobs from 1 source<a class="headerlink" href="#n-pull-jobs-from-1-source" title="Permalink to this headline">¶</a></h3>
-<p>Multiple pull jobs pulling from the same source have potential for race conditions during pruning:
-each pull job prunes the source side independently, causing replication-prune and prune-prune races.</p>
-<p>There is currently no way for a pull job to filter which snapshots it should attempt to replicate.
-Thus, it is not possible to just manually assert that the prune rules of all pull jobs are disjoint to avoid replication-prune and prune-prune races.</p>
+<div class="section" id="more-than-2-machines">
+<h3>More Than 2 Machines<a class="headerlink" href="#more-than-2-machines" title="Permalink to this headline">¶</a></h3>
+<p>This section might be relevant to users who wish to <em>fan-in</em> (N machines replicate to 1) or <em>fan-out</em> (replicate 1 machine to N machines).</p>
+<p><strong>Working setups</strong>:</p>
+<ul class="simple">
+<li>N <code class="docutils literal notranslate"><span class="pre">push</span></code> identities, 1 <code class="docutils literal notranslate"><span class="pre">sink</span></code> (as long as the different push jobs have a different <a class="reference internal" href="#overview-passive-side-client-identity"><span class="std std-ref">client identity</span></a>)<ul>
+<li><code class="docutils literal notranslate"><span class="pre">sink</span></code> constrains each client to a disjoint sub-tree of the sink-side dataset hierarchy <code class="docutils literal notranslate"><span class="pre">${root_fs}/${client_identity}</span></code>.
+Therefore, the different clients cannot interfere.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Setups that do not work</strong>:</p>
+<ul class="simple">
+<li>N <code class="docutils literal notranslate"><span class="pre">pull</span></code> identities, 1 <code class="docutils literal notranslate"><span class="pre">source</span></code> job. Tracking <a class="reference external" href="https://github.com/zrepl/zrepl/issues/380">issue #380</a>.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -519,7 +536,8 @@ Thus, it is not possible to just manually assert that the prune rules of all pul
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.3.0/configuration/overview.html">v0.3.0</a></dd>
+            <dd><a href="../../v0.4.0/configuration/overview.html">v0.4.0</a></dd>
+            <dd><a href="../../v0.3.1/configuration/overview.html">v0.3.1</a></dd>
             <dd><a href="../../v0.2.1/configuration/overview.html">v0.2.1</a></dd>
             <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
         </dl>

@@ -413,7 +413,7 @@ tar -xf EasyRSA-3.0.7.tgz
 ./easyrsa init-pki
 ./easyrsa build-ca nopass
 
-<span class="k">for</span> host in <span class="nv">$HOSTS</span><span class="p">;</span> <span class="k">do</span>
+<span class="k">for</span> host in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOSTS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
     ./easyrsa build-serverClient-full <span class="nv">$host</span> nopass
     <span class="nb">echo</span> cert <span class="k">for</span> host <span class="nv">$host</span> available at pki/issued/<span class="nv">$host</span>.crt
     <span class="nb">echo</span> key <span class="k">for</span> host <span class="nv">$host</span> available at pki/private/<span class="nv">$host</span>.key
@@ -594,7 +594,8 @@ The <code class="docutils literal notranslate"><span class="pre">client_identity
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.3.0/configuration/transports.html">v0.3.0</a></dd>
+            <dd><a href="../../v0.4.0/configuration/transports.html">v0.4.0</a></dd>
+            <dd><a href="../../v0.3.1/configuration/transports.html">v0.3.1</a></dd>
             <dd><a href="../../v0.2.1/configuration/transports.html">v0.2.1</a></dd>
             <dd><a href="../../v0.1.1/configuration/transports.html">v0.1.1</a></dd>
         </dl>
