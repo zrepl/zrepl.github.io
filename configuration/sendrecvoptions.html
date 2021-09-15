@@ -111,6 +111,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#encryption">Encryption</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#common-options">Common Options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bandwidth-limit-send-recv">Bandwidth Limit (send &amp; recv)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
@@ -235,31 +239,35 @@ See the <a class="reference external" href="https://openzfs.github.io/openzfs-do
 <td>&#160;</td>
 <td>Specific to zrepl, <a class="reference internal" href="#job-send-options-encrypted"><span class="std std-ref">see below</span></a>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">raw</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">bandwidth_limit</span></code></td>
+<td>&#160;</td>
+<td>Specific to zrepl, <a class="reference internal" href="#job-send-recv-options-bandwidth-limit"><span class="std std-ref">see below</span></a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">raw</span></code></td>
 <td><code class="docutils literal notranslate"><span class="pre">-w</span></code></td>
 <td>Use <code class="docutils literal notranslate"><span class="pre">encrypted</span></code> to only allow encrypted sends.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">send_properties</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">send_properties</span></code></td>
 <td><code class="docutils literal notranslate"><span class="pre">-p</span></code></td>
 <td><strong>Be careful</strong>, read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code></td>
 <td><code class="docutils literal notranslate"><span class="pre">-b</span></code></td>
 <td><strong>Be careful</strong>, read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code></td>
 <td><code class="docutils literal notranslate"><span class="pre">-L</span></code></td>
 <td><strong>Potential data loss on OpenZFS &lt; 2.0</strong>, see <a class="reference internal" href="#job-send-options-large-blocks"><span class="std std-ref">warning below</span></a>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">compressed</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">compressed</span></code></td>
 <td><code class="docutils literal notranslate"><span class="pre">-c</span></code></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">embbeded_data</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">embbeded_data</span></code></td>
 <td><code class="docutils literal notranslate"><span class="pre">-e</span></code></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">saved</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">saved</span></code></td>
 <td><code class="docutils literal notranslate"><span class="pre">-S</span></code></td>
 <td>&#160;</td>
 </tr>
@@ -325,6 +333,7 @@ The commit in question is included in OpenZFS 2.0 and works around the problem b
       <span class="n">override</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;org.openzfs.systemd:ignore&quot;</span><span class="p">:</span> <span class="s2">&quot;on&quot;</span>
       <span class="p">}</span>
+    <span class="n">bandwidth_limit</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># see below</span>
   <span class="o">...</span>
 </pre></div>
 </div>
@@ -387,6 +396,23 @@ and property replication is enabled, the receiver must <a class="reference inter
 <li><code class="docutils literal notranslate"><span class="pre">keyformat</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">encryption</span></code></li>
 </ul>
+</div>
+</div>
+<div class="section" id="common-options">
+<h2>Common Options<a class="headerlink" href="#common-options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bandwidth-limit-send-recv">
+<span id="job-send-recv-options-bandwidth-limit"></span><h3>Bandwidth Limit (send &amp; recv)<a class="headerlink" href="#bandwidth-limit-send-recv" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bandwidth_limit</span><span class="p">:</span>
+  <span class="nb">max</span><span class="p">:</span> <span class="mf">23.5</span> <span class="n">MiB</span> <span class="c1"># -1 is the default and disabled rate limiting</span>
+  <span class="n">bucket_capacity</span><span class="p">:</span> <span class="c1"># token bucket capacity in bytes; defaults to 128KiB</span>
+</pre></div>
+</div>
+<p>Both <code class="docutils literal notranslate"><span class="pre">send</span></code> and <code class="docutils literal notranslate"><span class="pre">recv</span></code> can be limited to a maximum bandwidth through <code class="docutils literal notranslate"><span class="pre">bandwidth_limit</span></code>.
+For most users, it should be sufficient to just set <code class="docutils literal notranslate"><span class="pre">bandwidth_limit.max</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">bandwidth_limit.bucket_capacity</span></code> refers to the <a class="reference external" href="https://github.com/juju/ratelimit">token bucket size</a>.</p>
+<p>The bandwidth limit only applies to the payload data, i.e., the ZFS send stream.
+It does not account for transport protocol overheads.
+The scope is the job level, i.e., all <a class="reference internal" href="replication.html#replication-option-concurrency"><span class="std std-ref">concurrent</span></a> sends or incoming receives of a job share the bandwidth limit.</p>
 </div>
 </div>
 </div>
