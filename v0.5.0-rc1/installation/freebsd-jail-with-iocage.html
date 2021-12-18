@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>FreeBSD Jail With iocage &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="What next?" href="what-next.html" />
+    <link rel="prev" title="Compile From Source" href="compile-from-source.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../installation.html">Installation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="user-privileges.html">User Privileges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packages.html">Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apt-repos.html">Debian / Ubuntu APT repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rpm-repos.html">RPM repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compile-from-source.html">Compile From Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">FreeBSD Jail With iocage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jail-creation">Jail Creation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#manual-jail">Manual Jail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugin">Plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="what-next.html">What next?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../installation.html">Installation</a> &raquo;</li>
+        
+      <li>FreeBSD Jail With iocage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/zrepl/zrepl/blob/v0.5.0-rc1/docs/installation/freebsd-jail-with-iocage.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+    
+    
+
+
+
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/installation/freebsd-jail-with-iocage.html"><b>Warning:</b> This document is for an old version of zrepl. The main version is stable.</a></p>
+<div class="section" id="freebsd-jail-with-iocage">
+<span id="installation-freebsd-jail-with-iocage"></span><h1>FreeBSD Jail With iocage<a class="headerlink" href="#freebsd-jail-with-iocage" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial shows how zrepl can be installed on FreeBSD, or FreeNAS in a jail using iocage.
+While this tutorial focuses on using iocage, much of the setup would be similar
+using a different jail manager.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>From a security perspective, just keep in mind that <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code>/<code class="docutils literal notranslate"><span class="pre">recv</span></code> was never designed with
+jails in mind, an attacker could probably crash the receive-side kernel or worse induce stateful
+damage to the receive-side pool if they were able to get access to the jail.</p>
+<p class="last">The jail doesn’t provide security benefits, but only management ones.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>A dataset that will be delegated to the jail needs to be created if one does not already exist.
+For the tutorial <code class="docutils literal notranslate"><span class="pre">tank/zrepl</span></code> will be used.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>none tank/zrepl
+</pre></div>
+</div>
+<p>The only software requirements on the host system are <code class="docutils literal notranslate"><span class="pre">iocage</span></code>, which can be installed
+from ports or packages.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pkg install py37-iocage
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default <code class="docutils literal notranslate"><span class="pre">iocage</span></code> will “activate” on first use which will set up some defaults such as
+which pool will be used. To activate <code class="docutils literal notranslate"><span class="pre">iocage</span></code> manually the <code class="docutils literal notranslate"><span class="pre">iocage</span> <span class="pre">activate</span></code> command can be used.</p>
+</div>
+</div>
+<div class="section" id="jail-creation">
+<h2>Jail Creation<a class="headerlink" href="#jail-creation" title="Permalink to this headline">¶</a></h2>
+<p>There are two options for jail creation using FreeBSD.</p>
+<ol class="arabic simple">
+<li>Manually set up the jail from scratch</li>
+<li>Create the jail using the <code class="docutils literal notranslate"><span class="pre">zrepl</span></code> plugin. On FreeNAS this is possible from the user interface using the community index.</li>
+</ol>
+<div class="section" id="manual-jail">
+<h3>Manual Jail<a class="headerlink" href="#manual-jail" title="Permalink to this headline">¶</a></h3>
+<p>Create a jail, using the same release as the host, called <code class="docutils literal notranslate"><span class="pre">zrepl</span></code> that will be automatically started at boot.
+The jail will have <code class="docutils literal notranslate"><span class="pre">tank/zrepl</span></code> delegated into it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iocage create --release <span class="s2">&quot;</span><span class="k">$(</span>freebsd-version -k <span class="p">|</span> cut -d <span class="s1">&#39;-&#39;</span> -f <span class="s1">&#39;1,2&#39;</span><span class="k">)</span><span class="s2">&quot;</span> --name zrepl <span class="se">\</span>
+       <span class="nv">boot</span><span class="o">=</span>on <span class="nv">nat</span><span class="o">=</span><span class="m">1</span> <span class="se">\</span>
+       <span class="nv">jail_zfs</span><span class="o">=</span>on <span class="se">\</span>
+       <span class="nv">jail_zfs_dataset</span><span class="o">=</span>zrepl <span class="se">\</span>
+       <span class="nv">jail_zfs_mountpoint</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>
+</pre></div>
+</div>
+<p>Enter the jail:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iocage console zrepl
+</pre></div>
+</div>
+<p>Install <code class="docutils literal notranslate"><span class="pre">zrepl</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pkg update <span class="o">&amp;&amp;</span> pkg upgrade
+pkg install zrepl
+</pre></div>
+</div>
+<p>Create the log file <code class="docutils literal notranslate"><span class="pre">/var/log/zrepl.log</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>touch /var/log/zrepl.log <span class="o">&amp;&amp;</span> service newsyslog restart
+</pre></div>
+</div>
+<p>Tell syslogd to redirect facility local0 to the <code class="docutils literal notranslate"><span class="pre">zrepl.log</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>service syslogd reload
+</pre></div>
+</div>
+<p>Enable the zrepl daemon to start automatically at boot:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sysrc <span class="nv">zrepl_enable</span><span class="o">=</span><span class="s2">&quot;YES&quot;</span>
+</pre></div>
+</div>
+<p>Now jump to <a class="reference internal" href="#installation-freebsd-jail-summary"><span class="std std-ref">the summary</span></a> below.</p>
+</div>
+<div class="section" id="plugin">
+<h3>Plugin<a class="headerlink" href="#plugin" title="Permalink to this headline">¶</a></h3>
+<p>When using the plugin, <code class="docutils literal notranslate"><span class="pre">zrepl</span></code> will be installed for you in a jail using the following <code class="docutils literal notranslate"><span class="pre">iocage</span></code> properties.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">nat=1</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">jail_zfs=on</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">jail_zfs_mountpoint=none</span></code></li>
+</ul>
+<p>Additionally the delegated dataset should be specified upon creation, and optionally start on boot can be set.
+This can also be done from the FreeNAS webui.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fetch https://raw.githubusercontent.com/ix-plugin-hub/iocage-plugin-index/master/zrepl.json -o /tmp/zrepl.json
+iocage fetch -P /tmp/zrepl.json --name zrepl <span class="nv">jail_zfs_dataset</span><span class="o">=</span>zrepl <span class="nv">boot</span><span class="o">=</span>on
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Now <code class="docutils literal notranslate"><span class="pre">zrepl</span></code> can be configured.</p>
+<p>Enter the jail.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iocage console zrepl
+</pre></div>
+</div>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code> configuration file.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Note: check out the <a class="reference internal" href="../quickstart.html#quickstart-toc"><span class="std std-ref">quick-start guides</span></a> for examples of a <code class="docutils literal notranslate"><span class="pre">sink</span></code> job.</p>
+</div>
+<p>Now <code class="docutils literal notranslate"><span class="pre">zrepl</span></code> can be started.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>service zrepl start
+</pre></div>
+</div>
+<p>Now jump to <a class="reference internal" href="#installation-freebsd-jail-summary"><span class="std std-ref">the summary</span></a> below.</p>
+</div>
+<div class="section" id="summary">
+<span id="installation-freebsd-jail-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>Congratulations, you have a working jail!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">With FreeBSD 13’s transition to OpenZFS 2.0, please ensure that your jail’s FreeBSD version matches the one in the kernel module.
+If you are getting cryptic errors such as
+<code class="docutils literal notranslate"><span class="pre">cannot</span> <span class="pre">receive</span> <span class="pre">new</span> <span class="pre">filesystem</span> <span class="pre">stream:</span> <span class="pre">invalid</span> <span class="pre">backup</span> <span class="pre">stream</span></code>
+the instructions posted <a class="reference external" href="https://github.com/zrepl/zrepl/issues/500#issuecomment-966215205">here</a> might help.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="what-next.html" class="btn btn-neutral float-right" title="What next?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="compile-from-source.html" class="btn btn-neutral float-left" title="Compile From Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Christian Schwarz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v0.5.0-rc1
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="freebsd-jail-with-iocage.html">v0.5.0-rc1</a></dd>
+            <dd><a href="../../v0.4.0/installation/freebsd-jail-with-iocage.html">v0.4.0</a></dd>
+            <dd><a href="../../v0.3.1/installation/freebsd-jail-with-iocage.html">v0.3.1</a></dd>
+            <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
+            <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../master/installation/freebsd-jail-with-iocage.html">master</a></dd>
+            <dd><a href="../../stable/installation/freebsd-jail-with-iocage.html">stable</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

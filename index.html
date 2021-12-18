@@ -179,10 +179,10 @@
       Progress: [=========================\----] 246.7 MiB / 264.7 MiB @ 11.5 MiB/s
         zroot              STEPPING (step 1/2, 624 B/1.2 KiB) next: @a => @b
         zroot/ROOT         DONE (step 2/2, 1.2 KiB/1.2 KiB)
-        zroot/ROOT/default STEPPING (step 1/2, 123.4 MiB/129.3 MiB) next: @a => @b
+      * zroot/ROOT/default STEPPING (step 1/2, 123.4 MiB/129.3 MiB) next: @a => @b
         zroot/tmp          STEPPING (step 1/2, 29.9 KiB/44.2 KiB) next: @a => @b
         zroot/usr          STEPPING (step 1/2, 624 B/1.2 KiB) next: @a => @b
-        zroot/usr/home     STEPPING (step 1/2, 123.3 MiB/135.3 MiB) next: @a => @b
+      * zroot/usr/home     STEPPING (step 1/2, 123.3 MiB/135.3 MiB) next: @a => @b
         zroot/var          STEPPING (step 1/2, 624 B/1.2 KiB) next: @a => @b
         zroot/var/audit    DONE (step 2/2, 1.2 KiB/1.2 KiB)
         zroot/var/crash    DONE (step 2/2, 1.2 KiB/1.2 KiB)
@@ -213,6 +213,7 @@
 <li>[x] Large blocks send &amp; receive</li>
 <li>[x] Embedded data send &amp; receive</li>
 <li>[x] Resume state send &amp; receive</li>
+<li>[x] Bandwidth limiting</li>
 </ul>
 </li>
 </ul>
@@ -311,17 +312,20 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#cli-overview">CLI Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#zrepl-daemon">zrepl daemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#ops-runbooks">Ops Runbooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#platform-tests">Platform Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.4.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id4">0.3.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#release-0-3">0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id5">0.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id7">0.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id8">0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id7">0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id8">0.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id9">0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#previous-releases">Previous Releases</a></li>
 </ul>
 </li>
@@ -374,6 +378,7 @@ Make sure to read the <a class="reference external" href="https://github.com/zre
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
+            <dd><a href="v0.5.0-rc1/index.html">v0.5.0-rc1</a></dd>
             <dd><a href="v0.4.0/index.html">v0.4.0</a></dd>
             <dd><a href="v0.3.1/index.html">v0.3.1</a></dd>
             <dd><a href="v0.2.1/index.html">v0.2.1</a></dd>

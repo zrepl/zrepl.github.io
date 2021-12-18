@@ -248,8 +248,9 @@ Make sure to actually add the necessary <code class="docutils literal notranslat
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> keeps all snapshots that have not been replicated to the receiving side.
-It only makes sense to specify this rule on a sender (source or push job).
-The state required to evaluate this rule is stored in the <a class="reference internal" href="overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
+It only makes sense to specify this rule for the <code class="docutils literal notranslate"><span class="pre">keep_sender</span></code>.
+The reason is that, by definition, all snapshots on the receiver have already been replicated to there from the sender.
+To determine whether a sender-side snapshot has already been replicated, zrepl uses the <a class="reference internal" href="overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> which corresponds to the most recent successfully replicated snapshot.</p>
 </div>
 <div class="section" id="policy-grid">
 <span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Permalink to this headline">¶</a></h2>
@@ -282,7 +283,7 @@ The youngest snapshot is on the left, the oldest on the right.</li>
 <li>All subsequent buckets are placed adjacent to their predecessor bucket.</li>
 <li>Now each snapshot on the axis either falls into one bucket or it is older than our rightmost bucket.
 Buckets are left-inclusive and right-exclusive which means that a snapshot on the edge of bucket will always ‘fall into the right one’.</li>
-<li>Snapshots older than the rightmost bucket <strong>not kept</strong> by this gridspec.</li>
+<li>Snapshots older than the rightmost bucket are <strong>not kept</strong> by the grid specification.</li>
 <li>For each bucket, we only keep the <code class="docutils literal notranslate"><span class="pre">keep</span></code> oldest snapshots.</li>
 </ol>
 <p>The syntax to describe the bucket list is as follows:</p>
@@ -296,11 +297,11 @@ It can be either a positive integer or <code class="docutils literal notranslate
 <li>The <strong>repeat</strong> count repeats the bucket definition for the specified number of times.</li>
 </ul>
 <p><strong>Example</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Assume the following grid spec:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Assume the following grid specification:
 
    grid: 1x1h(keep=all) | 2x2h | 1x3h
 
-This grid spec produces the following constellation of buckets:
+This grid specification produces the following constellation of buckets:
 
 0h        1h        2h        3h        4h        5h        6h        7h        8h        9h
 |         |         |         |         |         |         |         |         |         |
@@ -320,13 +321,13 @@ We place the snapshots on the same timeline as the buckets:
 |-Bucket1-|-----Bucket2-------|------Bucket3------|-----------Bucket4-----------|
 | keep=all|      keep=1       |       keep=1      |            keep=1           |
 |         |                   |                   |                             |
-|  a  b  c| d  e  f  g  h  i  j  k  l  m  n  o  p |q  r  s  t  u  v  w  x  y  z |A  B  C  D
+| a  b  c | d  e  f  g  h  i  j  k  l  m  n  o  p |q  r  s  t  u  v  w  x  y  z |A  B  C  D
 
-The result is the following mapping of snapshots to buckets:
+We obtain the following mapping of snapshots to buckets:
 
-Bucket1:   a, b, c
-Bucket2:   d,e,f,g,h,i,j
-Bucket3:   k,l,m,n,o,p
+Bucket1:   a,b,c
+Bucket2:   d,e,f,g,h,i
+Bucket3:   j,k,l,m,n,o,p
 Bucket4:   q,r,s,t,u,v,w,x,y,z
 No bucket: A,B,C,D
 
@@ -340,7 +341,7 @@ Result after pruning:
 |         |         |         |         |         |         |         |         |         |
 |-Bucket1-|-----Bucket2-------|------Bucket3------|-----------Bucket4-----------|
 |         |                   |                   |                             |
-|  a  b  c|                   j                 p |                           z  |
+| a  b  c |                i  |                 p |                           z |
 </pre></div>
 </div>
 </div>
@@ -477,6 +478,7 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
+            <dd><a href="../v0.5.0-rc1/configuration/prune.html">v0.5.0-rc1</a></dd>
             <dd><a href="../v0.4.0/configuration/prune.html">v0.4.0</a></dd>
             <dd><a href="../v0.3.1/configuration/prune.html">v0.3.1</a></dd>
             <dd><a href="../v0.2.1/configuration/prune.html">v0.2.1</a></dd>

@@ -215,6 +215,17 @@ Or even better, write it up in the same style as above and open a PR!</p>
 <p>We hope that you have found a configuration that fits your use case.
 Use <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> once again to make sure the config is correct (output indicates that everything is fine).
 Then restart the zrepl daemon on all systems involved in the replication, likely using <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">zrepl</span> <span class="pre">restart</span></code> or <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">zrepl</span></code>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Please <a class="reference internal" href="configuration/prune.html#prune"><span class="std std-ref">read up carefully</span></a> on the pruning rules before applying the config.
+In particular, note that most example configs apply to all snapshots, not just zrepl-created snapshots.
+Use the following keep rule on sender and receiver to prevent this:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">regex</span>
+  <span class="n">negate</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_.*&quot;</span> <span class="c1"># &lt;- the &#39;prefix&#39; specified in snapshotting.prefix</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="watch-it-work">
 <h2>Watch it Work<a class="headerlink" href="#watch-it-work" title="Permalink to this headline">¶</a></h2>
@@ -296,6 +307,7 @@ If you like tmux, here is a handy script that works on FreeBSD:</p>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
+            <dd><a href="../v0.5.0-rc1/quickstart.html">v0.5.0-rc1</a></dd>
             <dd><a href="../v0.4.0/quickstart.html">v0.4.0</a></dd>
             <dd><a href="../v0.3.1/quickstart.html">v0.3.1</a></dd>
             <dd><a href="../v0.2.1/index.html">v0.2.1</a></dd>
