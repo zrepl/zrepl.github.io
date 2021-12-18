@@ -188,24 +188,46 @@
 <span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <p>The changelog summarizes bugfixes that are deemed relevant for users and package maintainers.
 Developers should consult the git commit log or GitHub issue tracker.</p>
-<p>We use the following annotations for classifying changes:</p>
-<ul class="simple">
-<li><strong>[CONFIG]</strong> Change that breaks the config.
-As a package maintainer, make sure to warn your users about config breakage somehow.</li>
-<li><strong>[BREAK]</strong> Change that breaks interoperability or persistent state representation with previous releases.
-As a package maintainer, make sure to warn your users about config breakage somehow.
-Note that even updating the package on both sides might not be sufficient, e.g. if persistent state needs to be migrated to a new format.</li>
-<li><strong>[MIGRATION]</strong> Migration that must be run by the user.</li>
-<li>[FEATURE] Change that introduces new functionality.</li>
-<li>[BUG] Change that fixes a bug, no regressions or incompatibilities expected.</li>
-<li>[DOCS] Change to the documentation.</li>
-<li>[MAINT] Maintenance changes.</li>
-</ul>
 <div class="section" id="id2">
 <h2>0.5<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>[CONFIG]</strong> [BUG] Rename mis-spelled <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-options"><span class="std std-ref">send option</span></a> <code class="docutils literal notranslate"><span class="pre">embbeded_data</span></code> to <code class="docutils literal notranslate"><span class="pre">embedded_data</span></code>.</li>
+<li>[FEATURE] <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-recv-options-bandwidth-limit"><span class="std std-ref">Bandwidth limiting</span></a> (Thanks, Prominic.NET, Inc.)</li>
+<li>[FEATURE] zrepl status: use a <code class="docutils literal notranslate"><span class="pre">*</span></code> to indicate which filesystem is currently replicating</li>
+<li>[FEATURE] include daemon environment variables in zrepl status (currently only in <code class="docutils literal notranslate"><span class="pre">--raw</span></code>)</li>
+<li>[BUG] <strong>fix encrypt-on-receive + placeholders use case</strong> (<a class="reference external" href="https://github.com/zrepl/zrepl/issues/504">issue #504</a>)<ul>
+<li>Before this fix, <strong>plain sends</strong> to a receiver with an encrypted <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> <strong>could be received unencrypted</strong> if zrepl needed to create placeholders on the receiver.</li>
+<li>Existing zrepl users should <a class="reference internal" href="configuration/sendrecvoptions.html#job-recv-options-placeholder"><span class="std std-ref">read the docs</span></a> and check <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">get</span> <span class="pre">-r</span> <span class="pre">encryption,zrepl:placeholder</span> <span class="pre">PATH_TO_ROOTFS</span></code> on the receiver.</li>
+<li>Thanks to <a class="reference external" href="https://github.com/mologie">&#64;mologie</a> and <a class="reference external" href="https://github.com/razielgn">&#64;razielgn</a> for reporting and testing!</li>
 </ul>
+</li>
+<li>[BUG] Rename mis-spelled <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-options"><span class="std std-ref">send option</span></a> <code class="docutils literal notranslate"><span class="pre">embbeded_data</span></code> to <code class="docutils literal notranslate"><span class="pre">embedded_data</span></code>.</li>
+<li>[BUG] zrepl status: replication step numbers should start at 1</li>
+<li>[BUG] incorrect bandwidth averaging in <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code>.</li>
+<li>[BUG] FreeBSD with OpenZFS 2.0: zrepl would wait indefinitely for zfs send to exit on timeouts.</li>
+<li>[BUG] fix <code class="docutils literal notranslate"><span class="pre">strconv.ParseInt:</span> <span class="pre">value</span> <span class="pre">out</span> <span class="pre">of</span> <span class="pre">range</span></code> bug (and use the control RPCs).</li>
+<li>[DOCS] improve description of multiple pruning rules.</li>
+<li>[DOCS] document <a class="reference internal" href="usage.html#usage-platform-tests"><span class="std std-ref">platform tests</span></a>.</li>
+<li>[DOCS] quickstart: make users aware that prune rules apply to all snapshots.</li>
+<li>[MAINT] some platformtests were broken.</li>
+<li>[MAINT] FreeBSD: release armv7 and arm64 binaries.</li>
+<li>[MAINT] apt repo: update instructions due to <code class="docutils literal notranslate"><span class="pre">apt-key</span></code> deprecation.</li>
+</ul>
+<p>Note to all users: please read up on the following OpenZFS bugs, as you might be affected:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/openzfs/zfs/issues/12762">ZFS send/recv with ashift 9-&gt;12 leads to data corruption</a>.</li>
+<li>Various bugs with encrypted send/recv (<a class="reference external" href="https://openzfs.topicbox.com/groups/developer/T24bdaa2886c6cbf5-Mc039a11c3f1507ea0664817b/december-openzfs-leadership-meeting">Leadership meeting notes</a>)</li>
+</ul>
+<p>Finally, I’d like to point you to the <a class="reference external" href="https://github.com/zrepl/zrepl/discussions/547">GitHub discussion</a> about which bugfixes and features should be prioritized in zrepl 0.6 and beyond!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="last line-block">
+<div class="line">zrepl is a spare-time project primarily developed by <a class="reference external" href="https://cschwarz.com">Christian Schwarz</a>.</div>
+<div class="line">You can support maintenance and feature development through one of the following services:</div>
+<div class="line"><a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/badge/dynamic/json?color=yellow&amp;label=Patreon&amp;query=data.attributes.patron_count&amp;suffix=%20patrons&amp;url=https%3A%2F%2Fwww.patreon.com%2Fapi%2Fcampaigns%2F3095079" /></a> <a class="reference external" href="https://github.com/sponsors/problame"><img alt="Donate via GitHub Sponsors" src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/patrons/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></div>
+<div class="line">Note that PayPal processing fees are relatively high for small donations.</div>
+<div class="line">For SEPA wire transfer and <strong>commercial support</strong>, please <a class="reference external" href="https://cschwarz.com">contact Christian directly</a>.</div>
+</div>
+</div>
 </div>
 <div class="section" id="id3">
 <h2>0.4.0<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
@@ -231,16 +253,6 @@ The following bugfix in 0.3.1 <a class="reference external" href="https://github
 <ul class="simple">
 <li>[BUG] pruning: <code class="docutils literal notranslate"><span class="pre">grid</span></code>:  add all snapshots that do not match the regex to the rule’s destroy list.</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<div class="last line-block">
-<div class="line">zrepl is a spare-time project primarily developed by <a class="reference external" href="https://cschwarz.com">Christian Schwarz</a>.</div>
-<div class="line">You can support maintenance and feature development through one of the following services:</div>
-<div class="line"><a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/badge/dynamic/json?color=yellow&amp;label=Patreon&amp;query=data.attributes.patron_count&amp;suffix=%20patrons&amp;url=https%3A%2F%2Fwww.patreon.com%2Fapi%2Fcampaigns%2F3095079" /></a> <a class="reference external" href="https://github.com/sponsors/problame"><img alt="Donate via GitHub Sponsors" src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/patrons/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></div>
-<div class="line">Note that PayPal processing fees are relatively high for small donations.</div>
-<div class="line">For SEPA wire transfer and <strong>commercial support</strong>, please <a class="reference external" href="https://cschwarz.com">contact Christian directly</a>.</div>
-</div>
-</div>
 </div>
 <div class="section" id="id4">
 <h2>0.3.1<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>

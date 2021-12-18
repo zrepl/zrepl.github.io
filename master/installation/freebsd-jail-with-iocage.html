@@ -259,6 +259,7 @@ pkg install zrepl
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sysrc <span class="nv">zrepl_enable</span><span class="o">=</span><span class="s2">&quot;YES&quot;</span>
 </pre></div>
 </div>
+<p>Now jump to <a class="reference internal" href="#installation-freebsd-jail-summary"><span class="std std-ref">the summary</span></a> below.</p>
 </div>
 <div class="section" id="plugin">
 <h3>Plugin<a class="headerlink" href="#plugin" title="Permalink to this headline">¶</a></h3>
@@ -292,10 +293,18 @@ iocage fetch -P /tmp/zrepl.json --name zrepl <span class="nv">jail_zfs_dataset</
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>service zrepl start
 </pre></div>
 </div>
+<p>Now jump to <a class="reference internal" href="#installation-freebsd-jail-summary"><span class="std std-ref">the summary</span></a> below.</p>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<span id="installation-freebsd-jail-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>Congratulations, you have a working jail!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">With FreeBSD 13’s transition to OpenZFS 2.0, please ensure that your jail’s FreeBSD version matches the one in the kernel module.
+If you are getting cryptic errors such as
+<code class="docutils literal notranslate"><span class="pre">cannot</span> <span class="pre">receive</span> <span class="pre">new</span> <span class="pre">filesystem</span> <span class="pre">stream:</span> <span class="pre">invalid</span> <span class="pre">backup</span> <span class="pre">stream</span></code>
+the instructions posted <a class="reference external" href="https://github.com/zrepl/zrepl/issues/500#issuecomment-966215205">here</a> might help.</p>
+</div>
 </div>
 </div>
 

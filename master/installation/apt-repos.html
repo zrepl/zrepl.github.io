@@ -186,14 +186,27 @@
 The fingerprint of the signing key is <code class="docutils literal notranslate"><span class="pre">E101</span> <span class="pre">418F</span> <span class="pre">D3D6</span> <span class="pre">FBCB</span> <span class="pre">9D65</span>&#160; <span class="pre">A62D</span> <span class="pre">7086</span> <span class="pre">99FC</span> <span class="pre">5F2E</span> <span class="pre">BF16</span></code>.
 It is available at <a class="reference external" href="https://zrepl.cschwarz.com/apt/apt-key.asc">https://zrepl.cschwarz.com/apt/apt-key.asc</a> .
 Please open an issue in on GitHub if you encounter any issues with the repository.</p>
-<p>The following snippet configure the repository for your Debian or Ubuntu release:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">curl</span> <span class="n">gnupg</span> <span class="n">lsb</span><span class="o">-</span><span class="n">release</span><span class="p">;</span> \
-<span class="n">ARCH</span><span class="o">=</span><span class="s2">&quot;$(dpkg --print-architecture)&quot;</span><span class="p">;</span> \
-<span class="n">CODENAME</span><span class="o">=</span><span class="s2">&quot;$(lsb_release -i -s | tr &#39;[:upper:]&#39; &#39;[:lower:]&#39;) $(lsb_release -c -s | tr &#39;[:upper:]&#39; &#39;[:lower:]&#39;)&quot;</span><span class="p">;</span> \
-<span class="n">echo</span> <span class="s2">&quot;Using Distro and Codename: $CODENAME&quot;</span><span class="p">;</span> \
-<span class="p">(</span><span class="n">curl</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">zrepl</span><span class="o">.</span><span class="n">cschwarz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">apt</span><span class="o">-</span><span class="n">key</span><span class="o">.</span><span class="n">asc</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span><span class="p">)</span> <span class="o">&amp;&amp;</span> \
-<span class="p">(</span><span class="n">echo</span> <span class="s2">&quot;deb [arch=$ARCH] https://zrepl.cschwarz.com/apt/$CODENAME main&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">list</span><span class="p">)</span> <span class="o">&amp;&amp;</span> \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+<span class="nb">set</span> <span class="o">-</span><span class="n">ex</span>
+<span class="n">zrepl_apt_key_url</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">zrepl</span><span class="o">.</span><span class="n">cschwarz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">apt</span><span class="o">-</span><span class="n">key</span><span class="o">.</span><span class="n">asc</span>
+<span class="n">zrepl_apt_key_dst</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">keyrings</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">gpg</span>
+<span class="n">zrepl_apt_repo_file</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">list</span>
+
+<span class="c1"># Install dependencies for subsequent commands</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">curl</span> <span class="n">gnupg</span> <span class="n">lsb</span><span class="o">-</span><span class="n">release</span>
+
+<span class="c1"># Deploy the zrepl apt key.</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">fsSL</span> <span class="s2">&quot;$zrepl_apt_key_url&quot;</span> <span class="o">|</span> <span class="n">tee</span> <span class="o">|</span> <span class="n">gpg</span> <span class="o">--</span><span class="n">dearmor</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="s2">&quot;$zrepl_apt_key_dst&quot;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+
+<span class="c1"># Add the zrepl apt repo.</span>
+<span class="n">ARCH</span><span class="o">=</span><span class="s2">&quot;$(dpkg --print-architecture)&quot;</span>
+<span class="n">CODENAME</span><span class="o">=</span><span class="s2">&quot;$(lsb_release -i -s | tr &#39;[:upper:]&#39; &#39;[:lower:]&#39;) $(lsb_release -c -s | tr &#39;[:upper:]&#39; &#39;[:lower:]&#39;)&quot;</span>
+<span class="n">echo</span> <span class="s2">&quot;Using Distro and Codename: $CODENAME&quot;</span>
+<span class="n">echo</span> <span class="s2">&quot;deb [arch=$ARCH signed-by=$zrepl_apt_key_dst] https://zrepl.cschwarz.com/apt/$CODENAME main&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">list</span>
+
+<span class="c1"># Update apt repos.</span>
 <span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">

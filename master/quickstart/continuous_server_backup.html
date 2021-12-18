@@ -306,6 +306,9 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;/etc/zrepl/backups.key&quot;</span>
       <span class="n">client_cns</span><span class="p">:</span>
         <span class="o">-</span> <span class="s2">&quot;prod&quot;</span>
+  <span class="n">recv</span><span class="p">:</span>
+    <span class="n">placeholder</span><span class="p">:</span>
+      <span class="n">encryption</span><span class="p">:</span> <span class="n">inherit</span> <span class="c1"># use &#39;off&#39; if sender uses send.encrypted</span>
   <span class="n">root_fs</span><span class="p">:</span> <span class="s2">&quot;storage/zrepl/sink&quot;</span>
 </pre></div>
 </div>
