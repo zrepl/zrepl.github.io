@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fan-out replication &mdash; zrepl  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Installation" href="../installation.html" />
+    <link rel="prev" title="Local Snapshots + Offline Backup to an External Disk" href="backup_to_external_disk.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zrepl
+          
+
+          
+            
+            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#install-zrepl">Install zrepl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#overview-of-how-zrepl-works">Overview Of How zrepl Works</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../quickstart.html#configuration-examples">Configuration Examples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="continuous_server_backup.html">Continuous Backup of a Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backup_to_external_disk.html">Local Snapshots + Offline Backup to an External Disk</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Fan-out replication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-tls-certificates">Generate TLS Certificates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-source-server-a">Configure source server A</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-each-target-server">Configure each target server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#go-back-to-quickstart-guide">Go Back To Quickstart Guide</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#apply-configuration-changes">Apply Configuration Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#watch-it-work">Watch it Work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#what-next">What Next?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://matrix.to/#/#zrepl:matrix.org">Chat: Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../quickstart.html">Quick Start by Use Case</a> &raquo;</li>
+        
+      <li>Fan-out replication</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/quickstart/fan_out_replication.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+
+
+    
+    
+
+
+
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/quickstart/fan_out_replication.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is stable.</a></p>
+<div class="section" id="fan-out-replication">
+<span id="quickstart-fan-out-replication"></span><h1>Fan-out replication<a class="headerlink" href="#fan-out-replication" title="Permalink to this headline">¶</a></h1>
+<p>This quick-start example demonstrates how to implement a fan-out replication setup where datasets on a server (A) are replicated to multiple targets (B, C, etc.).</p>
+<p>This example uses multiple <code class="docutils literal notranslate"><span class="pre">source</span></code> jobs on server A and <code class="docutils literal notranslate"><span class="pre">pull</span></code> jobs on the target servers.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Before implementing this setup, please see the caveats listed in the <a class="reference internal" href="../configuration/overview.html#fan-out-replication"><span class="std std-ref">fan-out replication configuration overview</span></a>.</p>
+</div>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>On the source server (A), there should be:</p>
+<ul class="simple">
+<li>A <code class="docutils literal notranslate"><span class="pre">snap</span></code> job<ul>
+<li>Creates the snapshots</li>
+<li>Handles the pruning of snapshots</li>
+</ul>
+</li>
+<li>A <code class="docutils literal notranslate"><span class="pre">source</span></code> job for target B<ul>
+<li>Accepts connections from server B and B only</li>
+</ul>
+</li>
+<li>Further <code class="docutils literal notranslate"><span class="pre">source</span></code> jobs for each additional target (C, D, etc.)<ul>
+<li>Listens on a unique port</li>
+<li>Only accepts connections from the specific target</li>
+</ul>
+</li>
+</ul>
+<p>On each target server, there should be:</p>
+<ul class="simple">
+<li>A <code class="docutils literal notranslate"><span class="pre">pull</span></code> job that connects to the corresponding <code class="docutils literal notranslate"><span class="pre">source</span></code> job on A<ul>
+<li><code class="docutils literal notranslate"><span class="pre">prune_sender</span></code> should keep all snapshots since A’s <code class="docutils literal notranslate"><span class="pre">snap</span></code> job handles the pruning</li>
+<li><code class="docutils literal notranslate"><span class="pre">prune_receiver</span></code> can be configured as appropriate on each target server</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="generate-tls-certificates">
+<h2>Generate TLS Certificates<a class="headerlink" href="#generate-tls-certificates" title="Permalink to this headline">¶</a></h2>
+<p>Mutual TLS via the <a class="reference internal" href="../configuration/transports.html#transport-tcp-tlsclientauth"><span class="std std-ref">TLS client authentication transport</span></a> can be used to secure the connections between the servers. In this example, a self-signed certificate is created for each server without setting up a CA.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">source</span><span class="o">=</span>a.example.com
+<span class="nv">targets</span><span class="o">=(</span>
+    b.example.com
+    c.example.com
+    <span class="c1"># ...</span>
+<span class="o">)</span>
+
+<span class="k">for</span> server in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">source</span><span class="si">}</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">targets</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
+    openssl req -x509 -sha256 -nodes <span class="se">\</span>
+        -newkey rsa:4096 <span class="se">\</span>
+        -days <span class="m">365</span> <span class="se">\</span>
+        -keyout <span class="s2">&quot;</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">.key&quot;</span> <span class="se">\</span>
+        -out <span class="s2">&quot;</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">.crt&quot;</span> <span class="se">\</span>
+        -addext <span class="s2">&quot;subjectAltName = DNS:</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+        -subj <span class="s2">&quot;/CN=</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+
+<span class="c1"># Distribute each host&#39;s keypair</span>
+<span class="k">for</span> server in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">source</span><span class="si">}</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">targets</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
+    ssh root@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">&quot;</span> mkdir /etc/zrepl
+    scp <span class="s2">&quot;</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">&quot;</span>.<span class="o">{</span>crt,key<span class="o">}</span> root@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">&quot;</span>:/etc/zrepl/
+<span class="k">done</span>
+
+<span class="c1"># Distribute target certificates to the source</span>
+scp <span class="s2">&quot;</span><span class="si">${</span><span class="nv">targets</span><span class="p">[@]/%/.crt</span><span class="si">}</span><span class="s2">&quot;</span> root@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">source</span><span class="si">}</span><span class="s2">&quot;</span>:/etc/zrepl/
+
+<span class="c1"># Distribute source certificate to the targets</span>
+<span class="k">for</span> server in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">targets</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
+    scp <span class="s2">&quot;</span><span class="si">${</span><span class="nv">source</span><span class="si">}</span><span class="s2">.crt&quot;</span> root@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">server</span><span class="si">}</span><span class="s2">&quot;</span>:/etc/zrepl/
+<span class="k">done</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-source-server-a">
+<h2>Configure source server A<a class="headerlink" href="#configure-source-server-a" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="c1"># Separate job for snapshots and pruning</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">snapshots</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">snap</span>
+  <span class="n">filesystems</span><span class="p">:</span>
+    <span class="s1">&#39;tank&lt;&#39;</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># all filesystems</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">periodic</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
+  <span class="n">pruning</span><span class="p">:</span>
+    <span class="n">keep</span><span class="p">:</span>
+      <span class="c1"># Keep non-zrepl snapshots</span>
+      <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">regex</span>
+        <span class="n">negate</span><span class="p">:</span> <span class="n">true</span>
+        <span class="n">regex</span><span class="p">:</span> <span class="s1">&#39;^zrepl_&#39;</span>
+      <span class="c1"># Time-based snapshot retention</span>
+      <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">grid</span>
+        <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">30</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">12</span><span class="n">x30d</span>
+        <span class="n">regex</span><span class="p">:</span> <span class="s1">&#39;^zrepl_&#39;</span>
+
+<span class="c1"># Source job for target B</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">target_b</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">source</span>
+  <span class="n">serve</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">tls</span>
+    <span class="n">listen</span><span class="p">:</span> <span class="p">:</span><span class="mi">8888</span>
+    <span class="n">ca</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">b</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">crt</span>
+    <span class="n">cert</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">a</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">crt</span>
+    <span class="n">key</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">a</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">key</span>
+    <span class="n">client_cns</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+  <span class="n">filesystems</span><span class="p">:</span>
+    <span class="s1">&#39;tank&lt;&#39;</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># all filesystems</span>
+  <span class="c1"># Snapshots are handled by the separate snap job</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">manual</span>
+
+<span class="c1"># Source job for target C</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">target_c</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">source</span>
+  <span class="n">serve</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">tls</span>
+    <span class="n">listen</span><span class="p">:</span> <span class="p">:</span><span class="mi">8889</span>
+    <span class="n">ca</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">c</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">crt</span>
+    <span class="n">cert</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">a</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">crt</span>
+    <span class="n">key</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">a</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">key</span>
+    <span class="n">client_cns</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">c</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+  <span class="n">filesystems</span><span class="p">:</span>
+    <span class="s1">&#39;tank&lt;&#39;</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># all filesystems</span>
+  <span class="c1"># Snapshots are handled by the separate snap job</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">manual</span>
+
+<span class="c1"># Source jobs for remaining targets. Each one should listen on a different port</span>
+<span class="c1"># and reference the correct certificate and client CN.</span>
+<span class="c1"># - name: target_c</span>
+<span class="c1">#   ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-each-target-server">
+<h2>Configure each target server<a class="headerlink" href="#configure-each-target-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="c1"># Pull from source server A</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">source_a</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">pull</span>
+  <span class="n">connect</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">tls</span>
+    <span class="c1"># Use the correct port for this specific client (eg. B is 8888, C is 8889, etc.)</span>
+    <span class="n">address</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">8888</span>
+    <span class="n">ca</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">a</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">crt</span>
+    <span class="c1"># Use the correct key pair for this specific client</span>
+    <span class="n">cert</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">b</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">crt</span>
+    <span class="n">key</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">b</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">key</span>
+    <span class="n">server_cn</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+  <span class="n">root_fs</span><span class="p">:</span> <span class="n">pool0</span><span class="o">/</span><span class="n">backup</span>
+  <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
+  <span class="n">pruning</span><span class="p">:</span>
+    <span class="n">keep_sender</span><span class="p">:</span>
+      <span class="c1"># Source does the pruning in its snap job</span>
+      <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">regex</span>
+        <span class="n">regex</span><span class="p">:</span> <span class="s1">&#39;.*&#39;</span>
+    <span class="c1"># Receiver-side pruning can be configured as desired on each target server</span>
+    <span class="n">keep_receiver</span><span class="p">:</span>
+      <span class="c1"># Keep non-zrepl snapshots</span>
+      <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">regex</span>
+        <span class="n">negate</span><span class="p">:</span> <span class="n">true</span>
+        <span class="n">regex</span><span class="p">:</span> <span class="s1">&#39;^zrepl_&#39;</span>
+      <span class="c1"># Time-based snapshot retention</span>
+      <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">grid</span>
+        <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span><span class="n">x1h</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span> <span class="o">|</span> <span class="mi">24</span><span class="n">x1h</span> <span class="o">|</span> <span class="mi">30</span><span class="n">x1d</span> <span class="o">|</span> <span class="mi">12</span><span class="n">x30d</span>
+        <span class="n">regex</span><span class="p">:</span> <span class="s1">&#39;^zrepl_&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="go-back-to-quickstart-guide">
+<h2>Go Back To Quickstart Guide<a class="headerlink" href="#go-back-to-quickstart-guide" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../quickstart.html#quickstart-apply-config"><span class="std std-ref">Click here</span></a> to go back to the quickstart guide.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="backup_to_external_disk.html" class="btn btn-neutral float-left" title="Local Snapshots + Offline Backup to an External Disk" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, Christian Schwarz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: master
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v0.5.0/quickstart/fan_out_replication.html">v0.5.0</a></dd>
+            <dd><a href="../../v0.4.0/index.html">v0.4.0</a></dd>
+            <dd><a href="../../v0.3.1/index.html">v0.3.1</a></dd>
+            <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
+            <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="fan_out_replication.html">master</a></dd>
+            <dd><a href="../../stable/quickstart/fan_out_replication.html">stable</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

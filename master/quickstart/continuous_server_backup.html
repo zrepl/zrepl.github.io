@@ -99,6 +99,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="backup_to_external_disk.html">Local Snapshots + Offline Backup to an External Disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fan_out_replication.html">Fan-out replication</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#apply-configuration-changes">Apply Configuration Changes</a></li>
@@ -112,6 +113,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://matrix.to/#/#zrepl:matrix.org">Chat: Matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
 </ul>
 
@@ -195,13 +197,13 @@
 <p>This config example shows how we can backup our ZFS-based server to another machine using a zrepl push job.</p>
 <ul class="simple">
 <li>Production server <code class="docutils literal notranslate"><span class="pre">prod</span></code> with filesystems to back up:<ul>
-<li><code class="docutils literal notranslate"><span class="pre">zroot/var/db</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">zroot/usr/home</span></code> and all its child filesystems</li>
-<li><strong>except</strong> <code class="docutils literal notranslate"><span class="pre">zroot/usr/home/paranoid</span></code> belonging to a user doing backups themselves</li>
+<li>The entire pool <code class="docutils literal notranslate"><span class="pre">zroot</span></code></li>
+<li>except <code class="docutils literal notranslate"><span class="pre">zroot/var/tmp</span></code> and all child datasets of it</li>
+<li>and except <code class="docutils literal notranslate"><span class="pre">zroot/usr/home/paranoid</span></code> which belongs to a user doing backups themselves.</li>
 </ul>
 </li>
-<li>Backup server <code class="docutils literal notranslate"><span class="pre">backups</span></code> with<ul>
-<li>Filesystem <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod</span></code> + children dedicated to backups of <code class="docutils literal notranslate"><span class="pre">prod</span></code></li>
+<li>Backup server <code class="docutils literal notranslate"><span class="pre">backups</span></code> with a dataset sub-tree for use by zrepl:<ul>
+<li>In our example, that will be <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod</span></code>.</li>
 </ul>
 </li>
 </ul>
@@ -272,8 +274,8 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
     <span class="n">key</span><span class="p">:</span>  <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">prod</span><span class="o">.</span><span class="n">key</span>
     <span class="n">server_cn</span><span class="p">:</span> <span class="s2">&quot;backups&quot;</span>
   <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;zroot/var/db&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;zroot/usr/home&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;zroot&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;zroot/var/tmp&lt;&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
     <span class="s2">&quot;zroot/usr/home/paranoid&quot;</span><span class="p">:</span> <span class="n">false</span>
   <span class="p">}</span>
   <span class="n">snapshotting</span><span class="p">:</span>
@@ -306,9 +308,6 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;/etc/zrepl/backups.key&quot;</span>
       <span class="n">client_cns</span><span class="p">:</span>
         <span class="o">-</span> <span class="s2">&quot;prod&quot;</span>
-  <span class="n">recv</span><span class="p">:</span>
-    <span class="n">placeholder</span><span class="p">:</span>
-      <span class="n">encryption</span><span class="p">:</span> <span class="n">inherit</span> <span class="c1"># use &#39;off&#39; if sender uses send.encrypted</span>
   <span class="n">root_fs</span><span class="p">:</span> <span class="s2">&quot;storage/zrepl/sink&quot;</span>
 </pre></div>
 </div>
@@ -363,7 +362,7 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.5.0-rc1/quickstart/continuous_server_backup.html">v0.5.0-rc1</a></dd>
+            <dd><a href="../../v0.5.0/quickstart/continuous_server_backup.html">v0.5.0</a></dd>
             <dd><a href="../../v0.4.0/quickstart/continuous_server_backup.html">v0.4.0</a></dd>
             <dd><a href="../../v0.3.1/quickstart/continuous_server_backup.html">v0.3.1</a></dd>
             <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>

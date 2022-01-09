@@ -123,6 +123,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://matrix.to/#/#zrepl:matrix.org">Chat: Matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
 </ul>
 
@@ -452,7 +453,7 @@ This is temporary and being worked on <a class="reference external" href="https:
 </div>
 <div class="section" id="multiple-jobs-more-than-2-machines">
 <span id="jobs-multiple-jobs"></span><h2>Multiple Jobs &amp; More than 2 Machines<a class="headerlink" href="#multiple-jobs-more-than-2-machines" title="Permalink to this headline">¶</a></h2>
-<p>The quick-start guides focus on simple setups with a single sender and a single receiver.
+<p>Most users are served well with a single sender and a single receiver job.
 This section documents considerations for more complex setups.</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
@@ -488,9 +489,39 @@ This scenario is detailed in one of the <a class="reference internal" href="../q
 <p>This section might be relevant to users who wish to <em>fan-in</em> (N machines replicate to 1) or <em>fan-out</em> (replicate 1 machine to N machines).</p>
 <p><strong>Working setups</strong>:</p>
 <ul class="simple">
-<li>N <code class="docutils literal notranslate"><span class="pre">push</span></code> identities, 1 <code class="docutils literal notranslate"><span class="pre">sink</span></code> (as long as the different push jobs have a different <a class="reference internal" href="#overview-passive-side-client-identity"><span class="std std-ref">client identity</span></a>)<ul>
-<li><code class="docutils literal notranslate"><span class="pre">sink</span></code> constrains each client to a disjoint sub-tree of the sink-side dataset hierarchy <code class="docutils literal notranslate"><span class="pre">${root_fs}/${client_identity}</span></code>.
+<li><strong>Fan-in: N servers replicated to one receiver, disjoint dataset trees.</strong><ul>
+<li>This is the common use case of a centralized backup server.</li>
+<li>Implementation:<ul>
+<li>N <code class="docutils literal notranslate"><span class="pre">push</span></code> jobs (one per sender server), 1 <code class="docutils literal notranslate"><span class="pre">sink</span></code> (as long as the different push jobs have a different <a class="reference internal" href="#overview-passive-side-client-identity"><span class="std std-ref">client identity</span></a>)</li>
+<li>N <code class="docutils literal notranslate"><span class="pre">source</span></code> jobs (one per sender server), N <code class="docutils literal notranslate"><span class="pre">pull</span></code> on the receiver server (unique names, disjoing  <code class="docutils literal notranslate"><span class="pre">root_fs</span></code>)</li>
+</ul>
+</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">sink</span></code> job automatically constrains each client to a disjoint sub-tree of the sink-side dataset hierarchy <code class="docutils literal notranslate"><span class="pre">${root_fs}/${client_identity}</span></code>.
 Therefore, the different clients cannot interfere.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">pull</span></code> job only pulls from one host, so it’s up to the zrepl user to ensure that the different <code class="docutils literal notranslate"><span class="pre">pull</span></code> jobs don’t interfere.</li>
+</ul>
+</li>
+</ul>
+<ul class="simple" id="fan-out-replication">
+<li><strong>Fan-out: 1 server replicated to N receivers</strong><ul>
+<li>Can be implemented either in a pull or push fashion.<ul>
+<li><strong>pull setup</strong>: 1 <code class="docutils literal notranslate"><span class="pre">pull</span></code> job on each receiver server, each with a corresponding <strong>unique</strong> <code class="docutils literal notranslate"><span class="pre">source</span></code> job on the sender server.</li>
+<li><strong>push setup</strong>: 1 <code class="docutils literal notranslate"><span class="pre">sink</span></code> job on each receiver server, each with a corresponding <strong>unique</strong> <code class="docutils literal notranslate"><span class="pre">push</span></code> job on the sender server.</li>
+</ul>
+</li>
+<li>It is critical that we have one sending-side job (<code class="docutils literal notranslate"><span class="pre">source</span></code>, <code class="docutils literal notranslate"><span class="pre">push</span></code>) per receiver.
+The reason is that <a class="reference internal" href="#zrepl-zfs-abstractions"><span class="std std-ref">zrepl’s ZFS abstractions</span></a> (<code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">zfs-abstraction</span> <span class="pre">list</span></code>) include the name of the <code class="docutils literal notranslate"><span class="pre">source</span></code>/<code class="docutils literal notranslate"><span class="pre">push</span></code> job, but not the receive-side job name or client identity (see <a class="reference external" href="https://github.com/zrepl/zrepl/issues/380">issue #380</a>).
+As a counter-example, suppose we used multiple <code class="docutils literal notranslate"><span class="pre">pull</span></code> jobs with only one <code class="docutils literal notranslate"><span class="pre">source</span></code> job.
+All <code class="docutils literal notranslate"><span class="pre">pull</span></code> jobs would share the same <a class="reference internal" href="#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> and trip over each other, breaking incremental replication guarantees quickly.
+The anlogous problem exists for 1 <code class="docutils literal notranslate"><span class="pre">push</span></code> to N <code class="docutils literal notranslate"><span class="pre">sink</span></code> jobs.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> matched by the sending side jobs (<code class="docutils literal notranslate"><span class="pre">source</span></code>, <code class="docutils literal notranslate"><span class="pre">push</span></code>) need not necessarily be disjoint.
+For this to work, we need to avoid interference between snapshotting and pruning of the different sending jobs.
+The solution is to centralize sender-side snapshot management in a separate <code class="docutils literal notranslate"><span class="pre">snap</span></code> job.
+Snapshotting in the <code class="docutils literal notranslate"><span class="pre">source</span></code>/<code class="docutils literal notranslate"><span class="pre">push</span></code> job should then be disabled (<code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">manual</span></code>).
+And sender-side pruning (<code class="docutils literal notranslate"><span class="pre">keep_sender</span></code>) needs to be disabled in the active side (<code class="docutils literal notranslate"><span class="pre">pull</span></code> / <code class="docutils literal notranslate"><span class="pre">push</span></code>), since that’ll be done by the <code class="docutils literal notranslate"><span class="pre">snap</span> <span class="pre">job</span></code>.</li>
+<li><strong>Restore limitations</strong>: when restoring from one of the <code class="docutils literal notranslate"><span class="pre">pull</span></code> targets (e.g., using <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span> <span class="pre">-R</span></code>), the replication cursor bookmarks don’t exist on the restored system.
+This can break incremental replication to all other receive-sides after restore.</li>
+<li>See <a class="reference internal" href="../quickstart/fan_out_replication.html#quickstart-fan-out-replication"><span class="std std-ref">the fan-out replication quick-start guide</span></a> for an example of this setup.</li>
 </ul>
 </li>
 </ul>
@@ -546,7 +577,7 @@ Therefore, the different clients cannot interfere.</li>
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../v0.5.0-rc1/configuration/overview.html">v0.5.0-rc1</a></dd>
+            <dd><a href="../v0.5.0/configuration/overview.html">v0.5.0</a></dd>
             <dd><a href="../v0.4.0/configuration/overview.html">v0.4.0</a></dd>
             <dd><a href="../v0.3.1/configuration/overview.html">v0.3.1</a></dd>
             <dd><a href="../v0.2.1/configuration/overview.html">v0.2.1</a></dd>
