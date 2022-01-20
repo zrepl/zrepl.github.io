@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unreleased">0.6 (Unreleased)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">0.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">0.4.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">0.3.1</a></li>
@@ -189,6 +190,18 @@
 <span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <p>The changelog summarizes bugfixes that are deemed relevant for users and package maintainers.
 Developers should consult the git commit log or GitHub issue tracker.</p>
+<div class="section" id="unreleased">
+<h2>0.6 (Unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/zrepl/zrepl/discussions/547">Feature Wishlist on GitHub</a></li>
+<li><strong>[BREAK]</strong> [FEATURE] convert Prometheus metric <code class="docutils literal notranslate"><span class="pre">zrepl_version_daemon</span></code> to <code class="docutils literal notranslate"><span class="pre">zrepl_start_time</span></code> metric<ul>
+<li>The metric still reports the zrepl version in a label.
+But the metric <em>value</em> is now the Unix timestamp at the time the daemon was started.
+The Grafana dashboard in <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/dist/grafana">dist/grafana</a> has been updated.</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="id2">
 <h2>0.5<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
