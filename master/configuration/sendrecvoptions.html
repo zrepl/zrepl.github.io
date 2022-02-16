@@ -347,7 +347,7 @@ The commit in question is included in OpenZFS 2.0 and works around the problem b
 <p>Jump to
 <a class="reference internal" href="#job-recv-options-inherit-and-override"><span class="std std-ref">properties</span></a> ,
 <a class="reference internal" href="#job-send-recv-options-bandwidth-limit"><span class="std std-ref">bandwidth_limit</span></a> , and
-<a class="reference internal" href="#job-recv-options-placeholder"><span class="std std-ref">bandwidth_limit</span></a>.</p>
+<a class="reference internal" href="#job-recv-options-placeholder"><span class="std std-ref">placeholder</span></a>.</p>
 <div class="section" id="job-recv-options-inherit-and-override">
 <span id="id1"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#job-recv-options-inherit-and-override" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">override</span></code> maps directly to the <a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-recv.8.html">zfs recv -o flag</a>.
@@ -410,6 +410,10 @@ and property replication is enabled, the receiver must <a class="reference inter
 </div>
 <div class="section" id="placeholders">
 <span id="job-recv-options-placeholder"></span><h3>Placeholders<a class="headerlink" href="#placeholders" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">placeholder</span><span class="p">:</span>
+  <span class="n">encryption</span><span class="p">:</span> <span class="n">unspecified</span> <span class="o">|</span> <span class="n">off</span> <span class="o">|</span> <span class="n">inherit</span>
+</pre></div>
+</div>
 <p>During replication, zrepl <a class="reference internal" href="overview.html#replication-placeholder-property"><span class="std std-ref">creates placeholder datasets</span></a> on the receiving side if the sending side’s <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter creates gaps in the dataset hierarchy.
 This is generally fully transparent to the user.
 However, with OpenZFS Native Encryption, placeholders require zrepl user attention.
