@@ -496,7 +496,7 @@ This scenario is detailed in one of the <a class="reference internal" href="../q
 <li>This is the common use case of a centralized backup server.</li>
 <li>Implementation:<ul>
 <li>N <code class="docutils literal notranslate"><span class="pre">push</span></code> jobs (one per sender server), 1 <code class="docutils literal notranslate"><span class="pre">sink</span></code> (as long as the different push jobs have a different <a class="reference internal" href="#overview-passive-side-client-identity"><span class="std std-ref">client identity</span></a>)</li>
-<li>N <code class="docutils literal notranslate"><span class="pre">source</span></code> jobs (one per sender server), N <code class="docutils literal notranslate"><span class="pre">pull</span></code> on the receiver server (unique names, disjoing  <code class="docutils literal notranslate"><span class="pre">root_fs</span></code>)</li>
+<li>N <code class="docutils literal notranslate"><span class="pre">source</span></code> jobs (one per sender server), N <code class="docutils literal notranslate"><span class="pre">pull</span></code> on the receiver server (unique names, disjoint  <code class="docutils literal notranslate"><span class="pre">root_fs</span></code>)</li>
 </ul>
 </li>
 <li>The <code class="docutils literal notranslate"><span class="pre">sink</span></code> job automatically constrains each client to a disjoint sub-tree of the sink-side dataset hierarchy <code class="docutils literal notranslate"><span class="pre">${root_fs}/${client_identity}</span></code>.
