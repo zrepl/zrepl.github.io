@@ -97,12 +97,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#how-replication-works">How Replication Works</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#zfs-background-knowledge">ZFS Background Knowledge</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#zfs-abstractions-managed-by-zrepl">ZFS Abstractions Managed By zrepl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#limitations">Limitations</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#multiple-jobs-on-one-machine">Multiple Jobs on one Machine</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#more-than-2-machines">More Than 2 Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caveats-with-complex-setups-more-than-2-jobs-or-machines">Caveats With Complex Setups (More Than 2 Jobs or Machines)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#multiple-jobs-on-one-machine">Multiple Jobs on One Machine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#two-or-more-machines">Two Or More Machines</a></li>
 </ul>
 </li>
 </ul>
@@ -112,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conflict_resolution.html">Conflict Resolution Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
@@ -444,18 +444,9 @@ Subscribe to zrepl <a class="reference external" href="https://github.com/zrepl/
 <p class="last">More details can be found in the design document <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/replication/design.md">replication/design.md</a>.</p>
 </div>
 </div>
-<div class="section" id="limitations">
-<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h3>
-<div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p class="last">Currently, zrepl does not replicate filesystem properties.
-When receiving a filesystem, it is never mounted (<cite>-u</cite> flag)  and <cite>mountpoint=none</cite> is set.
-This is temporary and being worked on <a class="reference external" href="https://github.com/zrepl/zrepl/issues/24">issue #24</a>.</p>
 </div>
-</div>
-</div>
-<div class="section" id="multiple-jobs-more-than-2-machines">
-<span id="jobs-multiple-jobs"></span><h2>Multiple Jobs &amp; More than 2 Machines<a class="headerlink" href="#multiple-jobs-more-than-2-machines" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="caveats-with-complex-setups-more-than-2-jobs-or-machines">
+<h2>Caveats With Complex Setups (More Than 2 Jobs or Machines)<a class="headerlink" href="#caveats-with-complex-setups-more-than-2-jobs-or-machines" title="Permalink to this headline">¶</a></h2>
 <p>Most users are served well with a single sender and a single receiver job.
 This section documents considerations for more complex setups.</p>
 <div class="admonition attention">
@@ -470,7 +461,7 @@ This will help you understand why certain kinds of multi-machine setups do not (
 <p class="last">If you can’t find your desired configuration, have questions or would like to see improvements to multi-job setups, please <a class="reference external" href="https://github.com/zrepl/zrepl/issues/new">open an issue on GitHub</a>.</p>
 </div>
 <div class="section" id="multiple-jobs-on-one-machine">
-<h3>Multiple Jobs on one Machine<a class="headerlink" href="#multiple-jobs-on-one-machine" title="Permalink to this headline">¶</a></h3>
+<h3>Multiple Jobs on One Machine<a class="headerlink" href="#multiple-jobs-on-one-machine" title="Permalink to this headline">¶</a></h3>
 <p>As a general rule, multiple jobs configured on one machine <strong>must operate on disjoint sets of filesystems</strong>.
 Otherwise, concurrently running jobs might interfere when operating on the same filesystem.</p>
 <p>On your setup, ensure that</p>
@@ -487,8 +478,8 @@ Since the jobs won’t coordinate, errors in the log are to be expected, but <a 
 This scenario is detailed in one of the <a class="reference internal" href="../quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">quick-start guides</span></a>.</li>
 </ul>
 </div>
-<div class="section" id="more-than-2-machines">
-<h3>More Than 2 Machines<a class="headerlink" href="#more-than-2-machines" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="two-or-more-machines">
+<h3>Two Or More Machines<a class="headerlink" href="#two-or-more-machines" title="Permalink to this headline">¶</a></h3>
 <p>This section might be relevant to users who wish to <em>fan-in</em> (N machines replicate to 1) or <em>fan-out</em> (replicate 1 machine to N machines).</p>
 <p><strong>Working setups</strong>:</p>
 <ul class="simple">

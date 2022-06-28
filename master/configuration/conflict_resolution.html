@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Monitoring &mdash; zrepl  documentation</title>
+  <title>Conflict Resolution Options &mdash; zrepl  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Miscellaneous" href="misc.html" />
-    <link rel="prev" title="Logging" href="logging.html" /> 
+    <link rel="next" title="Taking Snaphots" href="snapshotting.html" />
+    <link rel="prev" title="Replication Options" href="replication.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -95,14 +95,14 @@
 <li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="conflict_resolution.html">Conflict Resolution Options</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Conflict Resolution Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-replication-option"><code class="docutils literal notranslate"><span class="pre">initial_replication</span></code> option</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Monitoring</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#prometheus-grafana">Prometheus &amp; Grafana</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
@@ -159,14 +159,14 @@
         
           <li><a href="../configuration.html">Configuration</a> &raquo;</li>
         
-      <li>Monitoring</li>
+      <li>Conflict Resolution Options</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/monitoring.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/conflict_resolution.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -188,30 +188,30 @@
 
 
 
-    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/configuration/monitoring.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is stable.</a></p>
-<div class="section" id="monitoring">
-<span id="id1"></span><h1>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline">¶</a></h1>
-<p>Monitoring endpoints are configured in the <code class="docutils literal notranslate"><span class="pre">global.monitoring</span></code> section of the config file.</p>
-<div class="section" id="prometheus-grafana">
-<span id="monitoring-prometheus"></span><h2>Prometheus &amp; Grafana<a class="headerlink" href="#prometheus-grafana" title="Permalink to this headline">¶</a></h2>
-<p>zrepl can expose <a class="reference external" href="https://prometheus.io/docs/instrumenting/exposition_formats/">Prometheus metrics</a> via HTTP.
-The <code class="docutils literal notranslate"><span class="pre">listen</span></code> attribute is a <a class="reference external" href="https://golang.org/pkg/net/#Listen">net.Listen</a>  string for tcp, e.g. <code class="docutils literal notranslate"><span class="pre">:9811</span></code> or <code class="docutils literal notranslate"><span class="pre">127.0.0.1:9811</span></code> (port 9811 was reserved to zrepl <a class="reference external" href="https://github.com/prometheus/prometheus/wiki/Default-port-allocations/_compare/43e495dd251ee328ac0d08b58084665b5c0f7a7e...459195059b55b414193ebeb80c5ba463d2606951">on the official list</a>).
-The <code class="docutils literal notranslate"><span class="pre">listen_freebind</span></code> attribute is <a class="reference internal" href="transports.html#listen-freebind-explanation"><span class="std std-ref">explained here</span></a>.
-The Prometheus monitoring job appears in the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">control</span></code> job list and may be specified <strong>at most once</strong>.</p>
-<p>zrepl also ships with an importable <a class="reference external" href="https://grafana.com">Grafana</a> dashboard that consumes the Prometheus metrics:
-see <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/dist/grafana">dist/grafana</a>.
-The dashboard also contains some advice on which metrics are important to monitor.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">At the time of writing, there is no stability guarantee on the exported metrics.</p>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">global</span><span class="p">:</span>
-  <span class="n">monitoring</span><span class="p">:</span>
-    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">prometheus</span>
-      <span class="n">listen</span><span class="p">:</span> <span class="s1">&#39;:9811&#39;</span>
-      <span class="n">listen_freebind</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># optional, default false</span>
+    <p class="scv-banner scv-sphinx_rtd_theme"><b>Warning:</b> This document is for the development version of zrepl.</p>
+<div class="section" id="conflict-resolution-options">
+<h1>Conflict Resolution Options<a class="headerlink" href="#conflict-resolution-options" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="o">...</span>
+  <span class="n">conflict_resolution</span><span class="p">:</span>
+    <span class="n">initial_replication</span><span class="p">:</span> <span class="n">most_recent</span> <span class="o">|</span> <span class="nb">all</span> <span class="o">|</span> <span class="n">fail</span> <span class="c1"># default: most_recent</span>
+
+  <span class="o">...</span>
 </pre></div>
 </div>
+<div class="section" id="initial-replication-option">
+<span id="conflict-resolution-initial-replication-option-send-all-snapshots"></span><h2><code class="docutils literal notranslate"><span class="pre">initial_replication</span></code> option<a class="headerlink" href="#initial-replication-option" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">initial_replication</span></code> option determines how many snapshots zrepl replicates if the filesystem has not been replicated before.
+If <code class="docutils literal notranslate"><span class="pre">most_recent</span></code> (the default), the initial replication will only transfer the most recent snapshot, while ignoring previous snapshots.
+If all snapshots should be replicated, specify <code class="docutils literal notranslate"><span class="pre">all</span></code>.
+Use <code class="docutils literal notranslate"><span class="pre">fail</span></code> to make replication of the filesystem fail in case there is no corresponding fileystem on the receiver.</p>
+<p>For example, suppose there are snapshosts <code class="docutils literal notranslate"><span class="pre">tank&#64;1</span></code>, <code class="docutils literal notranslate"><span class="pre">tank&#64;2</span></code>, <code class="docutils literal notranslate"><span class="pre">tank&#64;3</span></code> on a sender.
+Then <code class="docutils literal notranslate"><span class="pre">most_recent</span></code> will replicate just <code class="docutils literal notranslate"><span class="pre">&#64;3</span></code>, but <code class="docutils literal notranslate"><span class="pre">all</span></code> will replicate <code class="docutils literal notranslate"><span class="pre">&#64;1</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;2</span></code>, and <code class="docutils literal notranslate"><span class="pre">&#64;3</span></code>.</p>
+<p>If initial replication is interrupted, and there is at least one (maybe partial) snapshot on the receiver, zrepl will always resume in <strong>incremental mode</strong>.
+And that is regardless of where the initial replication was interrupted.</p>
+<p>For example, if <code class="docutils literal notranslate"><span class="pre">initial_replication:</span> <span class="pre">all</span></code> and the transfer of <code class="docutils literal notranslate"><span class="pre">&#64;1</span></code> is interrupted, zrepl would retry/resume at <code class="docutils literal notranslate"><span class="pre">&#64;1</span></code>.
+And even if the user changes the config to <code class="docutils literal notranslate"><span class="pre">initial_replication:</span> <span class="pre">most_recent</span></code> before resuming, <strong>incremental mode</strong> will still resume at <code class="docutils literal notranslate"><span class="pre">&#64;1</span></code>.</p>
 </div>
 </div>
 
@@ -223,10 +223,10 @@ The dashboard also contains some advice on which metrics are important to monito
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="misc.html" class="btn btn-neutral float-right" title="Miscellaneous" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="snapshotting.html" class="btn btn-neutral float-right" title="Taking Snaphots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="logging.html" class="btn btn-neutral float-left" title="Logging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="replication.html" class="btn btn-neutral float-left" title="Replication Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -259,16 +259,16 @@ The dashboard also contains some advice on which metrics are important to monito
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
-            <dd><a href="../../v0.5.0/configuration/monitoring.html">v0.5.0</a></dd>
-            <dd><a href="../../v0.4.0/configuration/monitoring.html">v0.4.0</a></dd>
-            <dd><a href="../../v0.3.1/configuration/monitoring.html">v0.3.1</a></dd>
-            <dd><a href="../../v0.2.1/configuration/monitoring.html">v0.2.1</a></dd>
-            <dd><a href="../../v0.1.1/configuration/monitoring.html">v0.1.1</a></dd>
+            <dd><a href="../../v0.5.0/index.html">v0.5.0</a></dd>
+            <dd><a href="../../v0.4.0/index.html">v0.4.0</a></dd>
+            <dd><a href="../../v0.3.1/index.html">v0.3.1</a></dd>
+            <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
+            <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="monitoring.html">master</a></dd>
-            <dd><a href="../../stable/configuration/monitoring.html">stable</a></dd>
+            <dd><a href="conflict_resolution.html">master</a></dd>
+            <dd><a href="../../stable/index.html">stable</a></dd>
         </dl>
     </div>
 </div>
