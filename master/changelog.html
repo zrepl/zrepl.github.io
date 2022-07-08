@@ -194,6 +194,7 @@ Developers should consult the git commit log or GitHub issue tracker.</p>
 <h2>0.6 (Unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="https://github.com/zrepl/zrepl/discussions/547">Feature Wishlist on GitHub</a></li>
+<li>[FEATURE] Add <code class="docutils literal notranslate"><span class="pre">ZREPL_DESTROY_MAX_BATCH_SIZE</span></code> env var (default 0=unlimited).</li>
 <li><strong>[BREAK]</strong> [FEATURE] convert Prometheus metric <code class="docutils literal notranslate"><span class="pre">zrepl_version_daemon</span></code> to <code class="docutils literal notranslate"><span class="pre">zrepl_start_time</span></code> metric<ul>
 <li>The metric still reports the zrepl version in a label.
 But the metric <em>value</em> is now the Unix timestamp at the time the daemon was started.
