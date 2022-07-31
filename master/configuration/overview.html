@@ -205,16 +205,16 @@
 <div class="section" id="overview-terminology">
 <h1>Overview &amp; Terminology<a class="headerlink" href="#overview-terminology" title="Permalink to this headline">¶</a></h1>
 <p>All work zrepl does is performed by the zrepl daemon which is configured in a single YAML configuration file loaded on startup.
-The following paths are considered:</p>
-<ul class="simple">
-<li>If set, the location specified via the global <code class="docutils literal notranslate"><span class="pre">--config</span></code> flag</li>
+The following paths are searched, in this order:</p>
+<ol class="arabic simple">
+<li>The path specified via the global <code class="docutils literal notranslate"><span class="pre">--config</span></code> flag</li>
 <li><code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">/usr/local/etc/zrepl/zrepl.yml</span></code></li>
-</ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> subcommand can be used to validate the configuration.
-The command will output nothing and exit with zero status code if the configuration is valid.
-The error messages vary in quality and usefulness: please report confusing config errors to the tracking <a class="reference external" href="https://github.com/zrepl/zrepl/issues/155">issue #155</a>.
-Full example configs such as in the <a class="reference internal" href="../quickstart.html#quickstart-toc"><span class="std std-ref">quick-start guides</span></a> or the <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/">config/samples/</a> directory might also be helpful.
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> can be used to validate the configuration.
+If the configuration is valid, it will output nothing and exit with code <code class="docutils literal notranslate"><span class="pre">0</span></code>.
+The error messages vary in quality and usefulness: please report confusing config errors to the tracking <a class="reference external" href="https://github.com/zrepl/zrepl/issues/155">issue #155</a>.</p>
+<p>Full example configs are available at <a class="reference internal" href="../quickstart.html#quickstart-toc"><span class="std std-ref">quick-start guides</span></a> and <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/">config/samples/</a>.
 However, copy-pasting examples is no substitute for reading documentation!</p>
 <div class="section" id="config-file-structure">
 <h2>Config File Structure<a class="headerlink" href="#config-file-structure" title="Permalink to this headline">¶</a></h2>
@@ -225,9 +225,8 @@ However, copy-pasting examples is no substitute for reading documentation!</p>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<p>zrepl is configured using a single YAML configuration file with two main sections: <code class="docutils literal notranslate"><span class="pre">global</span></code> and <code class="docutils literal notranslate"><span class="pre">jobs</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">global</span></code> section is filled with sensible defaults and is covered later in this chapter.
-The <code class="docutils literal notranslate"><span class="pre">jobs</span></code> section is a list of jobs which we are going to explain now.</p>
+<p>A zrepl configuration file is divided in to two main sections: <code class="docutils literal notranslate"><span class="pre">global</span></code> and <code class="docutils literal notranslate"><span class="pre">jobs</span></code>.
+<code class="docutils literal notranslate"><span class="pre">global</span></code> has sensible defaults. It is covered in <a class="reference internal" href="logging.html#logging"><span class="std std-ref">logging</span></a>, <a class="reference internal" href="monitoring.html#monitoring"><span class="std std-ref">monitoring</span></a> &amp; <a class="reference internal" href="misc.html#miscellaneous"><span class="std std-ref">miscellaneous</span></a>.</p>
 </div>
 <div class="section" id="jobs-how-they-work-together">
 <span id="job-overview"></span><h2>Jobs &amp; How They Work Together<a class="headerlink" href="#jobs-how-they-work-together" title="Permalink to this headline">¶</a></h2>
@@ -238,7 +237,7 @@ Jobs are identified by their <code class="docutils literal notranslate"><span cl
 <p class="first admonition-title">Note</p>
 <p class="last">The job name is persisted in several places on disk and thus <a class="reference external" href="https://github.com/zrepl/zrepl/issues/327">cannot be changed easily</a>.</p>
 </div>
-<p>Replication always happens between a pair of jobs: one is the <strong>active side</strong>, and one the <strong>passive side</strong>.
+<p>Replication always happens between a pair of jobs: one <strong>active side</strong> and one <strong>passive side</strong>.
 The active side connects to the passive side using a <a class="reference internal" href="transports.html#transport"><span class="std std-ref">transport</span></a> and starts executing the replication logic.
 The passive side responds to requests from the active side after checking its permissions.</p>
 <p>The following table shows how different job types can be combined to achieve <strong>both push and pull mode setups</strong>.
@@ -311,31 +310,32 @@ Note that snapshot-creation denoted by “(snap)” is orthogonal to whether a j
 <div class="section" id="how-the-active-side-works">
 <h2>How the Active Side Works<a class="headerlink" href="#how-the-active-side-works" title="Permalink to this headline">¶</a></h2>
 <p>The active side (<a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push</span></a> and <a class="reference internal" href="jobs.html#job-pull"><span class="std std-ref">pull</span></a> job) executes the replication and pruning logic:</p>
-<ul class="simple">
-<li>Wakeup because of finished snapshotting (<code class="docutils literal notranslate"><span class="pre">push</span></code> job) or pull interval ticker (<code class="docutils literal notranslate"><span class="pre">pull</span></code> job).</li>
-<li>Connect to the corresponding passive side using a <a class="reference internal" href="transports.html#transport"><span class="std std-ref">transport</span></a> and instantiate an RPC client.</li>
-<li>Replicate data from the sending to the receiving side (see below).</li>
+<ol class="arabic simple">
+<li>Wakeup after snapshotting (<code class="docutils literal notranslate"><span class="pre">push</span></code> job) or pull interval ticker (<code class="docutils literal notranslate"><span class="pre">pull</span></code> job).</li>
+<li>Connect to the passive side and instantiate an RPC client.</li>
+<li>Replicate data from the sender to the receiver.</li>
 <li>Prune on sender &amp; receiver.</li>
-</ul>
+</ol>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">The progress of the active side can be watched live using the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> subcommand.</p>
+<p class="last">The progress of the active side can be watched live using <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code>.</p>
 </div>
 </div>
 <div class="section" id="how-the-passive-side-works">
 <span id="overview-passive-side-client-identity"></span><h2>How the Passive Side Works<a class="headerlink" href="#how-the-passive-side-works" title="Permalink to this headline">¶</a></h2>
-<p>The passive side (<a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink</span></a> and <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source</span></a>) waits for connections from the corresponding active side,
-using the transport listener type specified in the <code class="docutils literal notranslate"><span class="pre">serve</span></code> field of the job configuration.
-When a client connects, the transport listener performS listener-specific access control (cert validation, IP ACLs, etc)
-and determines the <em>client identity</em>.
-The passive side job then uses this client identity as follows:</p>
-<ul class="simple">
-<li>The <code class="docutils literal notranslate"><span class="pre">sink</span></code> job maps requests from different client identities to their respective sub-filesystem tree <code class="docutils literal notranslate"><span class="pre">root_fs/${client_identity}</span></code>.</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">source</span></code> might, in the future, embed the client identity in <a class="reference internal" href="#zrepl-zfs-abstractions"><span class="std std-ref">zrepl’s ZFS abstraction names</span></a> in order to support multi-host replication.</li>
+<p>The passive side (<a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">sink</span></a> and <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source</span></a>) waits for connections from the active side,
+on the <a class="reference internal" href="transports.html#transport"><span class="std std-ref">transport</span></a> specified with <code class="docutils literal notranslate"><span class="pre">serve</span></code> in the job configuration.
+The respective transport then perfoms authentication &amp; authorization, resulting in a stable <em>client identity</em>.
+The passive side job uses this <em>client identity</em> as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li>In <code class="docutils literal notranslate"><span class="pre">sink</span></code> jobs, to map requests from different <em>client identities</em> to their respective sub-filesystem tree <code class="docutils literal notranslate"><span class="pre">root_fs/${client_identity}</span></code>.</li>
+<li><em>In the future, ``source`` might embed the client identity in :ref:`zrepl’s ZFS abstraction names &lt;zrepl-zfs-abstractions&gt;`, to support multi-host replication.</em></li>
 </ul>
+</div></blockquote>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">The implementation of the <code class="docutils literal notranslate"><span class="pre">sink</span></code> job requires that the connecting client identities be a valid ZFS filesystem name components.</p>
+<p class="last">The use of the client identity in the <code class="docutils literal notranslate"><span class="pre">sink</span></code> job implies that it must be usable as a ZFS ZFS filesystem name component.</p>
 </div>
 </div>
 <div class="section" id="how-replication-works">
@@ -343,7 +343,7 @@ The passive side job then uses this client identity as follows:</p>
 <p>One of the major design goals of the replication module is to avoid any duplication of the nontrivial logic.
 As such, the code works on abstract senders and receiver <strong>endpoints</strong>, where typically one will be implemented by a local program object and the other is an RPC client instance.
 Regardless of push- or pull-style setup, the logic executes on the active side, i.e. in the <code class="docutils literal notranslate"><span class="pre">push</span></code> or <code class="docutils literal notranslate"><span class="pre">pull</span></code> job.</p>
-<p>The following high-level steps take place during replication and can be monitored using the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> subcommand:</p>
+<p>The following high-level steps take place during replication and can be monitored using <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code>:</p>
 <ul class="simple">
 <li>Plan the replication:<ul>
 <li>Compare sender and receiver filesystem snapshots</li>
