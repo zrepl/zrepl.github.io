@@ -195,6 +195,17 @@ Developers should consult the git commit log or GitHub issue tracker.</p>
 <ul class="simple">
 <li><a class="reference external" href="https://github.com/zrepl/zrepl/discussions/547">Feature Wishlist on GitHub</a></li>
 <li>[FEATURE] Add <code class="docutils literal notranslate"><span class="pre">ZREPL_DESTROY_MAX_BATCH_SIZE</span></code> env var (default 0=unlimited).</li>
+<li>[BUG] Fix resuming from interrupted replications that use <code class="docutils literal notranslate"><span class="pre">send.raw</span></code> on unencrypted datasets.<ul>
+<li>The send options introduced in zrepl 0.4 allow users to specify additional zfs send flags for zrepl to use.
+Before this fix, when setting <code class="docutils literal notranslate"><span class="pre">send.raw=true</span></code> on a job that replicates unencrypted datasets,
+zrepl would not allow an interrupted replication to resume.
+The reason were overly cautious checks to support the <code class="docutils literal notranslate"><span class="pre">send.encrypted</span></code> option.</li>
+<li>This bugfix removes these checks from the replication planner.
+This makes <code class="docutils literal notranslate"><span class="pre">send.encrypted</span></code> a sender-side-only concern, much like all other <code class="docutils literal notranslate"><span class="pre">send.*</span></code> flags.</li>
+<li>However, this means that the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> UI no longer indicates whether a replication step uses encrypted sends or not.
+The setting is still effective though.</li>
+</ul>
+</li>
 <li><strong>[BREAK]</strong> [FEATURE] convert Prometheus metric <code class="docutils literal notranslate"><span class="pre">zrepl_version_daemon</span></code> to <code class="docutils literal notranslate"><span class="pre">zrepl_start_time</span></code> metric<ul>
 <li>The metric still reports the zrepl version in a label.
 But the metric <em>value</em> is now the Unix timestamp at the time the daemon was started.
