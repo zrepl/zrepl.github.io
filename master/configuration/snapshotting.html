@@ -97,6 +97,9 @@
 <li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conflict_resolution.html">Conflict Resolution Options</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Taking Snaphots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#periodic-snapshotting"><code class="docutils literal notranslate"><span class="pre">periodic</span></code> Snapshotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cron-snapshotting"><code class="docutils literal notranslate"><span class="pre">cron</span></code> Snapshotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-snapshotting"><code class="docutils literal notranslate"><span class="pre">manual</span></code> Snapshotting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pre-and-post-snapshot-hooks">Pre- and Post-Snapshot Hooks</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#command-hooks"><code class="docutils literal notranslate"><span class="pre">command</span></code> Hooks</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#postgres-checkpoint-hook"><code class="docutils literal notranslate"><span class="pre">postgres-checkpoint</span></code> Hook</a></li>
@@ -196,44 +199,115 @@
     <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/configuration/snapshotting.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is stable.</a></p>
 <div class="section" id="taking-snaphots">
 <span id="job-snapshotting-spec"></span><h1>Taking Snaphots<a class="headerlink" href="#taking-snaphots" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">push</span></code>, <code class="docutils literal notranslate"><span class="pre">source</span></code> and <code class="docutils literal notranslate"><span class="pre">snap</span></code> jobs can automatically take periodic snapshots of the filesystems matched by the <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter field.
-The snapshot names are composed of a user-defined prefix followed by a UTC date formatted like <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code>.
-We use UTC because it will avoid name conflicts when switching time zones or between summer and winter time.</p>
-<p>When a job is started, the snapshotter attempts to get the snapshotting rhythms of the matched <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> in sync because snapshotting all filesystems at the same time results in a more consistent backup.
-To find that sync point, the most recent snapshot, made by the snapshotter, in any of the matched <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> is used.
-A filesystem that does not have snapshots by the snapshotter has lower priority than filesystem that do, and thus might not be snapshotted (and replicated) until it is snapshotted at the next sync point.</p>
-<p>For <code class="docutils literal notranslate"><span class="pre">push</span></code> jobs, replication is automatically triggered after all filesystems have been snapshotted.</p>
-<p>Note that the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand does not trigger snapshotting.</p>
+<p>You can configure zrepl to take snapshots of the filesystems in the <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> field specified in <code class="docutils literal notranslate"><span class="pre">push</span></code>, <code class="docutils literal notranslate"><span class="pre">source</span></code> and <code class="docutils literal notranslate"><span class="pre">snap</span></code> jobs.</p>
+<p>The following snapshotting types are supported:</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">snapshotting.type</span></code></th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">periodic</span></code></td>
+<td>Ensure that snapshots are taken at a particular interval.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cron</span></code></td>
+<td>Use cron spec to take snapshots at particular points in time.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">manual</span></code></td>
+<td>zrepl does not take any snapshots by itself.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">periodic</span></code> and <code class="docutils literal notranslate"><span class="pre">cron</span></code> snapshotting types share some common options and behavior:</p>
+<ul class="simple">
+<li><strong>Naming:</strong> The snapshot names are composed of a user-defined <code class="docutils literal notranslate"><span class="pre">prefix</span></code> followed by a UTC date formatted like <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code>.
+We use UTC because it will avoid name conflicts when switching time zones or between summer and winter time.</li>
+<li><strong>Hooks:</strong> You can configure hooks to run before or after zrepl takes the snapshots. See <a class="reference internal" href="#job-snapshotting-hooks"><span class="std std-ref">below</span></a> for details.</li>
+<li><strong>Push replication:</strong> After creating all snapshots, the snapshotter will wake up the replication part of the job, if it’s a <code class="docutils literal notranslate"><span class="pre">push</span></code> job.
+Note that snapshotting is decoupled from replication, i.e., if it is down or takes too long, snapshots will still be taken.
+Note further that other jobs are not woken up by snapshotting.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<blockquote>
+<div><p>There is <strong>no concept of ownership</strong> of the snapshots that are created by <code class="docutils literal notranslate"><span class="pre">periodic</span></code> or <code class="docutils literal notranslate"><span class="pre">cron</span></code>.
+Thus, there is no distinction between zrepl-created snapshots and user-created snapshots during replication or pruning.</p>
+<p>In particular, pruning will take all snapshots into consideration by default.
+To constrain pruning to just zrepl-created snapshots:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Assign a unique <cite>prefix</cite> to the snapshotter and</li>
+<li>Use the <code class="docutils literal notranslate"><span class="pre">regex</span></code> functionality of the various pruning <code class="docutils literal notranslate"><span class="pre">keep</span></code> rules to just consider snapshots with that prefix.</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+<p class="last">There is currently no way to constrain replication to just zrepl-created snapshots.
+Follow and comment at <a class="reference external" href="https://github.com/zrepl/zrepl/issues/403">issue #403</a> if you need this functionality.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand does not trigger snapshotting.</p>
+</div>
+<div class="section" id="periodic-snapshotting">
+<h2><code class="docutils literal notranslate"><span class="pre">periodic</span></code> Snapshotting<a class="headerlink" href="#periodic-snapshotting" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
-<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
-  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;tmp&quot;</span><span class="p">:</span> <span class="n">false</span>
-  <span class="p">}</span>
+<span class="o">-</span> <span class="o">...</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
   <span class="n">snapshotting</span><span class="p">:</span>
     <span class="nb">type</span><span class="p">:</span> <span class="n">periodic</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
     <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
     <span class="n">hooks</span><span class="p">:</span> <span class="o">...</span>
-  <span class="o">...</span>
+ <span class="n">pruning</span><span class="p">:</span> <span class="o">...</span>
 </pre></div>
 </div>
-<p>There is also a <code class="docutils literal notranslate"><span class="pre">manual</span></code> snapshotting type, which covers the following use cases:</p>
-<ul class="simple">
-<li>Existing infrastructure for automatic snapshots: you only want to use this zrepl job for replication.</li>
-<li>Handling snapshotting through a separate <code class="docutils literal notranslate"><span class="pre">snap</span></code> job.</li>
-</ul>
-<p>Note that you will have to trigger replication manually using the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand in that case.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">periodic</span></code> snapshotter ensures that snapshots are taken in the specified <code class="docutils literal notranslate"><span class="pre">interval</span></code>.
+If you use zrepl for backup, this translates into your recovery point objective (RPO).
+To meet your RPO, you still need to monitor that replication, which happens asynchronously to snapshotting, actually works.</p>
+<p>It is desirable to get all <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> snapshotted simultaneously because it results in a more consistent backup.
+To accomplish this while still maintaining the <code class="docutils literal notranslate"><span class="pre">interval</span></code>, the <code class="docutils literal notranslate"><span class="pre">periodic</span></code> snapshotter attempts to get the snapshotting rhythms in sync.
+To find that sync point, the most recent snapshot, created by the snapshotter, in any of the matched <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> is used.
+A filesystem that does not have snapshots by the snapshotter has lower priority than filesystem that do, and thus might not be snapshotted (and replicated) until it is snapshotted at the next sync point.
+The snapshotter uses the <code class="docutils literal notranslate"><span class="pre">prefix</span></code> to identify which snapshots it created.</p>
+</div>
+<div class="section" id="cron-snapshotting">
+<span id="job-snapshotting-cron"></span><h2><code class="docutils literal notranslate"><span class="pre">cron</span></code> Snapshotting<a class="headerlink" href="#cron-snapshotting" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">snap</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">cron</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
+    <span class="c1"># (second, optional) minute hour day-of-month month day-of-week</span>
+    <span class="c1"># This example takes snapshots daily at 3:00.</span>
+    <span class="n">cron</span><span class="p">:</span> <span class="s2">&quot;0 3 * * *&quot;</span>
+  <span class="n">pruning</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">cron</span></code> mode, the snapshotter takes snaphots at fixed points in time.
+See <a class="reference external" href="https://en.wikipedia.org/wiki/Cron">https://en.wikipedia.org/wiki/Cron</a> for details on the syntax.
+zrepl uses the <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">github.com/robfig/cron/v3</span></code> Go package for parsing.
+An optional field for “seconds” is supported to take snapshots at sub-minute frequencies.</p>
+</div>
+<div class="section" id="manual-snapshotting">
+<h2><code class="docutils literal notranslate"><span class="pre">manual</span></code> Snapshotting<a class="headerlink" href="#manual-snapshotting" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
-  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;tmp&quot;</span><span class="p">:</span> <span class="n">false</span>
-  <span class="p">}</span>
   <span class="n">snapshotting</span><span class="p">:</span>
     <span class="nb">type</span><span class="p">:</span> <span class="n">manual</span>
   <span class="o">...</span>
 </pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">manual</span></code> mode, zrepl does not take snapshots by itself.
+Manual snapshotting is most useful if you have existing infrastructure for snapshot management.
+Or, if you want to decouple snapshot management from replication using a zrepl <code class="docutils literal notranslate"><span class="pre">snap</span></code> job.
+See <a class="reference internal" href="../quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">this quickstart guide</span></a> for an example.</p>
+<p>To trigger replication after taking snapshots, use the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> command.</p>
 </div>
 <div class="section" id="pre-and-post-snapshot-hooks">
 <span id="job-snapshotting-hooks"></span><h2>Pre- and Post-Snapshot Hooks<a class="headerlink" href="#pre-and-post-snapshot-hooks" title="Permalink to this headline">¶</a></h2>
