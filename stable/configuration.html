@@ -95,6 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/filter_syntax.html">Filter Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html">Send &amp; Recv Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/replication.html">Replication Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/conflict_resolution.html">Conflict Resolution Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/prune.html">Pruning Policies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/logging.html">Logging</a></li>
@@ -192,12 +193,11 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#how-replication-works">How Replication Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#zfs-background-knowledge">ZFS Background Knowledge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#zfs-abstractions-managed-by-zrepl">ZFS Abstractions Managed By zrepl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#limitations">Limitations</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#multiple-jobs-more-than-2-machines">Multiple Jobs &amp; More than 2 Machines</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#multiple-jobs-on-one-machine">Multiple Jobs on one Machine</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#more-than-2-machines">More Than 2 Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/overview.html#caveats-with-complex-setups-more-than-2-jobs-or-machines">Caveats With Complex Setups (More Than 2 Jobs or Machines)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#multiple-jobs-on-one-machine">Multiple Jobs on One Machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration/overview.html#two-or-more-machines">Two Or More Machines</a></li>
 </ul>
 </li>
 </ul>
@@ -256,9 +256,9 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#mount-behaviour">Mount behaviour</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#systemd">Systemd</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#encryption">Encryption</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#placeholders">Placeholders</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#placeholders">Placeholders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/sendrecvoptions.html#common-options">Common Options</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration/sendrecvoptions.html#bandwidth-limit-send-recv">Bandwidth Limit (send &amp; recv)</a></li>
 </ul>
@@ -270,7 +270,17 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration/replication.html#concurrency-option"><code class="docutils literal notranslate"><span class="pre">concurrency</span></code> option</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/conflict_resolution.html">Conflict Resolution Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/conflict_resolution.html#initial-replication-option"><code class="docutils literal notranslate"><span class="pre">initial_replication</span></code> option</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="configuration/snapshotting.html">Taking Snaphots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html#periodic-snapshotting"><code class="docutils literal notranslate"><span class="pre">periodic</span></code> Snapshotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html#cron-snapshotting"><code class="docutils literal notranslate"><span class="pre">cron</span></code> Snapshotting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration/snapshotting.html#timestamp-format">Timestamp Format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html#manual-snapshotting"><code class="docutils literal notranslate"><span class="pre">manual</span></code> Snapshotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration/snapshotting.html#pre-and-post-snapshot-hooks">Pre- and Post-Snapshot Hooks</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration/snapshotting.html#command-hooks"><code class="docutils literal notranslate"><span class="pre">command</span></code> Hooks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration/snapshotting.html#postgres-checkpoint-hook"><code class="docutils literal notranslate"><span class="pre">postgres-checkpoint</span></code> Hook</a></li>
@@ -361,6 +371,7 @@
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
+            <dd><a href="../v0.6.0/configuration.html">v0.6.0</a></dd>
             <dd><a href="../v0.5.0/configuration.html">v0.5.0</a></dd>
             <dd><a href="../v0.4.0/configuration.html">v0.4.0</a></dd>
             <dd><a href="../v0.3.1/configuration.html">v0.3.1</a></dd>

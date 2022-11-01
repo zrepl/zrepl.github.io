@@ -92,15 +92,16 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#unreleased">0.6 (Unreleased)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">0.5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">0.4.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-release">Next Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">0.3.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-3">0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">0.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">0.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">0.1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id7">0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">0.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">0.1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#notes-to-package-maintainers">Notes to Package Maintainers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
 </ul>
@@ -187,20 +188,82 @@
 <span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <p>The changelog summarizes bugfixes that are deemed relevant for users and package maintainers.
 Developers should consult the git commit log or GitHub issue tracker.</p>
-<div class="section" id="unreleased">
-<h2>0.6 (Unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="next-release">
+<h2>Next Release<a class="headerlink" href="#next-release" title="Permalink to this headline">¶</a></h2>
+<p>The plan for the next release is to revisit how zrepl does snapshot management.
+High-level goals:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/zrepl/zrepl/discussions/547">Feature Wishlist on GitHub</a></li>
-<li><strong>[BREAK]</strong> [FEATURE] convert Prometheus metric <code class="docutils literal notranslate"><span class="pre">zrepl_version_daemon</span></code> to <code class="docutils literal notranslate"><span class="pre">zrepl_start_time</span></code> metric<ul>
+<li>Make it easy to decouple snapshot management (snapshotting, pruning) from replication.</li>
+<li>Ability to include/exclude snapshots from replication.
+This is useful for aforementioned decoupling, e.g., separate snapshot prefixes for local &amp; remote replication.
+Also, it makes explicit that by default, zrepl replicates all snapshots, and that
+replication has no concept of “zrepl-created snapshots”, which is a common misconception.</li>
+<li>Use of <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">snapshot</span></code> comma syntax or channel programs to take snapshots of multiple
+datasets atomically.</li>
+<li>Provide an alternative to the <code class="docutils literal notranslate"><span class="pre">grid</span></code> pruning policy.
+Most likely something based on hourly/daily/weekly/monthly “trains” plus a count.</li>
+<li>Ability to prune at the granularity of the <strong>group</strong> of snapshots created at a given
+time, as opposed to the individual snapshots within a dataset.
+Maybe this will be addressed by the alternative to the <code class="docutils literal notranslate"><span class="pre">grid</span></code> pruning policy,
+as it will likely be more predictable.</li>
+</ul>
+<p>Those changes will likely come with some breakage in the config.
+However, I want to avoid breaking <strong>use cases</strong> that are satisfied by the current design.
+There will be beta/RC releases to give users a chance to evaluate.</p>
+</div>
+<div class="section" id="id2">
+<h2>0.6<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[FEATURE] <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-cron"><span class="std std-ref">Schedule-based snapshotting</span></a> using <code class="docutils literal notranslate"><span class="pre">cron</span></code> syntax instead of an interval.</li>
+<li>[FEATURE] Configurable initial replication policy.
+When a filesystem is first replicated to a receiver, this control whether just the newest
+snapshot will be replicated vs. all existing snapshots. Learn more <a class="reference internal" href="configuration/conflict_resolution.html#conflict-resolution-initial-replication"><span class="std std-ref">in the docs</span></a>.</li>
+<li>[FEATURE] Configurable timestamp format for snapshot names via <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-timestamp-format"><span class="std std-ref">timestamp_format</span></a>
+(Thanks, <a class="reference external" href="https://github.com/ydylla">&#64;ydylla</a>).</li>
+<li>[FEATURE] Add <code class="docutils literal notranslate"><span class="pre">ZREPL_DESTROY_MAX_BATCH_SIZE</span></code> env var (default 0=unlimited)
+(Thanks, <a class="reference external" href="https://github.com/3nprob">&#64;3nprob</a>).</li>
+<li>[FEATURE] Add <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span> <span class="pre">--skip-cert-check</span></code> flag (Thanks, <a class="reference external" href="https://github.com/cole-h">&#64;cole-h</a>).</li>
+<li>[BUG] Fix resuming from interrupted replications that use <code class="docutils literal notranslate"><span class="pre">send.raw</span></code> on unencrypted datasets.<ul>
+<li>The send options introduced in zrepl 0.4 allow users to specify additional zfs send flags for zrepl to use.
+Before this fix, when setting <code class="docutils literal notranslate"><span class="pre">send.raw=true</span></code> on a job that replicates unencrypted datasets,
+zrepl would not allow an interrupted replication to resume.
+The reason were overly cautious checks to support the <code class="docutils literal notranslate"><span class="pre">send.encrypted</span></code> option.</li>
+<li>This bugfix removes these checks from the replication planner.
+This makes <code class="docutils literal notranslate"><span class="pre">send.encrypted</span></code> a sender-side-only concern, much like all other <code class="docutils literal notranslate"><span class="pre">send.*</span></code> flags.</li>
+<li>However, this means that the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> UI no longer indicates whether a replication step uses encrypted sends or not.
+The setting is still effective though.</li>
+</ul>
+</li>
+<li><strong>[BREAK]</strong> convert Prometheus metric <code class="docutils literal notranslate"><span class="pre">zrepl_version_daemon</span></code> to <code class="docutils literal notranslate"><span class="pre">zrepl_start_time</span></code> metric<ul>
 <li>The metric still reports the zrepl version in a label.
 But the metric <em>value</em> is now the Unix timestamp at the time the daemon was started.
 The Grafana dashboard in <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/dist/grafana">dist/grafana</a> has been updated.</li>
 </ul>
 </li>
+<li>[BUG] transient zrepl status error: <code class="docutils literal notranslate"><span class="pre">Post</span> <span class="pre">&quot;http://unix/status&quot;:</span> <span class="pre">EOF</span></code></li>
+<li>[BUG] don’t treat receive-side bookmarks as a replication conflict.
+This facilitates chaining of replication jobs. See <a class="reference external" href="https://github.com/zrepl/zrepl/issues/490">issue #490</a>.</li>
+<li>[BUG] workaround for Go/gRPC problem on Illumos where zrepl would
+crash when using the <code class="docutils literal notranslate"><span class="pre">local</span></code> transport type (<a class="reference external" href="https://github.com/zrepl/zrepl/issues/598">issue #598</a>).</li>
+<li>[BUG] fix active child tasks panic that cold occur during replication plannig (<a class="reference external" href="https://github.com/zrepl/zrepl/issues/193abbe">issue #193abbe</a>)</li>
+<li>[BUG] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> off-by-one error in display of completed step count (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/ce6701f">commit ce6701f</a>)</li>
+<li>[BUG] Allow using day &amp; week units for <code class="docutils literal notranslate"><span class="pre">snapshotting.interval</span></code> (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/ffb1d89">commit ffb1d89</a>)</li>
+<li>[DOCS] <code class="docutils literal notranslate"><span class="pre">docs/overview</span></code> improvements (Thanks, <a class="reference external" href="https://github.com/jtagcat">&#64;jtagcat</a>).</li>
+<li>[MAINT] Update to Go 1.19.</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="last line-block">
+<div class="line">zrepl is a spare-time project primarily developed by <a class="reference external" href="https://cschwarz.com">Christian Schwarz</a>.</div>
+<div class="line">You can support maintenance and feature development through one of the following services:</div>
+<div class="line"><a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/badge/dynamic/json?color=yellow&amp;label=Patreon&amp;query=data.attributes.patron_count&amp;url=https%3A%2F%2Fwww.patreon.com%2Fapi%2Fcampaigns%2F3095079" /></a> <a class="reference external" href="https://github.com/sponsors/problame"><img alt="Donate via GitHub Sponsors" src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/patrons/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></div>
+<div class="line">Note that PayPal processing fees are relatively high for small donations.</div>
+<div class="line">For SEPA wire transfer and <strong>commercial support</strong>, please <a class="reference external" href="https://cschwarz.com">contact Christian directly</a>.</div>
 </div>
-<div class="section" id="id2">
-<h2>0.5<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>0.5<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[FEATURE] <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-recv-options-bandwidth-limit"><span class="std std-ref">Bandwidth limiting</span></a> (Thanks, Prominic.NET, Inc.)</li>
 <li>[FEATURE] zrepl status: use a <code class="docutils literal notranslate"><span class="pre">*</span></code> to indicate which filesystem is currently replicating</li>
@@ -229,19 +292,9 @@ The Grafana dashboard in <a class="reference external" href="https://github.com/
 <li>Various bugs with encrypted send/recv (<a class="reference external" href="https://openzfs.topicbox.com/groups/developer/T24bdaa2886c6cbf5-Mc039a11c3f1507ea0664817b/december-openzfs-leadership-meeting">Leadership meeting notes</a>)</li>
 </ul>
 <p>Finally, I’d like to point you to the <a class="reference external" href="https://github.com/zrepl/zrepl/discussions/547">GitHub discussion</a> about which bugfixes and features should be prioritized in zrepl 0.6 and beyond!</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<div class="last line-block">
-<div class="line">zrepl is a spare-time project primarily developed by <a class="reference external" href="https://cschwarz.com">Christian Schwarz</a>.</div>
-<div class="line">You can support maintenance and feature development through one of the following services:</div>
-<div class="line"><a class="reference external" href="https://www.patreon.com/zrepl"><img alt="Donate via Patreon" src="https://img.shields.io/badge/dynamic/json?color=yellow&amp;label=Patreon&amp;query=data.attributes.patron_count&amp;url=https%3A%2F%2Fwww.patreon.com%2Fapi%2Fcampaigns%2F3095079" /></a> <a class="reference external" href="https://github.com/sponsors/problame"><img alt="Donate via GitHub Sponsors" src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;style=flat&amp;color=yellow" /></a> <a class="reference external" href="https://liberapay.com/zrepl/donate"><img alt="Donate via Liberapay" src="https://img.shields.io/liberapay/patrons/zrepl.svg?logo=liberapay" /></a> <a class="reference external" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=R5QSXJVYHGX96"><img alt="Donate via PayPal" src="https://img.shields.io/badge/donate-paypal-yellow.svg" /></a></div>
-<div class="line">Note that PayPal processing fees are relatively high for small donations.</div>
-<div class="line">For SEPA wire transfer and <strong>commercial support</strong>, please <a class="reference external" href="https://cschwarz.com">contact Christian directly</a>.</div>
 </div>
-</div>
-</div>
-<div class="section" id="id3">
-<h2>0.4.0<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>0.4.0<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[FEATURE] support setting zfs send / recv flags in the config (send: <code class="docutils literal notranslate"><span class="pre">-wLcepbS</span></code> , recv: <code class="docutils literal notranslate"><span class="pre">-ox</span></code> ).
 Config docs <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-options"><span class="std std-ref">here</span></a> and <a class="reference internal" href="configuration/sendrecvoptions.html#job-recv-options"><span class="std std-ref">here</span></a> .</li>
@@ -265,8 +318,8 @@ The following bugfix in 0.3.1 <a class="reference external" href="https://github
 <li>[BUG] pruning: <code class="docutils literal notranslate"><span class="pre">grid</span></code>:  add all snapshots that do not match the regex to the rule’s destroy list.</li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h2>0.3.1<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>0.3.1<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>Mostly a bugfix release for <a class="reference internal" href="#release-0-3"><span class="std std-ref">zrepl 0.3</span></a>.</p>
 <ul class="simple">
 <li>[FEATURE] pruning: add optional <code class="docutils literal notranslate"><span class="pre">regex</span></code> field to <code class="docutils literal notranslate"><span class="pre">last_n</span></code> rule</li>
@@ -284,7 +337,7 @@ This brings the implementation in line with the docs.</li>
 </ul>
 </div>
 <div class="section" id="release-0-3">
-<span id="id5"></span><h2>0.3<a class="headerlink" href="#release-0-3" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>0.3<a class="headerlink" href="#release-0-3" title="Permalink to this headline">¶</a></h2>
 <p>This is a big one! Headlining features:</p>
 <ul class="simple">
 <li><strong>Resumable Send &amp; Recv Support</strong>
@@ -345,8 +398,8 @@ that will not be snapshotted until the sync-up phase is over</li>
 <li><strong>[MAINTAINER NOTICE]</strong> Please add the shell completions to the zrepl packages.</li>
 </ul>
 </div>
-<div class="section" id="id6">
-<h2>0.2.1<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2>0.2.1<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[FEATURE] Illumos (and Solaris) compatibility and binary builds (thanks, <a class="reference external" href="https://mnx.io">MNX.io</a> )</li>
 <li>[FEATURE] 32bit binaries for Linux and FreeBSD (untested, though)</li>
@@ -356,8 +409,8 @@ that will not be snapshotted until the sync-up phase is over</li>
 <li>[MAINTAINER NOTICE] <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> refactoring, see <a class="reference external" href="https://github.com/zrepl/zrepl/commit/080f2c0">commit 080f2c0</a></li>
 </ul>
 </div>
-<div class="section" id="id7">
-<h2>0.2<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h2>0.2<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[FEATURE] <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-hooks"><span class="std std-ref">Pre- and Post-Snapshot Hooks</span></a>
 with built-in support for MySQL and Postgres checkpointing
@@ -382,8 +435,8 @@ The pool name <code class="docutils literal notranslate"><span class="pre">zrepl
 Only run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">platformtest</span></code> on test systems, e.g. a FreeBSD VM image.</li>
 </ul>
 </div>
-<div class="section" id="id8">
-<h2>0.1.1<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h2>0.1.1<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/162">issue #162</a> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/d6304f4">commit d6304f4</a> : fix I/O timeout errors on variable receive rate<ul>
 <li>A significant reduction or sudden stall of the receive rate (e.g. recv pool has other I/O to do)
@@ -392,8 +445,8 @@ would cause a <code class="docutils literal notranslate"><span class="pre">write
 </li>
 </ul>
 </div>
-<div class="section" id="id9">
-<h2>0.1<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id10">
+<h2>0.1<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <p>This release is a milestone for zrepl and required significant refactoring if not rewrites of substantial parts of the application.
 It breaks both configuration and transport format, and thus requires manual intervention and updates on both sides of a replication setup.</p>
 <div class="admonition danger">
@@ -549,6 +602,7 @@ For the changelog of previous releases, use the version selection in the hosted 
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
+            <dd><a href="../v0.6.0/changelog.html">v0.6.0</a></dd>
             <dd><a href="../v0.5.0/changelog.html">v0.5.0</a></dd>
             <dd><a href="../v0.4.0/changelog.html">v0.4.0</a></dd>
             <dd><a href="../v0.3.1/changelog.html">v0.3.1</a></dd>

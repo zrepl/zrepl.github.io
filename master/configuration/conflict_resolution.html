@@ -188,7 +188,7 @@
 
 
 
-    <p class="scv-banner scv-sphinx_rtd_theme"><b>Warning:</b> This document is for the development version of zrepl.</p>
+    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/configuration/conflict_resolution.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is stable.</a></p>
 <div class="section" id="conflict-resolution-options">
 <h1>Conflict Resolution Options<a class="headerlink" href="#conflict-resolution-options" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
@@ -201,7 +201,7 @@
 </pre></div>
 </div>
 <div class="section" id="initial-replication-option">
-<span id="conflict-resolution-initial-replication-option-send-all-snapshots"></span><h2><code class="docutils literal notranslate"><span class="pre">initial_replication</span></code> option<a class="headerlink" href="#initial-replication-option" title="Permalink to this headline">¶</a></h2>
+<span id="conflict-resolution-initial-replication"></span><h2><code class="docutils literal notranslate"><span class="pre">initial_replication</span></code> option<a class="headerlink" href="#initial-replication-option" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">initial_replication</span></code> option determines how many snapshots zrepl replicates if the filesystem has not been replicated before.
 If <code class="docutils literal notranslate"><span class="pre">most_recent</span></code> (the default), the initial replication will only transfer the most recent snapshot, while ignoring previous snapshots.
 If all snapshots should be replicated, specify <code class="docutils literal notranslate"><span class="pre">all</span></code>.
@@ -259,6 +259,7 @@ And even if the user changes the config to <code class="docutils literal notrans
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
+            <dd><a href="../../v0.6.0/configuration/conflict_resolution.html">v0.6.0</a></dd>
             <dd><a href="../../v0.5.0/index.html">v0.5.0</a></dd>
             <dd><a href="../../v0.4.0/index.html">v0.4.0</a></dd>
             <dd><a href="../../v0.3.1/index.html">v0.3.1</a></dd>
@@ -268,7 +269,7 @@ And even if the user changes the config to <code class="docutils literal notrans
         <dl>
             <dt>Branches</dt>
             <dd><a href="conflict_resolution.html">master</a></dd>
-            <dd><a href="../../stable/index.html">stable</a></dd>
+            <dd><a href="../../stable/configuration/conflict_resolution.html">stable</a></dd>
         </dl>
     </div>
 </div>

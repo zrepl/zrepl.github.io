@@ -16,16 +16,76 @@ Changelog
 The changelog summarizes bugfixes that are deemed relevant for users and package maintainers.
 Developers should consult the git commit log or GitHub issue tracker.
 
-0.6 (Unreleased)
-----------------
+Next Release
+------------
 
-* `Feature Wishlist on GitHub <https://github.com/zrepl/zrepl/discussions/547>`_
+The plan for the next release is to revisit how zrepl does snapshot management.
+High-level goals:
 
-* |break| |feature| convert Prometheus metric ``zrepl_version_daemon`` to ``zrepl_start_time`` metric
+- Make it easy to decouple snapshot management (snapshotting, pruning) from replication.
+- Ability to include/exclude snapshots from replication.
+  This is useful for aforementioned decoupling, e.g., separate snapshot prefixes for local & remote replication.
+  Also, it makes explicit that by default, zrepl replicates all snapshots, and that
+  replication has no concept of "zrepl-created snapshots", which is a common misconception.
+- Use of ``zfs snapshot`` comma syntax or channel programs to take snapshots of multiple
+  datasets atomically.
+- Provide an alternative to the ``grid`` pruning policy.
+  Most likely something based on hourly/daily/weekly/monthly "trains" plus a count.
+- Ability to prune at the granularity of the **group** of snapshots created at a given
+  time, as opposed to the individual snapshots within a dataset.
+  Maybe this will be addressed by the alternative to the ``grid`` pruning policy,
+  as it will likely be more predictable.
+
+Those changes will likely come with some breakage in the config.
+However, I want to avoid breaking **use cases** that are satisfied by the current design.
+There will be beta/RC releases to give users a chance to evaluate.
+
+0.6
+---
+
+* |feature| :ref:`Schedule-based snapshotting<job-snapshotting--cron>` using ``cron`` syntax instead of an interval.
+* |feature| Configurable initial replication policy.
+  When a filesystem is first replicated to a receiver, this control whether just the newest
+  snapshot will be replicated vs. all existing snapshots. Learn more :ref:`in the docs <conflict_resolution-initial_replication>`.
+* |feature| Configurable timestamp format for snapshot names via :ref:`timestamp_format<job-snapshotting-timestamp_format>`
+  (Thanks, `@ydylla <https://github.com/ydylla>`_).
+* |feature| Add ``ZREPL_DESTROY_MAX_BATCH_SIZE`` env var (default 0=unlimited)
+  (Thanks, `@3nprob <https://github.com/3nprob>`_).
+* |feature| Add ``zrepl configcheck --skip-cert-check`` flag (Thanks, `@cole-h <https://github.com/cole-h>`_).
+* |bugfix| Fix resuming from interrupted replications that use ``send.raw`` on unencrypted datasets.
+
+  * The send options introduced in zrepl 0.4 allow users to specify additional zfs send flags for zrepl to use.
+    Before this fix, when setting ``send.raw=true`` on a job that replicates unencrypted datasets,
+    zrepl would not allow an interrupted replication to resume.
+    The reason were overly cautious checks to support the ``send.encrypted`` option.
+  * This bugfix removes these checks from the replication planner.
+    This makes ``send.encrypted`` a sender-side-only concern, much like all other ``send.*`` flags.
+  * However, this means that the ``zrepl status`` UI no longer indicates whether a replication step uses encrypted sends or not.
+    The setting is still effective though.
+
+* |break| convert Prometheus metric ``zrepl_version_daemon`` to ``zrepl_start_time`` metric
 
   * The metric still reports the zrepl version in a label.
     But the metric *value* is now the Unix timestamp at the time the daemon was started.
     The Grafana dashboard in :repomasterlink:`dist/grafana` has been updated.
+
+* |bugfix| transient zrepl status error: ``Post "http://unix/status": EOF``
+* |bugfix| don't treat receive-side bookmarks as a replication conflict.
+  This facilitates chaining of replication jobs. See :issue:`490`.
+* |bugfix| workaround for Go/gRPC problem on Illumos where zrepl would
+  crash when using the ``local`` transport type (:issue:`598`).
+* |bugfix| fix active child tasks panic that cold occur during replication plannig (:issue:`193abbe`)
+* |bugfix| ``zrepl status`` off-by-one error in display of completed step count (:commit:`ce6701f`)
+* |bugfix| Allow using day & week units for ``snapshotting.interval`` (:commit:`ffb1d89`)
+* |docs| ``docs/overview`` improvements (Thanks, `@jtagcat <https://github.com/jtagcat>`_).
+* |maint| Update to Go 1.19.
+
+.. NOTE::
+  |  zrepl is a spare-time project primarily developed by `Christian Schwarz <https://cschwarz.com>`_.
+  |  You can support maintenance and feature development through one of the following services:
+  |  |Donate via Patreon| |Donate via GitHub Sponsors| |Donate via Liberapay| |Donate via PayPal|
+  |  Note that PayPal processing fees are relatively high for small donations.
+  |  For SEPA wire transfer and **commercial support**, please `contact Christian directly <https://cschwarz.com>`_.
 
 0.5
 ---
@@ -57,14 +117,6 @@ Note to all users: please read up on the following OpenZFS bugs, as you might be
 * Various bugs with encrypted send/recv (`Leadership meeting notes <https://openzfs.topicbox.com/groups/developer/T24bdaa2886c6cbf5-Mc039a11c3f1507ea0664817b/december-openzfs-leadership-meeting>`_)
 
 Finally, I'd like to point you to the `GitHub discussion <https://github.com/zrepl/zrepl/discussions/547>`_ about which bugfixes and features should be prioritized in zrepl 0.6 and beyond!
-
-.. NOTE::
-  |  zrepl is a spare-time project primarily developed by `Christian Schwarz <https://cschwarz.com>`_.
-  |  You can support maintenance and feature development through one of the following services:
-  |  |Donate via Patreon| |Donate via GitHub Sponsors| |Donate via Liberapay| |Donate via PayPal|
-  |  Note that PayPal processing fees are relatively high for small donations.
-  |  For SEPA wire transfer and **commercial support**, please `contact Christian directly <https://cschwarz.com>`_.
-
 
 0.4.0
 -----
@@ -273,7 +325,7 @@ Changes
 * |feature| Proper timeout handling for the :ref:`SSH transport <transport-ssh+stdinserver>`
 
   * |break| Requires Go 1.11 or later.
-  
+
 * |break| |break_config|: mappings are no longer supported
 
   * Receiving sides (``pull`` and ``sink`` job) specify a single ``root_fs``.
