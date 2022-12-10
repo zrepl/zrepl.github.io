@@ -384,10 +384,8 @@ Please open a pull request if you find a property that is missing from this list
 <li><code class="docutils literal notranslate"><span class="pre">canmount</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">overlay</span></code></li>
 </ul>
-<p>Note: inheriting or overriding the <code class="docutils literal notranslate"><span class="pre">mountpoint</span></code> property on ZVOLs fails in <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">recv</span></code>.
-This is an <a class="reference external" href="https://github.com/openzfs/zfs/issues/11416">issue in OpenZFS</a> .
-As a workaround, consider creating separate zrepl jobs for your ZVOL and filesystem datasets.
-Please comment at zrepl <a class="reference external" href="https://github.com/zrepl/zrepl/issues/430">issue #430</a> if you encounter this issue and/or would like zrepl to automatically work around it.</p>
+<p>Note: Before <a class="reference external" href="https://github.com/openzfs/zfs/issues/11416">OpenZFS 2.0.5</a>, inheriting or overriding the <code class="docutils literal notranslate"><span class="pre">mountpoint</span></code> property on ZVOLs fails in <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">recv</span></code>.
+If you are on such an older version, consider creating separate zrepl jobs for your ZVOL and filesystem datasets.</p>
 </div>
 <div class="section" id="systemd">
 <h3>Systemd<a class="headerlink" href="#systemd" title="Permalink to this headline">¶</a></h3>
