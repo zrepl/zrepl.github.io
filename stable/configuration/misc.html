@@ -103,7 +103,6 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Miscellaneous</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#runtime-directories-unix-sockets">Runtime Directories &amp; UNIX Sockets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#durations-intervals">Durations &amp; Intervals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#super-verbose-job-debugging">Super-Verbose Job Debugging</a></li>
 </ul>
 </li>
 </ul>
@@ -220,28 +219,6 @@ The shell script below shows how the default runtime directory can be created.</
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>var durationStringRegex *regexp.Regexp = regexp.MustCompile(`^\s*(\d+)\s*(s|m|h|d|w)\s*$`)
 // s = second, m = minute, h = hour, d = day, w = week (7 days)
 </pre></div>
-</div>
-</div>
-<div class="section" id="super-verbose-job-debugging">
-<h2>Super-Verbose Job Debugging<a class="headerlink" href="#super-verbose-job-debugging" title="Permalink to this headline">¶</a></h2>
-<p>You have probably landed here because you opened an issue on GitHub and some developer told you to do this…
-So just read the annotated comments ;)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="o">...</span>
-  <span class="o">...</span>
- <span class="c1"># JOB DEBUGGING OPTIONS</span>
-  <span class="c1"># should be equal for all job types, but each job implements the debugging itself</span>
-  <span class="n">debug</span><span class="p">:</span>
-    <span class="n">conn</span><span class="p">:</span> <span class="c1"># debug the io.ReadWriteCloser connection</span>
-      <span class="n">read_dump</span><span class="p">:</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">connlog_read</span>   <span class="c1"># dump results of Read() invocations to this file</span>
-      <span class="n">write_dump</span><span class="p">:</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">connlog_write</span> <span class="c1"># dump results of Write() invocations to this file</span>
-    <span class="n">rpc</span><span class="p">:</span> <span class="c1"># debug the RPC protocol implementation</span>
-      <span class="n">log</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># log output from rpc layer to the job log</span>
-</pre></div>
-</div>
-<div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p class="last">Connection dumps will almost certainly contain your or other’s private data. Do not share it in a bug report.</p>
 </div>
 </div>
 </div>
