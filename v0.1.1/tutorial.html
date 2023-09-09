@@ -1,90 +1,50 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorial &mdash; zrepl  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="installation.html" />
     <link rel="prev" title="zrepl - ZFS replication" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="index.html" class="icon icon-home"> zrepl
           
-
-          
-            
-            <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
-          
+          <a href="index.html" class="icon icon-home">
+            zrepl
+              <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
@@ -106,154 +66,120 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">zrepl</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>Tutorial</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/zrepl/zrepl/blob/v0.1.1/docs/tutorial.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/tutorial.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  
+             
 
-
+<p class="scv-banner scv-sphinx_rtd_theme">
+  <strong>
     
+    You're reading an old version of this documentation.
+    If you want up-to-date information, please have a look at <a href="../index.html">stable</a>.
     
+  </strong>
+</p>
 
 
-
-    <p class="scv-banner scv-sphinx_rtd_theme"><b>Warning:</b> This document is for an old version of zrepl.</p>
-<div class="section" id="tutorial">
-<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+  <section id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading"></a></h1>
 <p>This tutorial shows how zrepl can be used to implement a ZFS-based push backup.
 We assume the following scenario:</p>
 <ul class="simple">
-<li>Production server <code class="docutils literal notranslate"><span class="pre">prod</span></code> with filesystems to back up:<ul>
-<li><code class="docutils literal notranslate"><span class="pre">zroot/var/db</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">zroot/usr/home</span></code> and all its child filesystems</li>
-<li><strong>except</strong> <code class="docutils literal notranslate"><span class="pre">zroot/usr/home/paranoid</span></code> belonging to a user doing backups themselves</li>
+<li><p>Production server <code class="docutils literal notranslate"><span class="pre">prod</span></code> with filesystems to back up:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">zroot/var/db</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zroot/usr/home</span></code> and all its child filesystems</p></li>
+<li><p><strong>except</strong> <code class="docutils literal notranslate"><span class="pre">zroot/usr/home/paranoid</span></code> belonging to a user doing backups themselves</p></li>
 </ul>
 </li>
-<li>Backup server <code class="docutils literal notranslate"><span class="pre">backups</span></code> with<ul>
-<li>Filesystem <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod</span></code> + children dedicated to backups of <code class="docutils literal notranslate"><span class="pre">prod</span></code></li>
+<li><p>Backup server <code class="docutils literal notranslate"><span class="pre">backups</span></code> with</p>
+<ul>
+<li><p>Filesystem <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod</span></code> + children dedicated to backups of <code class="docutils literal notranslate"><span class="pre">prod</span></code></p></li>
 </ul>
 </li>
 </ul>
 <p>Our backup solution should fulfill the following requirements:</p>
 <ul class="simple">
-<li>Periodically snapshot the filesystems on <code class="docutils literal notranslate"><span class="pre">prod</span></code> <em>every 10 minutes</em></li>
-<li>Incrementally replicate these snapshots to <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod/*</span></code> on <code class="docutils literal notranslate"><span class="pre">backups</span></code></li>
-<li>Keep only very few snapshots on <code class="docutils literal notranslate"><span class="pre">prod</span></code> to save disk space</li>
-<li>Keep a fading history (24 hourly, 30 daily, 6 monthly) of snapshots on <code class="docutils literal notranslate"><span class="pre">backups</span></code></li>
+<li><p>Periodically snapshot the filesystems on <code class="docutils literal notranslate"><span class="pre">prod</span></code> <em>every 10 minutes</em></p></li>
+<li><p>Incrementally replicate these snapshots to <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod/*</span></code> on <code class="docutils literal notranslate"><span class="pre">backups</span></code></p></li>
+<li><p>Keep only very few snapshots on <code class="docutils literal notranslate"><span class="pre">prod</span></code> to save disk space</p></li>
+<li><p>Keep a fading history (24 hourly, 30 daily, 6 monthly) of snapshots on <code class="docutils literal notranslate"><span class="pre">backups</span></code></p></li>
 </ul>
-<div class="section" id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<section id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Link to this heading"></a></h2>
 <p>We can model this situation as two jobs:</p>
 <ul class="simple">
-<li>A <strong>push job</strong> on <code class="docutils literal notranslate"><span class="pre">prod</span></code><ul>
-<li>Creates the snapshots</li>
-<li>Keeps a short history of local snapshots to enable incremental replication to <code class="docutils literal notranslate"><span class="pre">backups</span></code></li>
-<li>Connects to the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">daemon</span></code> process on <code class="docutils literal notranslate"><span class="pre">backups</span></code></li>
-<li>Pushes snapshots <code class="docutils literal notranslate"><span class="pre">backups</span></code></li>
-<li>Prunes snapshots on <code class="docutils literal notranslate"><span class="pre">backups</span></code> after replication is complete</li>
+<li><p>A <strong>push job</strong> on <code class="docutils literal notranslate"><span class="pre">prod</span></code></p>
+<ul>
+<li><p>Creates the snapshots</p></li>
+<li><p>Keeps a short history of local snapshots to enable incremental replication to <code class="docutils literal notranslate"><span class="pre">backups</span></code></p></li>
+<li><p>Connects to the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">daemon</span></code> process on <code class="docutils literal notranslate"><span class="pre">backups</span></code></p></li>
+<li><p>Pushes snapshots <code class="docutils literal notranslate"><span class="pre">backups</span></code></p></li>
+<li><p>Prunes snapshots on <code class="docutils literal notranslate"><span class="pre">backups</span></code> after replication is complete</p></li>
 </ul>
 </li>
-<li>A <strong>sink job</strong> on <code class="docutils literal notranslate"><span class="pre">backups</span></code><ul>
-<li>Accepts connections &amp; responds to requests from <code class="docutils literal notranslate"><span class="pre">prod</span></code></li>
-<li>Limits client <code class="docutils literal notranslate"><span class="pre">prod</span></code> access to filesystem sub-tree <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod</span></code></li>
+<li><p>A <strong>sink job</strong> on <code class="docutils literal notranslate"><span class="pre">backups</span></code></p>
+<ul>
+<li><p>Accepts connections &amp; responds to requests from <code class="docutils literal notranslate"><span class="pre">prod</span></code></p></li>
+<li><p>Limits client <code class="docutils literal notranslate"><span class="pre">prod</span></code> access to filesystem sub-tree <code class="docutils literal notranslate"><span class="pre">storage/zrepl/sink/prod</span></code></p></li>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="install-zrepl">
-<h2>Install zrepl<a class="headerlink" href="#install-zrepl" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="install-zrepl">
+<h2>Install zrepl<a class="headerlink" href="#install-zrepl" title="Link to this heading"></a></h2>
 <p>Follow the <a class="reference internal" href="installation.html#installation"><span class="std std-ref">OS-specific installation instructions</span></a> and come back here.</p>
-</div>
-<div class="section" id="generate-tls-certificates">
-<h2>Generate TLS Certificates<a class="headerlink" href="#generate-tls-certificates" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="generate-tls-certificates">
+<h2>Generate TLS Certificates<a class="headerlink" href="#generate-tls-certificates" title="Link to this heading"></a></h2>
 <p>We use the <cite>TLS client authentication transport &lt;transport-tcp+tlsclientauth&gt;</cite> to protect our data on the wire.
 To get things going quickly, we skip setting up a CA and generate two self-signed certificates as described <a class="reference internal" href="configuration/transports.html#transport-tcp-tlsclientauth-2machineopenssl"><span class="std std-ref">here</span></a>.
 Again, for convenience, We generate the key pairs on our local machine and distribute them using ssh:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>openssl req -x509 -sha256 -nodes <span class="se">\</span>
-   -newkey rsa:4096 <span class="se">\</span>
-   -days <span class="m">365</span> <span class="se">\</span>
-   -keyout backups.key <span class="se">\</span>
-   -out backups.crt
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-sha256<span class="w"> </span>-nodes<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-newkey<span class="w"> </span>rsa:4096<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-keyout<span class="w"> </span>backups.key<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-out<span class="w"> </span>backups.crt
 <span class="hll"><span class="c1"># ... and use &quot;backups&quot; as Common Name (CN)</span>
 </span>
-openssl req -x509 -sha256 -nodes <span class="se">\</span>
-   -newkey rsa:4096 <span class="se">\</span>
-   -days <span class="m">365</span> <span class="se">\</span>
-   -keyout prod.key <span class="se">\</span>
-   -out prod.crt
+openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-sha256<span class="w"> </span>-nodes<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-newkey<span class="w"> </span>rsa:4096<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-keyout<span class="w"> </span>prod.key<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-out<span class="w"> </span>prod.crt
 <span class="hll"><span class="c1"># ... and use &quot;prod&quot; as Common Name (CN)</span>
 </span>
-ssh root@backups <span class="s2">&quot;mkdir /etc/zrepl&quot;</span>
-scp  backups.key backups.crt prod.crt root@backups:/etc/zrepl
+ssh<span class="w"> </span>root@backups<span class="w"> </span><span class="s2">&quot;mkdir /etc/zrepl&quot;</span>
+scp<span class="w">  </span>backups.key<span class="w"> </span>backups.crt<span class="w"> </span>prod.crt<span class="w"> </span>root@backups:/etc/zrepl
 
-ssh root@prod <span class="s2">&quot;mkdir /etc/zrepl&quot;</span>
-scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
+ssh<span class="w"> </span>root@prod<span class="w"> </span><span class="s2">&quot;mkdir /etc/zrepl&quot;</span>
+scp<span class="w">  </span>prod.key<span class="w"> </span>prod.crt<span class="w"> </span>backups.crt<span class="w"> </span>root@prod:/etc/zrepl
 </pre></div>
 </div>
-</div>
-<div class="section" id="configure-server-prod">
-<h2>Configure server <code class="docutils literal notranslate"><span class="pre">prod</span></code><a class="headerlink" href="#configure-server-prod" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="configure-server-prod">
+<h2>Configure server <code class="docutils literal notranslate"><span class="pre">prod</span></code><a class="headerlink" href="#configure-server-prod" title="Link to this heading"></a></h2>
 <p>We define a <strong>push job</strong> named <code class="docutils literal notranslate"><span class="pre">prod_to_backups</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal notranslate"><span class="pre">prod</span></code> :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">prod_to_backups</span>
@@ -285,9 +211,9 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
       <span class="n">regex</span><span class="p">:</span> <span class="s2">&quot;^zrepl_&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="configure-server-backups">
-<span id="tutorial-configure-prod"></span><h2>Configure server <code class="docutils literal notranslate"><span class="pre">backups</span></code><a class="headerlink" href="#configure-server-backups" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="configure-server-backups">
+<span id="tutorial-configure-prod"></span><h2>Configure server <code class="docutils literal notranslate"><span class="pre">backups</span></code><a class="headerlink" href="#configure-server-backups" title="Link to this heading"></a></h2>
 <p>We define a corresponding <strong>sink job</strong> named <code class="docutils literal notranslate"><span class="pre">sink</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/zrepl.yml</span></code> on host <code class="docutils literal notranslate"><span class="pre">prod</span></code> :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">sink</span>
@@ -303,14 +229,14 @@ scp  prod.key prod.crt backups.crt root@prod:/etc/zrepl
   <span class="n">root_fs</span><span class="p">:</span> <span class="s2">&quot;storage/zrepl/sink&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="apply-configuration-changes">
-<h2>Apply Configuration Changes<a class="headerlink" href="#apply-configuration-changes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="apply-configuration-changes">
+<h2>Apply Configuration Changes<a class="headerlink" href="#apply-configuration-changes" title="Link to this heading"></a></h2>
 <p>We use <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> before to catch any configuration errors: no output indicates that everything is fine.
 If that is the case, restart the zrepl daemon on <strong>both</strong> <code class="docutils literal notranslate"><span class="pre">prod</span></code> and <code class="docutils literal notranslate"><span class="pre">backups</span></code> using <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">zrepl</span> <span class="pre">restart</span></code> or <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">zrepl</span></code>.</p>
-</div>
-<div class="section" id="watch-it-work">
-<h2>Watch it Work<a class="headerlink" href="#watch-it-work" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="watch-it-work">
+<h2>Watch it Work<a class="headerlink" href="#watch-it-work" title="Link to this heading"></a></h2>
 <p>Run <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> on <code class="docutils literal notranslate"><span class="pre">prod</span></code> to monitor the replication and pruning activity.
 To re-trigger replication (snapshots are separate!), use <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">prod_to_backups</span></code> on <code class="docutils literal notranslate"><span class="pre">prod</span></code>.</p>
 <p>If you like tmux, here is a handy script that works on FreeBSD:</p>
@@ -333,88 +259,71 @@ To re-trigger replication (snapshots are separate!), use <code class="docutils l
 <span class="n">tmux</span> <span class="n">attach</span> <span class="o">-</span><span class="n">t</span> <span class="n">zrepl</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <p>Congratulations, you have a working push backup. Where to go next?</p>
 <ul class="simple">
-<li>Read more about <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">configuration format, options &amp; job types</span></a></li>
-<li>Configure <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a> &amp; <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring</span></a>.</li>
-<li>Learn about <a class="reference internal" href="implementation.html#implementation-toc"><span class="std std-ref">implementation details</span></a> of zrepl.</li>
+<li><p>Read more about <a class="reference internal" href="configuration.html#configuration-toc"><span class="std std-ref">configuration format, options &amp; job types</span></a></p></li>
+<li><p>Configure <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">logging</span></a> &amp; <a class="reference internal" href="configuration/monitoring.html#monitoring"><span class="std std-ref">monitoring</span></a>.</p></li>
+<li><p>Learn about <a class="reference internal" href="implementation.html#implementation-toc"><span class="std std-ref">implementation details</span></a> of zrepl.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
+
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="zrepl - ZFS replication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="zrepl - ZFS replication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017-2019, Christian Schwarz
-
-    </p>
+    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
   
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-        <span class="fa fa-book"> Other Versions</span>
-        v: v0.1.1
-        <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-        <dl>
-            <dt>Tags</dt>
-            <dd><a href="../v0.6.0/index.html">v0.6.0</a></dd>
-            <dd><a href="../v0.5.0/index.html">v0.5.0</a></dd>
-            <dd><a href="../v0.4.0/index.html">v0.4.0</a></dd>
-            <dd><a href="../v0.3.1/index.html">v0.3.1</a></dd>
-            <dd><a href="../v0.2.1/tutorial.html">v0.2.1</a></dd>
-            <dd><a href="tutorial.html">v0.1.1</a></dd>
-        </dl>
-        <dl>
-            <dt>Branches</dt>
-            <dd><a href="../master/index.html">master</a></dd>
-            <dd><a href="../stable/index.html">stable</a></dd>
-        </dl>
-    </div>
-</div>
-
-
-  <script type="text/javascript">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.1.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../v0.6.0/index.html">v0.6.0</a></dd>
+      <dd><a href="../v0.5.0/index.html">v0.5.0</a></dd>
+      <dd><a href="../v0.4.0/index.html">v0.4.0</a></dd>
+      <dd><a href="../v0.3.1/index.html">v0.3.1</a></dd>
+      <dd><a href="../v0.2.1/tutorial.html">v0.2.1</a></dd>
+      <dd><a href="tutorial.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../index.html">stable</a></dd>
+      <dd><a href="../master/index.html">master</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

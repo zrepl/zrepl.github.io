@@ -1,90 +1,50 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Implementation Overview &mdash; zrepl  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Talks &amp; Presentations" href="pr.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="index.html" class="icon icon-home"> zrepl
           
-
-          
-            
-            <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
-          
+          <a href="index.html" class="icon icon-home">
+            zrepl
+              <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -104,206 +64,152 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">zrepl</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>Implementation Overview</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Implementation Overview</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/zrepl/zrepl/blob/v0.1.1/docs/implementation.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/implementation.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  
+             
 
-
+<p class="scv-banner scv-sphinx_rtd_theme">
+  <strong>
     
+    You're reading an old version of this documentation.
+    If you want up-to-date information, please have a look at <a href="../index.html">stable</a>.
     
+  </strong>
+</p>
 
 
-
-    <p class="scv-banner scv-sphinx_rtd_theme"><b>Warning:</b> This document is for an old version of zrepl.</p>
-<div class="section" id="implementation-overview">
-<span id="implementation-toc"></span><h1>Implementation Overview<a class="headerlink" href="#implementation-overview" title="Permalink to this headline">¶</a></h1>
+  <section id="implementation-overview">
+<span id="implementation-toc"></span><h1>Implementation Overview<a class="headerlink" href="#implementation-overview" title="Link to this heading"></a></h1>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Incomplete and possibly outdated.
+<p class="admonition-title">Warning</p>
+<p>Incomplete and possibly outdated.
 Check out the <a class="reference internal" href="pr.html#pr-talks"><span class="std std-ref">talks about zrepl</span></a> at various conferences for up-to-date material.
 Alternatively, have a <a class="reference external" href="http://github.com/zrepl/zrepl">look at the source code</a> ;)</p>
 </div>
 <p>The following design aspects may convince you that <code class="docutils literal notranslate"><span class="pre">zrepl</span></code> is superior to a hacked-together shell script solution.
 Also check out the <a class="reference internal" href="pr.html#pr-talks"><span class="std std-ref">talks about zrepl</span></a> at various conferences.</p>
-<div class="section" id="testability-performance">
-<h2>Testability &amp; Performance<a class="headerlink" href="#testability-performance" title="Permalink to this headline">¶</a></h2>
+<section id="testability-performance">
+<h2>Testability &amp; Performance<a class="headerlink" href="#testability-performance" title="Link to this heading"></a></h2>
 <p>zrepl is written in Go, a real programming language with type safety,
 reasonable performance, testing infrastructure and an (opinionated) idea of
 software engineering.</p>
 <ul class="simple">
-<li>key parts &amp; algorithms of zrepl are covered by unit tests (work in progress)</li>
-<li>zrepl is noticably faster than comparable shell scripts</li>
+<li><p>key parts &amp; algorithms of zrepl are covered by unit tests (work in progress)</p></li>
+<li><p>zrepl is noticably faster than comparable shell scripts</p></li>
 </ul>
-</div>
-<div class="section" id="rpc-protocol">
-<h2>RPC protocol<a class="headerlink" href="#rpc-protocol" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="rpc-protocol">
+<h2>RPC protocol<a class="headerlink" href="#rpc-protocol" title="Link to this heading"></a></h2>
 <p>While it is tempting to just issue a few <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">remote</span> <span class="pre">'zfs</span> <span class="pre">send</span> <span class="pre">...'</span> <span class="pre">|</span> <span class="pre">zfs</span> <span class="pre">recv</span></code>, this has a number of drawbacks:</p>
 <ul class="simple">
-<li>The snapshot streams need to be compatible.</li>
-<li>Communication is still unidirectional. Thus, you will most likely<ul>
-<li>either not take advantage of advanced replication features such as <em>compressed send &amp; recv</em></li>
-<li>or issue additional <code class="docutils literal notranslate"><span class="pre">ssh</span></code> commands in advance to figure out what features are supported on the other side.</li>
+<li><p>The snapshot streams need to be compatible.</p></li>
+<li><p>Communication is still unidirectional. Thus, you will most likely</p>
+<ul>
+<li><p>either not take advantage of advanced replication features such as <em>compressed send &amp; recv</em></p></li>
+<li><p>or issue additional <code class="docutils literal notranslate"><span class="pre">ssh</span></code> commands in advance to figure out what features are supported on the other side.</p></li>
 </ul>
 </li>
-<li>Advanced logic in shell scripts is ugly to read, poorly testable and a pain to maintain.</li>
+<li><p>Advanced logic in shell scripts is ugly to read, poorly testable and a pain to maintain.</p></li>
 </ul>
 <p>zrepl takes a different approach:</p>
 <ul class="simple">
-<li>Define an RPC protocol.</li>
-<li>Establish an encrypted, authenticated, bidirectional communication channel.</li>
-<li>Run daemons on both sides of the setup and let them talk to each other.</li>
+<li><p>Define an RPC protocol.</p></li>
+<li><p>Establish an encrypted, authenticated, bidirectional communication channel.</p></li>
+<li><p>Run daemons on both sides of the setup and let them talk to each other.</p></li>
 </ul>
 <p>This has several obvious benefits:</p>
 <ul class="simple">
-<li>No blank root shell access is given to the other side.</li>
-<li>An <em>authenticated</em> peer <em>requests</em> filesystem lists, snapshot streams, etc.</li>
-<li>The server decides which filesystems it exposes to which peers.</li>
-<li>The <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">transport mechanism</span></a> is decoupled from the remaining logic, which allows us to painlessly offer multiple transport mechanisms.</li>
+<li><p>No blank root shell access is given to the other side.</p></li>
+<li><p>An <em>authenticated</em> peer <em>requests</em> filesystem lists, snapshot streams, etc.</p></li>
+<li><p>The server decides which filesystems it exposes to which peers.</p></li>
+<li><p>The <a class="reference internal" href="configuration/transports.html#transport"><span class="std std-ref">transport mechanism</span></a> is decoupled from the remaining logic, which allows us to painlessly offer multiple transport mechanisms.</p></li>
 </ul>
-<div class="section" id="protocol-implementation">
-<h3>Protocol Implementation<a class="headerlink" href="#protocol-implementation" title="Permalink to this headline">¶</a></h3>
+<section id="protocol-implementation">
+<h3>Protocol Implementation<a class="headerlink" href="#protocol-implementation" title="Link to this heading"></a></h3>
 <p>zrepl uses a custom RPC protol because, at the time of writing, existing solutions like gRPC do not provide efficient means to transport large amounts of data, whose size is unknown at send time (= zfs send streams).
 The package used is <a class="reference external" href="https://github.com/problame/go-streamrpc/tree/master">github.com/problame/go-streamrpc</a>.</p>
-</div>
-</div>
-<div class="section" id="logging-transparency">
-<h2>Logging &amp; Transparency<a class="headerlink" href="#logging-transparency" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="logging-transparency">
+<h2>Logging &amp; Transparency<a class="headerlink" href="#logging-transparency" title="Link to this heading"></a></h2>
 <p>zrepl comes with <a class="reference internal" href="configuration/logging.html#logging"><span class="std std-ref">rich, structured and configurable logging</span></a>, allowing administators to understand what the software is actually doing.</p>
-</div>
-</div>
+</section>
+</section>
+
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="pr.html" class="btn btn-neutral float-right" title="Talks &amp; Presentations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pr.html" class="btn btn-neutral float-right" title="Talks &amp; Presentations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017-2019, Christian Schwarz
-
-    </p>
+    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
   
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-        <span class="fa fa-book"> Other Versions</span>
-        v: v0.1.1
-        <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-        <dl>
-            <dt>Tags</dt>
-            <dd><a href="../v0.6.0/index.html">v0.6.0</a></dd>
-            <dd><a href="../v0.5.0/index.html">v0.5.0</a></dd>
-            <dd><a href="../v0.4.0/index.html">v0.4.0</a></dd>
-            <dd><a href="../v0.3.1/index.html">v0.3.1</a></dd>
-            <dd><a href="../v0.2.1/index.html">v0.2.1</a></dd>
-            <dd><a href="implementation.html">v0.1.1</a></dd>
-        </dl>
-        <dl>
-            <dt>Branches</dt>
-            <dd><a href="../master/index.html">master</a></dd>
-            <dd><a href="../stable/index.html">stable</a></dd>
-        </dl>
-    </div>
-</div>
-
-
-  <script type="text/javascript">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.1.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../v0.6.0/index.html">v0.6.0</a></dd>
+      <dd><a href="../v0.5.0/index.html">v0.5.0</a></dd>
+      <dd><a href="../v0.4.0/index.html">v0.4.0</a></dd>
+      <dd><a href="../v0.3.1/index.html">v0.3.1</a></dd>
+      <dd><a href="../v0.2.1/index.html">v0.2.1</a></dd>
+      <dd><a href="implementation.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../index.html">stable</a></dd>
+      <dd><a href="../master/index.html">master</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

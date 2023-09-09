@@ -1,90 +1,50 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pruning Policies &mdash; zrepl  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Logging" href="logging.html" />
     <link rel="prev" title="Taking Snaphots" href="snapshotting.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> zrepl
           
-
-          
-            
-            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
-          
+          <a href="../index.html" class="icon icon-home">
+            zrepl
+              <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
@@ -119,83 +79,44 @@
 <li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">zrepl</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../configuration.html">Configuration</a> &raquo;</li>
-        
-      <li>Pruning Policies</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../configuration.html">Configuration</a></li>
+      <li class="breadcrumb-item active">Pruning Policies</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/zrepl/zrepl/blob/v0.4.0/docs/configuration/prune.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/prune.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  
+             
 
-
+<p class="scv-banner scv-sphinx_rtd_theme">
+  <strong>
     
+    You're reading an old version of this documentation.
+    If you want up-to-date information, please have a look at <a href="../../configuration/prune.html">stable</a>.
     
+  </strong>
+</p>
 
 
-
-    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/configuration/prune.html"><b>Warning:</b> This document is for an old version of zrepl. The main version is stable.</a></p>
-<div class="section" id="pruning-policies">
-<span id="prune"></span><h1>Pruning Policies<a class="headerlink" href="#pruning-policies" title="Permalink to this headline">¶</a></h1>
+  <section id="pruning-policies">
+<span id="prune"></span><h1>Pruning Policies<a class="headerlink" href="#pruning-policies" title="Link to this heading"></a></h1>
 <p>In zrepl, <em>pruning</em> means <em>destroying snapshots</em>.
 Pruning must happen on both sides of a replication or the systems would inevitably run out of disk space at some point.</p>
 <p>Typically, the requirements to temporal resolution and maximum retention time differ per side.
@@ -236,12 +157,12 @@ The keep rules are <strong>evaluated on the active side</strong> (<a class="refe
 </pre></div>
 </div>
 <div class="admonition danger">
-<p class="first admonition-title">Danger</p>
-<p class="last">You might have <strong>existing snapshots</strong> of filesystems affected by pruning which you want to keep, i.e. not be destroyed by zrepl.
+<p class="admonition-title">Danger</p>
+<p>You might have <strong>existing snapshots</strong> of filesystems affected by pruning which you want to keep, i.e. not be destroyed by zrepl.
 Make sure to actually add the necessary <code class="docutils literal notranslate"><span class="pre">regex</span></code> keep rules on both sides, like with <code class="docutils literal notranslate"><span class="pre">manual</span></code> in the example above.</p>
 </div>
-<div class="section" id="policy-not-replicated">
-<span id="prune-keep-not-replicated"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code><a class="headerlink" href="#policy-not-replicated" title="Permalink to this headline">¶</a></h2>
+<section id="policy-not-replicated">
+<span id="prune-keep-not-replicated"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code><a class="headerlink" href="#policy-not-replicated" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
   <span class="n">pruning</span><span class="p">:</span>
@@ -253,9 +174,9 @@ Make sure to actually add the necessary <code class="docutils literal notranslat
 <p><code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> keeps all snapshots that have not been replicated to the receiving side.
 It only makes sense to specify this rule on a sender (source or push job).
 The state required to evaluate this rule is stored in the <a class="reference internal" href="overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> on the sending side.</p>
-</div>
-<div class="section" id="policy-grid">
-<span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="policy-grid">
+<span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jobs:
 - type: pull
   pruning:
@@ -277,26 +198,26 @@ The state required to evaluate this rule is stored in the <a class="reference in
 Each interval is a bucket with a maximum capacity of <code class="docutils literal notranslate"><span class="pre">keep</span></code> snapshots.
 The following procedure happens during pruning:</p>
 <ol class="arabic simple">
-<li>The list of snapshots is filtered by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
-Only snapshots names that match the regex are considered for this rule, all others will be pruned unless another rule keeps them.</li>
-<li>The snapshots that match <code class="docutils literal notranslate"><span class="pre">regex</span></code> are placed onto a time axis according to their <code class="docutils literal notranslate"><span class="pre">creation</span></code> date.
-The youngest snapshot is on the left, the oldest on the right.</li>
-<li>The first buckets are placed “under” that axis so that the <code class="docutils literal notranslate"><span class="pre">grid</span></code> spec’s first bucket’s left edge aligns with youngest snapshot.</li>
-<li>All subsequent buckets are placed adjacent to their predecessor bucket.</li>
-<li>Now each snapshot on the axis either falls into one bucket or it is older than our rightmost bucket.
-Buckets are left-inclusive and right-exclusive which means that a snapshot on the edge of bucket will always ‘fall into the right one’.</li>
-<li>Snapshots older than the rightmost bucket <strong>not kept</strong> by this gridspec.</li>
-<li>For each bucket, we only keep the <code class="docutils literal notranslate"><span class="pre">keep</span></code> oldest snapshots.</li>
+<li><p>The list of snapshots is filtered by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
+Only snapshots names that match the regex are considered for this rule, all others will be pruned unless another rule keeps them.</p></li>
+<li><p>The snapshots that match <code class="docutils literal notranslate"><span class="pre">regex</span></code> are placed onto a time axis according to their <code class="docutils literal notranslate"><span class="pre">creation</span></code> date.
+The youngest snapshot is on the left, the oldest on the right.</p></li>
+<li><p>The first buckets are placed “under” that axis so that the <code class="docutils literal notranslate"><span class="pre">grid</span></code> spec’s first bucket’s left edge aligns with youngest snapshot.</p></li>
+<li><p>All subsequent buckets are placed adjacent to their predecessor bucket.</p></li>
+<li><p>Now each snapshot on the axis either falls into one bucket or it is older than our rightmost bucket.
+Buckets are left-inclusive and right-exclusive which means that a snapshot on the edge of bucket will always ‘fall into the right one’.</p></li>
+<li><p>Snapshots older than the rightmost bucket <strong>not kept</strong> by this gridspec.</p></li>
+<li><p>For each bucket, we only keep the <code class="docutils literal notranslate"><span class="pre">keep</span></code> oldest snapshots.</p></li>
 </ol>
 <p>The syntax to describe the bucket list is as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Repeat</span> <span class="n">x</span> <span class="n">Duration</span> <span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>The <strong>duration</strong> specifies the length of the interval.</li>
-<li>The <strong>keep</strong> count specifies the number of snapshots that fit into the bucket.
-It can be either a positive integer or <code class="docutils literal notranslate"><span class="pre">all</span></code> (all snapshots are kept).</li>
-<li>The <strong>repeat</strong> count repeats the bucket definition for the specified number of times.</li>
+<li><p>The <strong>duration</strong> specifies the length of the interval.</p></li>
+<li><p>The <strong>keep</strong> count specifies the number of snapshots that fit into the bucket.
+It can be either a positive integer or <code class="docutils literal notranslate"><span class="pre">all</span></code> (all snapshots are kept).</p></li>
+<li><p>The <strong>repeat</strong> count repeats the bucket definition for the specified number of times.</p></li>
 </ul>
 <p><strong>Example</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>This grid spec produces the following list of adjacent buckets. For the sake of simplicity,
@@ -337,9 +258,9 @@ further in the past since each bucket acts like a low-pass filter for incoming s
 and adding a less-low-pass-filter after a low-pass one has no effect.
 </pre></div>
 </div>
-</div>
-<div class="section" id="policy-last-n">
-<span id="prune-keep-last-n"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">last_n</span></code><a class="headerlink" href="#policy-last-n" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="policy-last-n">
+<span id="prune-keep-last-n"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">last_n</span></code><a class="headerlink" href="#policy-last-n" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>jobs:
   - type: push
     pruning:
@@ -352,9 +273,9 @@ and adding a less-low-pass-filter after a low-pass one has no effect.
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">last_n</span></code> filters the snapshot list by <code class="docutils literal notranslate"><span class="pre">regex</span></code>, then keeps the last <code class="docutils literal notranslate"><span class="pre">count</span></code> snapshots in that list (last = youngest = most recent creation date)
 All snapshots that don’t match <code class="docutils literal notranslate"><span class="pre">regex</span></code> or exceed <code class="docutils literal notranslate"><span class="pre">count</span></code> in the filtered list are destroyed unless matched by other rules.</p>
-</div>
-<div class="section" id="policy-regex">
-<span id="prune-keep-regex"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">regex</span></code><a class="headerlink" href="#policy-regex" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="policy-regex">
+<span id="prune-keep-regex"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">regex</span></code><a class="headerlink" href="#policy-regex" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
   <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
     <span class="n">pruning</span><span class="p">:</span>
@@ -377,9 +298,9 @@ All snapshots that don’t match <code class="docutils literal notranslate"><spa
 <p><code class="docutils literal notranslate"><span class="pre">regex</span></code> keeps all snapshots whose names are matched by the regular expression in <code class="docutils literal notranslate"><span class="pre">regex</span></code>.
 Like all other regular expression fields in prune policies, zrepl uses Go’s <a class="reference external" href="https://golang.org/pkg/regexp/#Compile">regexp.Regexp</a> Perl-compatible regular expressions (<a class="reference external" href="https://golang.org/pkg/regexp/syntax">Syntax</a>).
 The optional <cite>negate</cite> boolean field inverts the semantics: Use it if you want to keep all snapshots that <em>do not</em> match the given regex.</p>
-</div>
-<div class="section" id="source-side-snapshot-pruning">
-<span id="prune-workaround-source-side-pruning"></span><h2>Source-side snapshot pruning<a class="headerlink" href="#source-side-snapshot-pruning" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="source-side-snapshot-pruning">
+<span id="prune-workaround-source-side-pruning"></span><h2>Source-side snapshot pruning<a class="headerlink" href="#source-side-snapshot-pruning" title="Link to this heading"></a></h2>
 <p>A <a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">source jobs</span></a> takes snapshots on the system it runs on.
 The corresponding <a class="reference internal" href="jobs.html#job-pull"><span class="std std-ref">pull job</span></a> on the replication target connects to the source job and replicates the snapshots.
 Afterwards, the pull job coordinates pruning on both sender (the source job side) and receiver (the pull job side).</p>
@@ -387,8 +308,8 @@ Afterwards, the pull job coordinates pruning on both sender (the source job side
 The source job will continue taking snapshots which will not be pruned until the pull side connects.
 This means that <strong>extended replication downtime will fill up the source’s zpool with snapshots</strong>.</p>
 <p>If the above is a conceivable situation for you, consider using <a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push mode</span></a>, where pruning happens on the same side where snapshots are taken.</p>
-<div class="section" id="workaround-using-snap-job">
-<h3>Workaround using <code class="docutils literal notranslate"><span class="pre">snap</span></code> job<a class="headerlink" href="#workaround-using-snap-job" title="Permalink to this headline">¶</a></h3>
+<section id="workaround-using-snap-job">
+<h3>Workaround using <code class="docutils literal notranslate"><span class="pre">snap</span></code> job<a class="headerlink" href="#workaround-using-snap-job" title="Link to this heading"></a></h3>
 <p>As a workaround (see GitHub <a class="reference external" href="https://github.com/zrepl/zrepl/issues/102">issue #102</a> for development progress), a pruning-only <a class="reference internal" href="jobs.html#job-snap"><span class="std std-ref">snap job</span></a> can be defined on the source side:
 The snap job is in charge of snapshot creation &amp; destruction, whereas the source job’s role is reduced to just serving snapshots.
 However, since, jobs are run independently, it is possible that the snap job will prune snapshots that are queued for replication / destruction by the remote pull job that connects to the source job.
@@ -423,80 +344,63 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
       <span class="o">...</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="snapshotting.html" class="btn btn-neutral float-left" title="Taking Snaphots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="snapshotting.html" class="btn btn-neutral float-left" title="Taking Snaphots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017-2019, Christian Schwarz
-
-    </p>
+    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
   
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-        <span class="fa fa-book"> Other Versions</span>
-        v: v0.4.0
-        <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-        <dl>
-            <dt>Tags</dt>
-            <dd><a href="../../v0.6.0/configuration/prune.html">v0.6.0</a></dd>
-            <dd><a href="../../v0.5.0/configuration/prune.html">v0.5.0</a></dd>
-            <dd><a href="prune.html">v0.4.0</a></dd>
-            <dd><a href="../../v0.3.1/configuration/prune.html">v0.3.1</a></dd>
-            <dd><a href="../../v0.2.1/configuration/prune.html">v0.2.1</a></dd>
-            <dd><a href="../../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
-        </dl>
-        <dl>
-            <dt>Branches</dt>
-            <dd><a href="../../master/configuration/prune.html">master</a></dd>
-            <dd><a href="../../stable/configuration/prune.html">stable</a></dd>
-        </dl>
-    </div>
-</div>
-
-
-  <script type="text/javascript">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.4.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v0.6.0/configuration/prune.html">v0.6.0</a></dd>
+      <dd><a href="../../v0.5.0/configuration/prune.html">v0.5.0</a></dd>
+      <dd><a href="prune.html">v0.4.0</a></dd>
+      <dd><a href="../../v0.3.1/configuration/prune.html">v0.3.1</a></dd>
+      <dd><a href="../../v0.2.1/configuration/prune.html">v0.2.1</a></dd>
+      <dd><a href="../../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../../configuration/prune.html">stable</a></dd>
+      <dd><a href="../../master/configuration/prune.html">master</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,90 +1,50 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Local Snapshots + Offline Backup to an External Disk &mdash; zrepl  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Installation" href="../installation.html" />
     <link rel="prev" title="Continuous Backup of a Server" href="continuous_server_backup.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> zrepl
           
-
-          
-            
-            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
-          
+          <a href="../index.html" class="icon icon-home">
+            zrepl
+              <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#install-zrepl">Install zrepl</a></li>
@@ -108,83 +68,44 @@
 <li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">zrepl</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../quickstart.html">Quick Start by Use Case</a> &raquo;</li>
-        
-      <li>Local Snapshots + Offline Backup to an External Disk</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../quickstart.html">Quick Start by Use Case</a></li>
+      <li class="breadcrumb-item active">Local Snapshots + Offline Backup to an External Disk</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/zrepl/zrepl/blob/v0.4.0/docs/quickstart/backup_to_external_disk.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/quickstart/backup_to_external_disk.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  
+             
 
-
+<p class="scv-banner scv-sphinx_rtd_theme">
+  <strong>
     
+    You're reading an old version of this documentation.
+    If you want up-to-date information, please have a look at <a href="../../quickstart/backup_to_external_disk.html">stable</a>.
     
+  </strong>
+</p>
 
 
-
-    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/quickstart/backup_to_external_disk.html"><b>Warning:</b> This document is for an old version of zrepl. The main version is stable.</a></p>
-<div class="section" id="local-snapshots-offline-backup-to-an-external-disk">
-<span id="quickstart-backup-to-external-disk"></span><h1>Local Snapshots + Offline Backup to an External Disk<a class="headerlink" href="#local-snapshots-offline-backup-to-an-external-disk" title="Permalink to this headline">¶</a></h1>
+  <section id="local-snapshots-offline-backup-to-an-external-disk">
+<span id="quickstart-backup-to-external-disk"></span><h1>Local Snapshots + Offline Backup to an External Disk<a class="headerlink" href="#local-snapshots-offline-backup-to-an-external-disk" title="Link to this heading"></a></h1>
 <p>This config example shows how we can use zrepl to make periodic snapshots of our local workstation and back it up to a zpool on an external disk which we occassionally connect.</p>
 <p>The local snapshots should be taken every 15 minutes for pain-free recovery from CLI disasters (<code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">/</span></code> and the like).
 However, we do not want to keep the snapshots around for very long because our workstation is a little tight on disk space.
@@ -194,16 +115,16 @@ We want zrepl to inspect the filesystems and snapshots on the external pool, fig
 Afterwards, we want to clean up old snapshots on the backup pool: we want to keep all snapshots younger than one hour, 24 for each hor of the first day, then 360 daily backups.</p>
 <p>A few additional requirements:</p>
 <ul class="simple">
-<li>Snapshot creation and pruning on our workstation should happen in the background, without interaction from our side.</li>
-<li>However, we want to explicitly trigger replication via the command line.</li>
-<li>We want to use OpenZFS native encryption to protect our data on the external disk.
+<li><p>Snapshot creation and pruning on our workstation should happen in the background, without interaction from our side.</p></li>
+<li><p>However, we want to explicitly trigger replication via the command line.</p></li>
+<li><p>We want to use OpenZFS native encryption to protect our data on the external disk.
 It is absolutely critical that only encrypted data leaves our workstation.
-<strong>zrepl should provide an easy config knob for this and prevent replication of unencrypted datasets to the external disk.</strong></li>
-<li>We want to be able to put off the backups for more than three weeks, i.e., longer than the lifetime of the automatically created snapshots on our workstation.
-<strong>zrepl should use bookmarks and holds to achieve this goal</strong>.</li>
-<li>When we yank out the drive during replication and go on a long vacation, we do <em>not</em> want the partially replicated snapshot to stick around as it would hold on to too much disk space over time.
+<strong>zrepl should provide an easy config knob for this and prevent replication of unencrypted datasets to the external disk.</strong></p></li>
+<li><p>We want to be able to put off the backups for more than three weeks, i.e., longer than the lifetime of the automatically created snapshots on our workstation.
+<strong>zrepl should use bookmarks and holds to achieve this goal</strong>.</p></li>
+<li><p>When we yank out the drive during replication and go on a long vacation, we do <em>not</em> want the partially replicated snapshot to stick around as it would hold on to too much disk space over time.
 Therefore, we want zrepl to deviate from its <a class="reference internal" href="../configuration/replication.html#replication-option-protection"><span class="std std-ref">default behavior</span></a> and sacrifice resumability, but nonetheless retain the ability to do incremental replication once we return from our vacation.
-<strong>zrepl should provide an easy config knob to disable step holds for incremental replication</strong>.</li>
+<strong>zrepl should provide an easy config knob to disable step holds for incremental replication</strong>.</p></li>
 </ul>
 <p>The following config snippet implements the setup described above.
 You will likely want to customize some aspects mentioned in the top comment in the file.</p>
@@ -298,78 +219,61 @@ You will likely want to customize some aspects mentioned in the top comment in t
 </pre></div>
 </div>
 <p><a class="reference internal" href="../quickstart.html#quickstart-apply-config"><span class="std std-ref">Click here</span></a> to go back to the quickstart guide.</p>
-</div>
+</section>
+
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="continuous_server_backup.html" class="btn btn-neutral float-left" title="Continuous Backup of a Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="continuous_server_backup.html" class="btn btn-neutral float-left" title="Continuous Backup of a Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017-2019, Christian Schwarz
-
-    </p>
+    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
   
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-        <span class="fa fa-book"> Other Versions</span>
-        v: v0.4.0
-        <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-        <dl>
-            <dt>Tags</dt>
-            <dd><a href="../../v0.6.0/quickstart/backup_to_external_disk.html">v0.6.0</a></dd>
-            <dd><a href="../../v0.5.0/quickstart/backup_to_external_disk.html">v0.5.0</a></dd>
-            <dd><a href="backup_to_external_disk.html">v0.4.0</a></dd>
-            <dd><a href="../../v0.3.1/quickstart/backup_to_external_disk.html">v0.3.1</a></dd>
-            <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
-            <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
-        </dl>
-        <dl>
-            <dt>Branches</dt>
-            <dd><a href="../../master/quickstart/backup_to_external_disk.html">master</a></dd>
-            <dd><a href="../../stable/quickstart/backup_to_external_disk.html">stable</a></dd>
-        </dl>
-    </div>
-</div>
-
-
-  <script type="text/javascript">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.4.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v0.6.0/quickstart/backup_to_external_disk.html">v0.6.0</a></dd>
+      <dd><a href="../../v0.5.0/quickstart/backup_to_external_disk.html">v0.5.0</a></dd>
+      <dd><a href="backup_to_external_disk.html">v0.4.0</a></dd>
+      <dd><a href="../../v0.3.1/quickstart/backup_to_external_disk.html">v0.3.1</a></dd>
+      <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
+      <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../../quickstart/backup_to_external_disk.html">stable</a></dd>
+      <dd><a href="../../master/quickstart/backup_to_external_disk.html">master</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

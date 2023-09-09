@@ -1,90 +1,50 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Send &amp; Recv Options &mdash; zrepl  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Replication Options" href="replication.html" />
     <link rel="prev" title="Filter Syntax" href="filter_syntax.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> zrepl
           
-
-          
-            
-            <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
-          
+          <a href="../index.html" class="icon icon-home">
+            zrepl
+              <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
@@ -135,85 +95,46 @@
 <li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">zrepl</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../configuration.html">Configuration</a> &raquo;</li>
-        
-      <li>Send &amp; Recv Options</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../configuration.html">Configuration</a></li>
+      <li class="breadcrumb-item active">Send &amp; Recv Options</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            
               <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/sendrecvoptions.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  
+             
 
-
+<p class="scv-banner scv-sphinx_rtd_theme">
+  <strong>
     
+    You're reading the documentation for a development version.
+    For the latest released version, please have a look at <a href="../../configuration/sendrecvoptions.html">stable</a>.
     
+  </strong>
+</p>
 
 
-
-    <p class="scv-banner scv-sphinx_rtd_theme"><a href="../../stable/configuration/sendrecvoptions.html"><b>Warning:</b> This document is for the development version of zrepl. The main version is stable.</a></p>
-<div class="section" id="send-recv-options">
-<h1>Send &amp; Recv Options<a class="headerlink" href="#send-recv-options" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="send-options">
-<span id="job-send-options"></span><h2>Send Options<a class="headerlink" href="#send-options" title="Permalink to this headline">¶</a></h2>
+  <section id="send-recv-options">
+<h1>Send &amp; Recv Options<a class="headerlink" href="#send-recv-options" title="Link to this heading"></a></h1>
+<section id="send-options">
+<span id="job-send-options"></span><h2>Send Options<a class="headerlink" href="#send-options" title="Link to this heading"></a></h2>
 <p><a class="reference internal" href="jobs.html#job-source"><span class="std std-ref">Source</span></a> and <a class="reference internal" href="jobs.html#job-push"><span class="std std-ref">push</span></a> jobs have an optional <code class="docutils literal notranslate"><span class="pre">send</span></code> configuration section.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
@@ -228,81 +149,81 @@ Flags with an entry in the <code class="docutils literal notranslate"><span clas
 zrepl does not perform feature checks for these flags.
 If you enable a flag that is not supported by the installed version of ZFS, the zfs error will show up at runtime in the logs and zrepl status.
 See the <a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-send.8.html">upstream man page</a> (<code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">zfs-send</span></code>) for their semantics.</p>
-<table border="1" class="colwidths-given docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="10%" />
-<col width="70%" />
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 70%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">send.</span></code></th>
-<th class="head"><code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code></th>
-<th class="head">Comment</th>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">send.</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code></p></th>
+<th class="head"><p>Comment</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">encrypted</span></code></td>
-<td>&#160;</td>
-<td>Specific to zrepl, <a class="reference internal" href="#job-send-options-encrypted"><span class="std std-ref">see below</span></a>.</td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">encrypted</span></code></p></td>
+<td></td>
+<td><p>Specific to zrepl, <a class="reference internal" href="#job-send-options-encrypted"><span class="std std-ref">see below</span></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">bandwidth_limit</span></code></td>
-<td>&#160;</td>
-<td>Specific to zrepl, <a class="reference internal" href="#job-send-recv-options-bandwidth-limit"><span class="std std-ref">see below</span></a>.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bandwidth_limit</span></code></p></td>
+<td></td>
+<td><p>Specific to zrepl, <a class="reference internal" href="#job-send-recv-options-bandwidth-limit"><span class="std std-ref">see below</span></a>.</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">raw</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">-w</span></code></td>
-<td>Use <code class="docutils literal notranslate"><span class="pre">encrypted</span></code> to only allow encrypted sends. Mixed sends are not supported.</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">raw</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-w</span></code></p></td>
+<td><p>Use <code class="docutils literal notranslate"><span class="pre">encrypted</span></code> to only allow encrypted sends. Mixed sends are not supported.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">send_properties</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">-p</span></code></td>
-<td><strong>Be careful</strong>, read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">send_properties</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-p</span></code></p></td>
+<td><p><strong>Be careful</strong>, read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">-b</span></code></td>
-<td><strong>Be careful</strong>, read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-b</span></code></p></td>
+<td><p><strong>Be careful</strong>, read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">-L</span></code></td>
-<td><strong>Potential data loss on OpenZFS &lt; 2.0</strong>, see <a class="reference internal" href="#job-send-options-large-blocks"><span class="std std-ref">warning below</span></a>.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-L</span></code></p></td>
+<td><p><strong>Potential data loss on OpenZFS &lt; 2.0</strong>, see <a class="reference internal" href="#job-send-options-large-blocks"><span class="std std-ref">warning below</span></a>.</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">compressed</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">-c</span></code></td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compressed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-c</span></code></p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">embedded_data</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">-e</span></code></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">embedded_data</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-e</span></code></p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">saved</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">-S</span></code></td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">saved</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-S</span></code></p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<div class="section" id="encrypted">
-<span id="job-send-options-encrypted"></span><h3><code class="docutils literal notranslate"><span class="pre">encrypted</span></code><a class="headerlink" href="#encrypted" title="Permalink to this headline">¶</a></h3>
+<section id="encrypted">
+<span id="job-send-options-encrypted"></span><h3><code class="docutils literal notranslate"><span class="pre">encrypted</span></code><a class="headerlink" href="#encrypted" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">encrypted</span></code> option controls whether the matched filesystems are sent as <a class="reference external" href="http://open-zfs.org/wiki/ZFS-Native_Encryption">OpenZFS native encryption</a> raw sends.
 More specifically, if <code class="docutils literal notranslate"><span class="pre">encrypted=true</span></code>, zrepl</p>
 <ul class="simple">
-<li>checks for any of the filesystems matched by <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> whether the ZFS <code class="docutils literal notranslate"><span class="pre">encryption</span></code> property indicates that the filesystem is actually encrypted with ZFS native encryption and</li>
-<li>invokes the <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code> subcommand with the <code class="docutils literal notranslate"><span class="pre">-w</span></code> option (raw sends) and</li>
-<li>expects the receiving side to support OpenZFS native encryption (recv will fail otherwise)</li>
+<li><p>checks for any of the filesystems matched by <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> whether the ZFS <code class="docutils literal notranslate"><span class="pre">encryption</span></code> property indicates that the filesystem is actually encrypted with ZFS native encryption and</p></li>
+<li><p>invokes the <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">send</span></code> subcommand with the <code class="docutils literal notranslate"><span class="pre">-w</span></code> option (raw sends) and</p></li>
+<li><p>expects the receiving side to support OpenZFS native encryption (recv will fail otherwise)</p></li>
 </ul>
 <p>Filesystems matched by <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> that are not encrypted are not sent and will cause error log messages.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">encrypted=false</span></code>, zrepl expects that filesystems matching <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> are not encrypted or have loaded encryption keys.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Use <code class="docutils literal notranslate"><span class="pre">encrypted</span></code> instead of <code class="docutils literal notranslate"><span class="pre">raw</span></code> to make your intent clear that zrepl must only replicate filesystems that are actually encrypted by OpenZFS native encryption.
+<p class="admonition-title">Note</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">encrypted</span></code> instead of <code class="docutils literal notranslate"><span class="pre">raw</span></code> to make your intent clear that zrepl must only replicate filesystems that are actually encrypted by OpenZFS native encryption.
 It is meant as a safeguard to prevent unintended sends of unencrypted filesystems in raw mode.</p>
 </div>
-</div>
-<div class="section" id="properties">
-<span id="job-send-options-properties"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="properties">
+<span id="job-send-options-properties"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#properties" title="Link to this heading"></a></h3>
 <p>Sends the dataset properties along with snapshots.
 Please be careful with this option and read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</p>
-</div>
-<div class="section" id="backup-properties">
-<span id="job-send-options-backup-properties"></span><h3><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code><a class="headerlink" href="#backup-properties" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="backup-properties">
+<span id="job-send-options-backup-properties"></span><h3><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code><a class="headerlink" href="#backup-properties" title="Link to this heading"></a></h3>
 <p>When properties are modified on a filesystem that was received from a send stream with <code class="docutils literal notranslate"><span class="pre">send.properties=true</span></code>, ZFS archives the original received value internally.
 This also applies to <a class="reference internal" href="#job-recv-options-inherit-and-override"><span class="std std-ref">inheriting or overriding properties during zfs receive</span></a>.</p>
 <p>When sending those received filesystems another hop, the <code class="docutils literal notranslate"><span class="pre">backup_properties</span></code> flag instructs ZFS to send the original property values rather than the current locally set values.</p>
@@ -314,21 +235,21 @@ B will want to override <a class="reference internal" href="#job-note-property-r
 But the job that replicates from B to C should be sending the original property values received from A.
 Thus, B sets the <code class="docutils literal notranslate"><span class="pre">backup_properties</span></code> option.</p>
 <p>Please be careful with this option and read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</p>
-</div>
-<div class="section" id="large-blocks">
-<span id="job-send-options-large-blocks"></span><h3><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code><a class="headerlink" href="#large-blocks" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="large-blocks">
+<span id="job-send-options-large-blocks"></span><h3><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code><a class="headerlink" href="#large-blocks" title="Link to this heading"></a></h3>
 <p>This flag should not be changed after initial replication.
 Prior to <a class="reference external" href="https://github.com/openzfs/zfs/pull/10383/files#diff-4c1e47568f46fb63546e984943b09a3e6b051e2242649523f7835bbdfe2a9110R337-R342">OpenZFS commit 7bcb7f08</a>
 it was possible to change this setting which resulted in <strong>data loss on the receiver</strong>.
 The commit in question is included in OpenZFS 2.0 and works around the problem by prohibiting receives of incremental streams with a flipped setting.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This bug has <strong>not been fixed in the OpenZFS 0.8 releases</strong> which means that changing this flag after initial replication might cause <strong>data loss</strong> on the receiver.</p>
+<p class="admonition-title">Warning</p>
+<p>This bug has <strong>not been fixed in the OpenZFS 0.8 releases</strong> which means that changing this flag after initial replication might cause <strong>data loss</strong> on the receiver.</p>
 </div>
-</div>
-</div>
-<div class="section" id="recv-options">
-<span id="job-recv-options"></span><h2>Recv Options<a class="headerlink" href="#recv-options" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="recv-options">
+<span id="job-recv-options"></span><h2>Recv Options<a class="headerlink" href="#recv-options" title="Link to this heading"></a></h2>
 <p><a class="reference internal" href="jobs.html#job-sink"><span class="std std-ref">Sink</span></a> and <a class="reference internal" href="jobs.html#job-pull"><span class="std std-ref">pull</span></a> jobs have an optional <code class="docutils literal notranslate"><span class="pre">recv</span></code> configuration section:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
 <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">pull</span>
@@ -349,18 +270,18 @@ The commit in question is included in OpenZFS 2.0 and works around the problem b
 <a class="reference internal" href="#job-recv-options-inherit-and-override"><span class="std std-ref">properties</span></a> ,
 <a class="reference internal" href="#job-send-recv-options-bandwidth-limit"><span class="std std-ref">bandwidth_limit</span></a> , and
 <a class="reference internal" href="#job-recv-options-placeholder"><span class="std std-ref">placeholder</span></a>.</p>
-<div class="section" id="job-recv-options-inherit-and-override">
-<span id="id1"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#job-recv-options-inherit-and-override" title="Permalink to this headline">¶</a></h3>
+<section id="job-recv-options-inherit-and-override">
+<span id="id1"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#job-recv-options-inherit-and-override" title="Link to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">override</span></code> maps directly to the <a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-recv.8.html">zfs recv -o flag</a>.
 Property name-value pairs specified in this map will apply to all received filesystems, regardless of whether the send stream contains properties or not.</p>
 <p><code class="docutils literal notranslate"><span class="pre">inherit</span></code> maps directly to the <a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-recv.8.html">zfs recv -x flag</a>.
 Property names specified in this list will be inherited from the receiving side’s parent filesystem (e.g. <code class="docutils literal notranslate"><span class="pre">root_fs</span></code>).</p>
 <p>With both options, the sending side’s property value is still stored on the receiver, but the local override or inherit is the one that takes effect.
 You can send the original properties from the first receiver to another receiver using <a class="reference internal" href="#job-send-options-backup-properties"><span class="std std-ref">send.backup_properties</span></a>.</p>
-</div>
-</div>
-<div class="section" id="a-note-on-property-replication">
-<span id="job-note-property-replication"></span><h2>A Note on Property Replication<a class="headerlink" href="#a-note-on-property-replication" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="a-note-on-property-replication">
+<span id="job-note-property-replication"></span><h2>A Note on Property Replication<a class="headerlink" href="#a-note-on-property-replication" title="Link to this heading"></a></h2>
 <p>If a send stream contains properties, as per <code class="docutils literal notranslate"><span class="pre">send.properties</span></code> or <code class="docutils literal notranslate"><span class="pre">send.backup_properties</span></code>,
 the default ZFS behavior is to use those properties on the receiving side, verbatim.</p>
 <p>In many use cases for zrepl, this can have devastating consequences.
@@ -370,46 +291,46 @@ Also, many scripts and tools use ZFS user properties for configuration and do no
 If they are installed on the receiving side as well as the sending side, property replication could have unintended effects.</p>
 <p><strong>zrepl currently does not provide any automatic safe-guards for property replication:</strong></p>
 <ul class="simple">
-<li>Make sure to read the entire man page on zfs recv (<a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-recv.8.html">man zfs recv</a>) before enabling this feature.</li>
-<li>Use <code class="docutils literal notranslate"><span class="pre">recv.properties.override</span></code> whenever possible, e.g. for <code class="docutils literal notranslate"><span class="pre">mountpoint=none</span></code> or <code class="docutils literal notranslate"><span class="pre">canmount=off</span></code>.</li>
-<li>Use <code class="docutils literal notranslate"><span class="pre">recv.properties.inherit</span></code> if that makes more sense to you.</li>
+<li><p>Make sure to read the entire man page on zfs recv (<a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-recv.8.html">man zfs recv</a>) before enabling this feature.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">recv.properties.override</span></code> whenever possible, e.g. for <code class="docutils literal notranslate"><span class="pre">mountpoint=none</span></code> or <code class="docutils literal notranslate"><span class="pre">canmount=off</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">recv.properties.inherit</span></code> if that makes more sense to you.</p></li>
 </ul>
 <p>Below is an <strong>non-exhaustive list of problematic properties</strong>.
 Please open a pull request if you find a property that is missing from this list.
 (Both with regards to core ZFS tools and other software in the broader ecosystem.)</p>
-<div class="section" id="mount-behaviour">
-<h3>Mount behaviour<a class="headerlink" href="#mount-behaviour" title="Permalink to this headline">¶</a></h3>
+<section id="mount-behaviour">
+<h3>Mount behaviour<a class="headerlink" href="#mount-behaviour" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">mountpoint</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">canmount</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">overlay</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mountpoint</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">canmount</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">overlay</span></code></p></li>
 </ul>
 <p>Note: Before <a class="reference external" href="https://github.com/openzfs/zfs/issues/11416">OpenZFS 2.0.5</a>, inheriting or overriding the <code class="docutils literal notranslate"><span class="pre">mountpoint</span></code> property on ZVOLs fails in <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">recv</span></code>.
 If you are on such an older version, consider creating separate zrepl jobs for your ZVOL and filesystem datasets.</p>
-</div>
-<div class="section" id="systemd">
-<h3>Systemd<a class="headerlink" href="#systemd" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="systemd">
+<h3>Systemd<a class="headerlink" href="#systemd" title="Link to this heading"></a></h3>
 <p>With systemd, you should also consider the properties processed by the <a class="reference external" href="https://manpages.debian.org/buster-backports/zfsutils-linux/zfs-mount-generator.8.en.html">zfs-mount-generator</a> .</p>
 <p>Most notably:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">org.openzfs.systemd:ignore</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">org.openzfs.systemd:wanted-by</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">org.openzfs.systemd:required-by</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.openzfs.systemd:ignore</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.openzfs.systemd:wanted-by</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.openzfs.systemd:required-by</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="encryption">
-<h3>Encryption<a class="headerlink" href="#encryption" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="encryption">
+<h3>Encryption<a class="headerlink" href="#encryption" title="Link to this heading"></a></h3>
 <p>If the sender filesystems are encrypted but the sender does <a class="reference internal" href="overview.html#zfs-background-knowledge-plain-vs-raw-sends"><span class="std std-ref">plain sends</span></a>
 and property replication is enabled, the receiver must <a class="reference internal" href="#job-recv-options-inherit-and-override"><span class="std std-ref">inherit the following properties</span></a>:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">keylocation</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">keyformat</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">encryption</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keylocation</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keyformat</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">encryption</span></code></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="placeholders">
-<span id="job-recv-options-placeholder"></span><h2>Placeholders<a class="headerlink" href="#placeholders" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="placeholders">
+<span id="job-recv-options-placeholder"></span><h2>Placeholders<a class="headerlink" href="#placeholders" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">placeholder</span><span class="p">:</span>
   <span class="n">encryption</span><span class="p">:</span> <span class="n">unspecified</span> <span class="o">|</span> <span class="n">off</span> <span class="o">|</span> <span class="n">inherit</span>
 </pre></div>
@@ -420,9 +341,9 @@ However, with OpenZFS Native Encryption, placeholders require zrepl user attenti
 Specifically, the problem is that, when zrepl attempts to create the placeholder dataset on the receiver, and that placeholder’s parent dataset is encrypted, ZFS wants to inherit encryption to the placeholder.
 This is relevant to two use cases that zrepl supports:</p>
 <ol class="arabic simple">
-<li><strong>encrypted-send-to-untrusted-receiver</strong> In this use case, the sender sends an <a class="reference internal" href="#job-send-options-encrypted"><span class="std std-ref">encrypted send stream</span></a> and the receiver doesn’t have the key loaded.</li>
-<li><strong>send-plain-encrypt-on-receive</strong> The receive-side <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> dataset is encrypted, and the senders are unencrypted.
-The key of <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is loaded, and the goal is that the plain sends (e.g., from production) are encrypted on-the-fly during receive, with <code class="docutils literal notranslate"><span class="pre">root_fs</span></code>’s key.</li>
+<li><p><strong>encrypted-send-to-untrusted-receiver</strong> In this use case, the sender sends an <a class="reference internal" href="#job-send-options-encrypted"><span class="std std-ref">encrypted send stream</span></a> and the receiver doesn’t have the key loaded.</p></li>
+<li><p><strong>send-plain-encrypt-on-receive</strong> The receive-side <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> dataset is encrypted, and the senders are unencrypted.
+The key of <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is loaded, and the goal is that the plain sends (e.g., from production) are encrypted on-the-fly during receive, with <code class="docutils literal notranslate"><span class="pre">root_fs</span></code>’s key.</p></li>
 </ol>
 <p>For <strong>encrypted-send-to-untrusted-receiver</strong>, the placeholder datasets need to be created with <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">encryption=off</span></code>.
 Without it, creation would fail with an error, indicating that the placeholder’s parent dataset’s key needs to be loaded.
@@ -435,11 +356,11 @@ This will make <code class="docutils literal notranslate"><span class="pre">zfs<
 In <code class="docutils literal notranslate"><span class="pre">undefined</span></code> mode (default), placeholder creation bails out and asks the user to configure a behavior.
 In <code class="docutils literal notranslate"><span class="pre">off</span></code> mode, the placeholder is created with <code class="docutils literal notranslate"><span class="pre">encryption=off</span></code>, i.e., <strong>encrypted-send-to-untrusted-rceiver</strong> use case.
 In <code class="docutils literal notranslate"><span class="pre">inherit</span></code> mode, the placeholder is created without specifying <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">encryption</span></code> at all, i.e., the <strong>send-plain-encrypt-on-receive</strong> use case.</p>
-</div>
-<div class="section" id="common-options">
-<h2>Common Options<a class="headerlink" href="#common-options" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="bandwidth-limit-send-recv">
-<span id="job-send-recv-options-bandwidth-limit"></span><h3>Bandwidth Limit (send &amp; recv)<a class="headerlink" href="#bandwidth-limit-send-recv" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="common-options">
+<h2>Common Options<a class="headerlink" href="#common-options" title="Link to this heading"></a></h2>
+<section id="bandwidth-limit-send-recv">
+<span id="job-send-recv-options-bandwidth-limit"></span><h3>Bandwidth Limit (send &amp; recv)<a class="headerlink" href="#bandwidth-limit-send-recv" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bandwidth_limit</span><span class="p">:</span>
   <span class="nb">max</span><span class="p">:</span> <span class="mf">23.5</span> <span class="n">MiB</span> <span class="c1"># -1 is the default and disabled rate limiting</span>
   <span class="n">bucket_capacity</span><span class="p">:</span> <span class="c1"># token bucket capacity in bytes; defaults to 128KiB</span>
@@ -451,80 +372,63 @@ The <code class="docutils literal notranslate"><span class="pre">bandwidth_limit
 <p>The bandwidth limit only applies to the payload data, i.e., the ZFS send stream.
 It does not account for transport protocol overheads.
 The scope is the job level, i.e., all <a class="reference internal" href="replication.html#replication-option-concurrency"><span class="std std-ref">concurrent</span></a> sends or incoming receives of a job share the bandwidth limit.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="replication.html" class="btn btn-neutral float-right" title="Replication Options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="filter_syntax.html" class="btn btn-neutral float-left" title="Filter Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="filter_syntax.html" class="btn btn-neutral float-left" title="Filter Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="replication.html" class="btn btn-neutral float-right" title="Replication Options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017-2019, Christian Schwarz
-
-    </p>
+    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
   
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-        <span class="fa fa-book"> Other Versions</span>
-        v: master
-        <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-        <dl>
-            <dt>Tags</dt>
-            <dd><a href="../../v0.6.0/configuration/sendrecvoptions.html">v0.6.0</a></dd>
-            <dd><a href="../../v0.5.0/configuration/sendrecvoptions.html">v0.5.0</a></dd>
-            <dd><a href="../../v0.4.0/configuration/sendrecvoptions.html">v0.4.0</a></dd>
-            <dd><a href="../../v0.3.1/configuration/sendrecvoptions.html">v0.3.1</a></dd>
-            <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
-            <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
-        </dl>
-        <dl>
-            <dt>Branches</dt>
-            <dd><a href="sendrecvoptions.html">master</a></dd>
-            <dd><a href="../../stable/configuration/sendrecvoptions.html">stable</a></dd>
-        </dl>
-    </div>
-</div>
-
-
-  <script type="text/javascript">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../v0.6.0/configuration/sendrecvoptions.html">v0.6.0</a></dd>
+      <dd><a href="../../v0.5.0/configuration/sendrecvoptions.html">v0.5.0</a></dd>
+      <dd><a href="../../v0.4.0/configuration/sendrecvoptions.html">v0.4.0</a></dd>
+      <dd><a href="../../v0.3.1/configuration/sendrecvoptions.html">v0.3.1</a></dd>
+      <dd><a href="../../v0.2.1/index.html">v0.2.1</a></dd>
+      <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../../configuration/sendrecvoptions.html">stable</a></dd>
+      <dd><a href="sendrecvoptions.html">master</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
