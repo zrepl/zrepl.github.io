@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taking Snaphots &mdash; zrepl  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pruning Policies" href="prune.html" />
+    <link rel="prev" title="Conflict Resolution Options" href="conflict_resolution.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            zrepl
+              <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview &amp; Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jobs.html">Job Types in Detail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports.html">Transports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_syntax.html">Filter Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sendrecvoptions.html">Send &amp; Recv Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replication.html">Replication Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conflict_resolution.html">Conflict Resolution Options</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Taking Snaphots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#periodic-snapshotting"><code class="docutils literal notranslate"><span class="pre">periodic</span></code> Snapshotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cron-snapshotting"><code class="docutils literal notranslate"><span class="pre">cron</span></code> Snapshotting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timestamp-format">Timestamp Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-snapshotting"><code class="docutils literal notranslate"><span class="pre">manual</span></code> Snapshotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pre-and-post-snapshot-hooks">Pre- and Post-Snapshot Hooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#command-hooks"><code class="docutils literal notranslate"><span class="pre">command</span></code> Hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#postgres-checkpoint-hook"><code class="docutils literal notranslate"><span class="pre">postgres-checkpoint</span></code> Hook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mysql-lock-tables-hook"><code class="docutils literal notranslate"><span class="pre">mysql-lock-tables</span></code> Hook</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="prune.html">Pruning Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pr.html">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://matrix.to/#/#zrepl:matrix.org">Chat: Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supporters.html">Supporters</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">zrepl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../configuration.html">Configuration</a></li>
+      <li class="breadcrumb-item active">Taking Snaphots</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/configuration/snapshotting.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<p class="scv-banner scv-sphinx_rtd_theme">
+  <strong>
+    
+    You're reading an old version of this documentation.
+    If you want up-to-date information, please have a look at <a href="../../configuration/snapshotting.html">stable</a>.
+    
+  </strong>
+</p>
+
+
+  <section id="taking-snaphots">
+<span id="job-snapshotting-spec"></span><h1>Taking Snaphots<a class="headerlink" href="#taking-snaphots" title="Link to this heading"></a></h1>
+<p>You can configure zrepl to take snapshots of the filesystems in the <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> field specified in <code class="docutils literal notranslate"><span class="pre">push</span></code>, <code class="docutils literal notranslate"><span class="pre">source</span></code> and <code class="docutils literal notranslate"><span class="pre">snap</span></code> jobs.</p>
+<p>The following snapshotting types are supported:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">snapshotting.type</span></code></p></th>
+<th class="head"><p>Comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">periodic</span></code></p></td>
+<td><p>Ensure that snapshots are taken at a particular interval.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cron</span></code></p></td>
+<td><p>Use cron spec to take snapshots at particular points in time.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">manual</span></code></p></td>
+<td><p>zrepl does not take any snapshots by itself.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">periodic</span></code> and <code class="docutils literal notranslate"><span class="pre">cron</span></code> snapshotting types share some common options and behavior:</p>
+<ul class="simple">
+<li><p><strong>Naming:</strong> The snapshot names are composed of a user-defined <code class="docutils literal notranslate"><span class="pre">prefix</span></code> followed by a UTC date formatted like <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code>.
+We use UTC because it will avoid name conflicts when switching time zones or between summer and winter time.</p></li>
+<li><p><strong>Hooks:</strong> You can configure hooks to run before or after zrepl takes the snapshots. See <a class="reference internal" href="#job-snapshotting-hooks"><span class="std std-ref">below</span></a> for details.</p></li>
+<li><p><strong>Push replication:</strong> After creating all snapshots, the snapshotter will wake up the replication part of the job, if it’s a <code class="docutils literal notranslate"><span class="pre">push</span></code> job.
+Note that snapshotting is decoupled from replication, i.e., if it is down or takes too long, snapshots will still be taken.
+Note further that other jobs are not woken up by snapshotting.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<blockquote>
+<div><p>There is <strong>no concept of ownership</strong> of the snapshots that are created by <code class="docutils literal notranslate"><span class="pre">periodic</span></code> or <code class="docutils literal notranslate"><span class="pre">cron</span></code>.
+Thus, there is no distinction between zrepl-created snapshots and user-created snapshots during replication or pruning.</p>
+<p>In particular, pruning will take all snapshots into consideration by default.
+To constrain pruning to just zrepl-created snapshots:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Assign a unique <cite>prefix</cite> to the snapshotter and</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">regex</span></code> functionality of the various pruning <code class="docutils literal notranslate"><span class="pre">keep</span></code> rules to just consider snapshots with that prefix.</p></li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+<p>There is currently no way to constrain replication to just zrepl-created snapshots.
+Follow and comment at <a class="reference external" href="https://github.com/zrepl/zrepl/issues/403">issue #403</a> if you need this functionality.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> subcommand does not trigger snapshotting.</p>
+</div>
+<section id="periodic-snapshotting">
+<h2><code class="docutils literal notranslate"><span class="pre">periodic</span></code> Snapshotting<a class="headerlink" href="#periodic-snapshotting" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="o">...</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">periodic</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
+    <span class="c1"># Timestamp format that is used as snapshot suffix.</span>
+    <span class="c1"># Can be any of &quot;dense&quot; (default), &quot;human&quot;, &quot;iso-8601&quot;, &quot;unix-seconds&quot; or a custom Go time format (see https://go.dev/src/time/format.go)</span>
+    <span class="n">timestamp_format</span><span class="p">:</span> <span class="n">dense</span>
+    <span class="n">hooks</span><span class="p">:</span> <span class="o">...</span>
+ <span class="n">pruning</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">periodic</span></code> snapshotter ensures that snapshots are taken in the specified <code class="docutils literal notranslate"><span class="pre">interval</span></code>.
+If you use zrepl for backup, this translates into your recovery point objective (RPO).
+To meet your RPO, you still need to monitor that replication, which happens asynchronously to snapshotting, actually works.</p>
+<p>It is desirable to get all <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> snapshotted simultaneously because it results in a more consistent backup.
+To accomplish this while still maintaining the <code class="docutils literal notranslate"><span class="pre">interval</span></code>, the <code class="docutils literal notranslate"><span class="pre">periodic</span></code> snapshotter attempts to get the snapshotting rhythms in sync.
+To find that sync point, the most recent snapshot, created by the snapshotter, in any of the matched <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> is used.
+A filesystem that does not have snapshots by the snapshotter has lower priority than filesystem that do, and thus might not be snapshotted (and replicated) until it is snapshotted at the next sync point.
+The snapshotter uses the <code class="docutils literal notranslate"><span class="pre">prefix</span></code> to identify which snapshots it created.</p>
+</section>
+<section id="cron-snapshotting">
+<span id="job-snapshotting-cron"></span><h2><code class="docutils literal notranslate"><span class="pre">cron</span></code> Snapshotting<a class="headerlink" href="#cron-snapshotting" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">snap</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">cron</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
+    <span class="c1"># (second, optional) minute hour day-of-month month day-of-week</span>
+    <span class="c1"># This example takes snapshots daily at 3:00.</span>
+    <span class="n">cron</span><span class="p">:</span> <span class="s2">&quot;0 3 * * *&quot;</span>
+    <span class="c1"># Timestamp format that is used as snapshot suffix.</span>
+    <span class="c1"># Can be any of &quot;dense&quot; (default), &quot;human&quot;, &quot;iso-8601&quot;, &quot;unix-seconds&quot; or a custom Go time format (see https://go.dev/src/time/format.go)</span>
+    <span class="n">timestamp_format</span><span class="p">:</span> <span class="n">dense</span>
+  <span class="n">pruning</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">cron</span></code> mode, the snapshotter takes snaphots at fixed points in time.
+See <a class="reference external" href="https://en.wikipedia.org/wiki/Cron">https://en.wikipedia.org/wiki/Cron</a> for details on the syntax.
+zrepl uses the <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">github.com/robfig/cron/v3</span></code> Go package for parsing.
+An optional field for “seconds” is supported to take snapshots at sub-minute frequencies.</p>
+<section id="timestamp-format">
+<span id="job-snapshotting-timestamp-format"></span><h3>Timestamp Format<a class="headerlink" href="#timestamp-format" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">cron</span></code> and <code class="docutils literal notranslate"><span class="pre">periodic</span></code> snapshotter support configuring a custom timestamp format that is used as suffix for the snapshot name.
+It can be used by setting <code class="docutils literal notranslate"><span class="pre">timestamp_format</span></code> to any of the following values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dense</span></code> (default) looks like <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">human</span></code> looks like <code class="docutils literal notranslate"><span class="pre">2006-01-02_15:04:05</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iso-8601</span></code> looks like <code class="docutils literal notranslate"><span class="pre">2006-01-02T15:04:05.000Z</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unix-seconds</span></code> looks like <code class="docutils literal notranslate"><span class="pre">1136214245</span></code></p></li>
+<li><p>Any custom Go time format accepted by <a class="reference external" href="https://go.dev/src/time/format.go">time.Time#Format</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="manual-snapshotting">
+<h2><code class="docutils literal notranslate"><span class="pre">manual</span></code> Snapshotting<a class="headerlink" href="#manual-snapshotting" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">manual</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">manual</span></code> mode, zrepl does not take snapshots by itself.
+Manual snapshotting is most useful if you have existing infrastructure for snapshot management.
+Or, if you want to decouple snapshot management from replication using a zrepl <code class="docutils literal notranslate"><span class="pre">snap</span></code> job.
+See <a class="reference internal" href="../quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">this quickstart guide</span></a> for an example.</p>
+<p>To trigger replication after taking snapshots, use the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> command.</p>
+</section>
+<section id="pre-and-post-snapshot-hooks">
+<span id="job-snapshotting-hooks"></span><h2>Pre- and Post-Snapshot Hooks<a class="headerlink" href="#pre-and-post-snapshot-hooks" title="Link to this heading"></a></h2>
+<p>Jobs with <a class="reference internal" href="#job-snapshotting-spec">periodic snapshots</a> can run hooks before and/or after taking the snapshot specified in <code class="docutils literal notranslate"><span class="pre">snapshotting.hooks</span></code>:
+Hooks are called per filesystem before and after the snapshot is taken (pre- and post-edge).
+Pre-edge invocations are in configuration order, post-edge invocations in reverse order, i.e. like a stack.
+If a pre-snapshot invocation fails, <code class="docutils literal notranslate"><span class="pre">err_is_fatal=true</span></code> cuts off subsequent hooks, does not take a snapshot, and only invokes post-edges corresponding to previous successful pre-edges.
+<code class="docutils literal notranslate"><span class="pre">err_is_fatal=false</span></code> logs the failed pre-edge invocation but does not affect subsequent hooks nor snapshotting itself.
+Post-edges are only invoked for hooks whose pre-edges ran without error.
+Note that hook failures for one filesystem never affect other filesystems.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">timeout</span></code> parameter specifies a period after which zrepl will kill the hook process and report an error.
+The default is 30 seconds and may be specified in any units understood by <a class="reference external" href="https://golang.org/pkg/time/#ParseDuration">time.ParseDuration</a>.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter which limits the filesystems the hook runs for. This uses the same <a class="reference internal" href="filter_syntax.html#pattern-filter"><span class="std std-ref">filter specification</span></a> as jobs.</p>
+<p>Most hook types take additional parameters, please refer to the respective subsections below.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Hook <code class="docutils literal notranslate"><span class="pre">type</span></code></p></th>
+<th class="head"><p>Details</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">command</span></code></p></td>
+<td><p><a class="reference internal" href="#job-hook-type-command"><span class="std std-ref">Details</span></a></p></td>
+<td><p>Arbitrary pre- and post snapshot scripts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">postgres-checkpoint</span></code></p></td>
+<td><p><a class="reference internal" href="#job-hook-type-postgres-checkpoint"><span class="std std-ref">Details</span></a></p></td>
+<td><p>Execute Postgres <code class="docutils literal notranslate"><span class="pre">CHECKPOINT</span></code> SQL command before snapshot.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mysql-lock-tables</span></code></p></td>
+<td><p><a class="reference internal" href="#job-hook-type-mysql-lock-tables"><span class="std std-ref">Details</span></a></p></td>
+<td><p>Flush and read-Lock MySQL tables while taking the snapshot.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="command-hooks">
+<span id="job-hook-type-command"></span><h3><code class="docutils literal notranslate"><span class="pre">command</span></code> Hooks<a class="headerlink" href="#command-hooks" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span><span class="p">:</span>
+<span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">push</span>
+  <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;tmp&quot;</span><span class="p">:</span> <span class="n">false</span>
+  <span class="p">}</span>
+  <span class="n">snapshotting</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">periodic</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">zrepl_</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span><span class="n">m</span>
+    <span class="n">hooks</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">command</span>
+      <span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">hooks</span><span class="o">/</span><span class="n">zrepl</span><span class="o">-</span><span class="n">notify</span><span class="o">.</span><span class="n">sh</span>
+      <span class="n">timeout</span><span class="p">:</span> <span class="mi">30</span><span class="n">s</span>
+      <span class="n">err_is_fatal</span><span class="p">:</span> <span class="n">false</span>
+    <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">command</span>
+      <span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zrepl</span><span class="o">/</span><span class="n">hooks</span><span class="o">/</span><span class="n">special</span><span class="o">-</span><span class="n">snapshot</span><span class="o">.</span><span class="n">sh</span>
+      <span class="n">filesystems</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;tank/special&quot;</span><span class="p">:</span> <span class="n">true</span>
+      <span class="p">}</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">command</span></code> hooks take a <code class="docutils literal notranslate"><span class="pre">path</span></code> to an executable script or binary to be executed before and after the snapshot.
+<code class="docutils literal notranslate"><span class="pre">path</span></code> must be absolute (e.g. <code class="docutils literal notranslate"><span class="pre">/etc/zrepl/hooks/zrepl-notify.sh</span></code>).
+No arguments may be specified; create a wrapper script if zrepl must call an executable that requires arguments.
+The process standard output is logged at level INFO. Standard error is logged at level WARN.
+The following environment variables are set:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ZREPL_HOOKTYPE</span></code>: either “pre_snapshot” or “post_snapshot”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ZREPL_FS</span></code>: the ZFS filesystem name being snapshotted</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ZREPL_SNAPNAME</span></code>: the zrepl-generated snapshot name (e.g. <code class="docutils literal notranslate"><span class="pre">zrepl_20380119_031407_000</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ZREPL_DRYRUN</span></code>: set to <code class="docutils literal notranslate"><span class="pre">&quot;true&quot;</span></code> if a dry run is in progress so scripts can print, but not run, their commands</p></li>
+</ul>
+<p>An empty template hook can be found in <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/hooks/template.sh">config/samples/hooks/template.sh</a>.</p>
+</section>
+<section id="postgres-checkpoint-hook">
+<span id="job-hook-type-postgres-checkpoint"></span><h3><code class="docutils literal notranslate"><span class="pre">postgres-checkpoint</span></code> Hook<a class="headerlink" href="#postgres-checkpoint-hook" title="Link to this heading"></a></h3>
+<p>Connects to a Postgres server and executes the <code class="docutils literal notranslate"><span class="pre">CHECKPOINT</span></code> statement pre-snapshot.
+Checkpointing applies the WAL contents to all data files and syncs the data files to disk.
+This is not required for a consistent database backup: it merely forward-pays the “cost” of WAL replay to the time of snapshotting instead of at restore.
+However, the Postgres manual recommends against checkpointing during normal operation.
+Further, the operation requires Postgres superuser privileges.
+zrepl users must decide on their own whether this hook is useful for them (it likely isn’t).</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Note that WALs and Postgres data directory (with all database data files) must be on the same filesystem to guarantee a correct point-in-time backup with the ZFS snapshot.</p>
+</div>
+<p>DSN syntax documented here: <a class="reference external" href="https://godoc.org/github.com/lib/pq">https://godoc.org/github.com/lib/pq</a></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">zrepl_checkpoint</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">yourpasswordhere</span><span class="p">;</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">zrepl_checkpoint</span><span class="w"> </span><span class="n">SUPERUSER</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres-checkpoint</span>
+<span class="w">  </span><span class="nt">dsn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;host=localhost</span><span class="nv"> </span><span class="s">port=5432</span><span class="nv"> </span><span class="s">user=postgres</span><span class="nv"> </span><span class="s">password=yourpasswordhere</span><span class="nv"> </span><span class="s">sslmode=disable&quot;</span>
+<span class="w">  </span><span class="nt">filesystems</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">      </span><span class="s">&quot;p1/postgres/data11&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span>
+<span class="w">  </span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mysql-lock-tables-hook">
+<span id="job-hook-type-mysql-lock-tables"></span><h3><code class="docutils literal notranslate"><span class="pre">mysql-lock-tables</span></code> Hook<a class="headerlink" href="#mysql-lock-tables-hook" title="Link to this heading"></a></h3>
+<p>Connects to MySQL and executes</p>
+<ul class="simple">
+<li><p>pre-snapshot <code class="docutils literal notranslate"><span class="pre">FLUSH</span> <span class="pre">TABLES</span> <span class="pre">WITH</span> <span class="pre">READ</span> <span class="pre">LOCK</span></code> to lock all tables in all databases in the MySQL server we connect to (<a class="reference external" href="https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock">docs</a>)</p></li>
+<li><p>post-snapshot <code class="docutils literal notranslate"><span class="pre">UNLOCK</span> <span class="pre">TABLES</span></code>  reverse above operation.</p></li>
+</ul>
+<p>Above procedure is documented in the <a class="reference external" href="https://dev.mysql.com/doc/mysql-backup-excerpt/5.7/en/backup-methods.html">MySQL manual</a>
+as a means to produce a consistent backup of a MySQL DBMS installation (i.e., all databases).</p>
+<p><a class="reference external" href="https://github.com/go-sql-driver/mysql#dsn-data-source-name">DSN syntax</a>: <code class="docutils literal notranslate"><span class="pre">[username[:password]&#64;][protocol[(address)]]/dbname[?param1=value1&amp;...&amp;paramN=valueN]</span></code></p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>All MySQL databases must be on the same ZFS filesystem to guarantee a consistent point-in-time backup with the ZFS snapshot.</p>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">zrepl_lock_tables</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;yourpasswordhere&#39;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="n">RELOAD</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">zrepl_lock_tables</span><span class="p">;</span>
+<span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql-lock-tables</span>
+<span class="w">  </span><span class="nt">dsn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;zrepl_lock_tables:yourpasswordhere@tcp(localhost)/&quot;</span>
+<span class="w">  </span><span class="nt">filesystems</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;tank/mysql&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span>
+<span class="w">  </span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="conflict_resolution.html" class="btn btn-neutral float-left" title="Conflict Resolution Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="prune.html" class="btn btn-neutral float-right" title="Pruning Policies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.6.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="snapshotting.html">v0.6.1</a></dd>
+      <dd><a href="../../v0.5.0/configuration/snapshotting.html">v0.5.0</a></dd>
+      <dd><a href="../../v0.4.0/configuration/snapshotting.html">v0.4.0</a></dd>
+      <dd><a href="../../v0.3.1/configuration/snapshotting.html">v0.3.1</a></dd>
+      <dd><a href="../../v0.2.1/configuration/snapshotting.html">v0.2.1</a></dd>
+      <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../../configuration/snapshotting.html">stable</a></dd>
+      <dd><a href="../../master/configuration/snapshotting.html">master</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
