@@ -385,7 +385,11 @@ Otherwise, concurrently running jobs might interfere when operating on the same 
 <p>On your setup, ensure that</p>
 <ul class="simple">
 <li><p>all <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter specifications are disjoint</p></li>
-<li><p>no <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is a prefix or equal to another <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></p></li>
+<li><p>no <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is a prefix or equal to another <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></p>
+<ul>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">sink</span></code> jobs, consider all possible <code class="docutils literal notranslate"><span class="pre">root_fs/${client_identity}</span></code>.</p></li>
+</ul>
+</li>
 <li><p>no <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter matches any <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></p></li>
 </ul>
 <p><strong>Exceptions to the rule</strong>:</p>
