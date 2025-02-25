@@ -58,11 +58,9 @@
 <li class="toctree-l2"><a class="reference internal" href="conflict_resolution.html">Conflict Resolution Options</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Taking Snaphots</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#periodic-snapshotting"><code class="docutils literal notranslate"><span class="pre">periodic</span></code> Snapshotting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cron-snapshotting"><code class="docutils literal notranslate"><span class="pre">cron</span></code> Snapshotting</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#timestamp-format">Timestamp Format</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#cron-snapshotting"><code class="docutils literal notranslate"><span class="pre">cron</span></code> Snapshotting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manual-snapshotting"><code class="docutils literal notranslate"><span class="pre">manual</span></code> Snapshotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timestamp-format">Timestamp Format</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pre-and-post-snapshot-hooks">Pre- and Post-Snapshot Hooks</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#command-hooks"><code class="docutils literal notranslate"><span class="pre">command</span></code> Hooks</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#postgres-checkpoint-hook"><code class="docutils literal notranslate"><span class="pre">postgres-checkpoint</span></code> Hook</a></li>
@@ -149,8 +147,9 @@
 </table>
 <p>The <code class="docutils literal notranslate"><span class="pre">periodic</span></code> and <code class="docutils literal notranslate"><span class="pre">cron</span></code> snapshotting types share some common options and behavior:</p>
 <ul class="simple">
-<li><p><strong>Naming:</strong> The snapshot names are composed of a user-defined <code class="docutils literal notranslate"><span class="pre">prefix</span></code> followed by a UTC date formatted like <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code>.
-We use UTC because it will avoid name conflicts when switching time zones or between summer and winter time.</p></li>
+<li><p><strong>Naming:</strong> The snapshot names are composed of a user-defined <code class="docutils literal notranslate"><span class="pre">prefix</span></code> followed by a UTC date formatted like <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code> by default.
+We either use UTC or timestamp with timezone information because it will avoid name conflicts when switching time zones or between summer and winter time.
+Note that if timestamp with time zone information is used, the “+” of the timezone (i.e. +02:00) is replaced by “_” (i.e. _02:00) to conform to allowed characters in ZFS snapshots.</p></li>
 <li><p><strong>Hooks:</strong> You can configure hooks to run before or after zrepl takes the snapshots. See <a class="reference internal" href="#job-snapshotting-hooks"><span class="std std-ref">below</span></a> for details.</p></li>
 <li><p><strong>Push replication:</strong> After creating all snapshots, the snapshotter will wake up the replication part of the job, if it’s a <code class="docutils literal notranslate"><span class="pre">push</span></code> job.
 Note that snapshotting is decoupled from replication, i.e., if it is down or takes too long, snapshots will still be taken.
@@ -189,6 +188,9 @@ Follow and comment at <a class="reference external" href="https://github.com/zre
     <span class="c1"># Timestamp format that is used as snapshot suffix.</span>
     <span class="c1"># Can be any of &quot;dense&quot; (default), &quot;human&quot;, &quot;iso-8601&quot;, &quot;unix-seconds&quot; or a custom Go time format (see https://go.dev/src/time/format.go)</span>
     <span class="n">timestamp_format</span><span class="p">:</span> <span class="n">dense</span>
+    <span class="c1"># Specifies in which time zone the snapshot suffix is generated, optional, defaults to UTC, used only if time zone information is part of timestamp_format.</span>
+    <span class="c1"># Can be &quot;UTC&quot; (default), &quot;Local&quot; (time zone information from the OS) or any of the IANA Time Zone names (see https://nodatime.org/TimeZones)</span>
+    <span class="n">timestamp_location</span><span class="p">:</span> <span class="n">UTC</span>
     <span class="n">hooks</span><span class="p">:</span> <span class="o">...</span>
  <span class="n">pruning</span><span class="p">:</span> <span class="o">...</span>
 </pre></div>
@@ -216,6 +218,9 @@ The snapshotter uses the <code class="docutils literal notranslate"><span class=
     <span class="c1"># Timestamp format that is used as snapshot suffix.</span>
     <span class="c1"># Can be any of &quot;dense&quot; (default), &quot;human&quot;, &quot;iso-8601&quot;, &quot;unix-seconds&quot; or a custom Go time format (see https://go.dev/src/time/format.go)</span>
     <span class="n">timestamp_format</span><span class="p">:</span> <span class="n">dense</span>
+    <span class="c1"># Specifies in which time zone the snapshot suffix is generated, optional, defaults to UTC, used only if time zone information is part of timestamp_format.</span>
+    <span class="c1"># Can be &quot;UTC&quot; (default), &quot;Local&quot; (time zone information from the OS) or any of the IANA Time Zone names (see https://nodatime.org/TimeZones)</span>
+    <span class="n">timestamp_location</span><span class="p">:</span> <span class="n">UTC</span>
   <span class="n">pruning</span><span class="p">:</span> <span class="o">...</span>
 </pre></div>
 </div>
@@ -223,18 +228,6 @@ The snapshotter uses the <code class="docutils literal notranslate"><span class=
 See <a class="reference external" href="https://en.wikipedia.org/wiki/Cron">https://en.wikipedia.org/wiki/Cron</a> for details on the syntax.
 zrepl uses the <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">github.com/robfig/cron/v3</span></code> Go package for parsing.
 An optional field for “seconds” is supported to take snapshots at sub-minute frequencies.</p>
-<section id="timestamp-format">
-<span id="job-snapshotting-timestamp-format"></span><h3>Timestamp Format<a class="headerlink" href="#timestamp-format" title="Link to this heading"></a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">cron</span></code> and <code class="docutils literal notranslate"><span class="pre">periodic</span></code> snapshotter support configuring a custom timestamp format that is used as suffix for the snapshot name.
-It can be used by setting <code class="docutils literal notranslate"><span class="pre">timestamp_format</span></code> to any of the following values:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">dense</span></code> (default) looks like <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">human</span></code> looks like <code class="docutils literal notranslate"><span class="pre">2006-01-02_15:04:05</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">iso-8601</span></code> looks like <code class="docutils literal notranslate"><span class="pre">2006-01-02T15:04:05.000Z</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">unix-seconds</span></code> looks like <code class="docutils literal notranslate"><span class="pre">1136214245</span></code></p></li>
-<li><p>Any custom Go time format accepted by <a class="reference external" href="https://go.dev/src/time/format.go">time.Time#Format</a>.</p></li>
-</ul>
-</section>
 </section>
 <section id="manual-snapshotting">
 <h2><code class="docutils literal notranslate"><span class="pre">manual</span></code> Snapshotting<a class="headerlink" href="#manual-snapshotting" title="Link to this heading"></a></h2>
@@ -250,6 +243,27 @@ Manual snapshotting is most useful if you have existing infrastructure for snaps
 Or, if you want to decouple snapshot management from replication using a zrepl <code class="docutils literal notranslate"><span class="pre">snap</span></code> job.
 See <a class="reference internal" href="../quickstart/backup_to_external_disk.html#quickstart-backup-to-external-disk"><span class="std std-ref">this quickstart guide</span></a> for an example.</p>
 <p>To trigger replication after taking snapshots, use the <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">signal</span> <span class="pre">wakeup</span> <span class="pre">JOB</span></code> command.</p>
+</section>
+<section id="timestamp-format">
+<span id="job-snapshotting-timestamp-format"></span><h2>Timestamp Format<a class="headerlink" href="#timestamp-format" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">cron</span></code> and <code class="docutils literal notranslate"><span class="pre">periodic</span></code> snapshotter support configuring a custom timestamp format that is used as suffix for the snapshot name.</p>
+<p>By default, the current time is converted to UTC and then formatted using the <code class="docutils literal notranslate"><span class="pre">dense</span></code> format.</p>
+<p>Both time zone and format can be customized by setting <code class="docutils literal notranslate"><span class="pre">timestamp_format</span></code> and/or <code class="docutils literal notranslate"><span class="pre">timestamp_location</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timestamp_location</span></code> is fed verbatim into <a class="reference external" href="https://pkg.go.dev/time#LoadLocation">time.LoadLocation</a>.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">timestamp_format</span></code> supports the following values (case-insensitive).</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dense</span></code> =&gt; Go format string <code class="docutils literal notranslate"><span class="pre">20060102_150405_000</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">human</span></code> =&gt; Go format string <code class="docutils literal notranslate"><span class="pre">2006-01-02_15:04:05</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iso-8601</span></code> =&gt; Go format string <code class="docutils literal notranslate"><span class="pre">2006-01-02T15:04:05.000Z07:00</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unix-seconds</span></code> =&gt; Unix seconds since the epoch, formatted as a decimal string (<a class="reference external" href="https://pkg.go.dev/time#Time.Unix">time.Time.Unix</a>)</p></li>
+<li><p>Any custom Go time format accepted by <a class="reference external" href="https://go.dev/src/time/format.go">time.Time#Format</a>.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">dense</span></code>, <code class="docutils literal notranslate"><span class="pre">human</span></code>, and <code class="docutils literal notranslate"><span class="pre">unix-seconds</span></code> formats require the <code class="docutils literal notranslate"><span class="pre">timestamp_location</span></code> to be <code class="docutils literal notranslate"><span class="pre">UTC</span></code> because they do not contain timezone information.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">+</span></code> character is <a class="reference external" href="https://github.com/openzfs/zfs/blob/1d3ba0bf01020f5459b1c28db3979129088924c0/module/zcommon/zfs_namecheck.c#L334-L351">not allowed in ZFS snapshot names</a>.
+Format strings are disallowed to contain the <code class="docutils literal notranslate"><span class="pre">+</span></code> character (it’s not a character that is interpreted by <code class="docutils literal notranslate"><span class="pre">time.Time.Format</span></code>, so there’s no reason to use it).
+If a format _produces_ a <code class="docutils literal notranslate"><span class="pre">+</span></code>, that <code class="docutils literal notranslate"><span class="pre">+</span></code> is replaced by an <cite>_`</cite> character.</p>
 </section>
 <section id="pre-and-post-snapshot-hooks">
 <span id="job-snapshotting-hooks"></span><h2>Pre- and Post-Snapshot Hooks<a class="headerlink" href="#pre-and-post-snapshot-hooks" title="Link to this heading"></a></h2>

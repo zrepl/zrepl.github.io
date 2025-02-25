@@ -56,19 +56,20 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Send &amp; Recv Options</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#send-options">Send Options</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#encrypted"><code class="docutils literal notranslate"><span class="pre">encrypted</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#properties"><code class="docutils literal notranslate"><span class="pre">properties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#send-properties"><code class="docutils literal notranslate"><span class="pre">send_properties</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#backup-properties"><code class="docutils literal notranslate"><span class="pre">backup_properties</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#large-blocks"><code class="docutils literal notranslate"><span class="pre">large_blocks</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#recv-options">Recv Options</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#job-recv-options-inherit-and-override"><code class="docutils literal notranslate"><span class="pre">properties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties"><code class="docutils literal notranslate"><span class="pre">properties</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#a-note-on-property-replication">A Note on Property Replication</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mount-behaviour">Mount behaviour</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#systemd">Systemd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#encryption">Encryption</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sharing">Sharing</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#placeholders">Placeholders</a></li>
@@ -217,8 +218,8 @@ More specifically, if <code class="docutils literal notranslate"><span class="pr
 It is meant as a safeguard to prevent unintended sends of unencrypted filesystems in raw mode.</p>
 </div>
 </section>
-<section id="properties">
-<span id="job-send-options-properties"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#properties" title="Link to this heading"></a></h3>
+<section id="send-properties">
+<span id="job-send-options-properties"></span><h3><code class="docutils literal notranslate"><span class="pre">send_properties</span></code><a class="headerlink" href="#send-properties" title="Link to this heading"></a></h3>
 <p>Sends the dataset properties along with snapshots.
 Please be careful with this option and read the <a class="reference internal" href="#job-note-property-replication"><span class="std std-ref">note on property replication below</span></a>.</p>
 </section>
@@ -270,8 +271,8 @@ The commit in question is included in OpenZFS 2.0 and works around the problem b
 <a class="reference internal" href="#job-recv-options-inherit-and-override"><span class="std std-ref">properties</span></a> ,
 <a class="reference internal" href="#job-send-recv-options-bandwidth-limit"><span class="std std-ref">bandwidth_limit</span></a> , and
 <a class="reference internal" href="#job-recv-options-placeholder"><span class="std std-ref">placeholder</span></a>.</p>
-<section id="job-recv-options-inherit-and-override">
-<span id="id1"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#job-recv-options-inherit-and-override" title="Link to this heading"></a></h3>
+<section id="properties">
+<span id="job-recv-options-inherit-and-override"></span><h3><code class="docutils literal notranslate"><span class="pre">properties</span></code><a class="headerlink" href="#properties" title="Link to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">override</span></code> maps directly to the <a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-recv.8.html">zfs recv -o flag</a>.
 Property name-value pairs specified in this map will apply to all received filesystems, regardless of whether the send stream contains properties or not.</p>
 <p><code class="docutils literal notranslate"><span class="pre">inherit</span></code> maps directly to the <a class="reference external" href="https://openzfs.github.io/openzfs-docs/man/8/zfs-recv.8.html">zfs recv -x flag</a>.
@@ -282,7 +283,7 @@ You can send the original properties from the first receiver to another receiver
 </section>
 <section id="a-note-on-property-replication">
 <span id="job-note-property-replication"></span><h2>A Note on Property Replication<a class="headerlink" href="#a-note-on-property-replication" title="Link to this heading"></a></h2>
-<p>If a send stream contains properties, as per <code class="docutils literal notranslate"><span class="pre">send.properties</span></code> or <code class="docutils literal notranslate"><span class="pre">send.backup_properties</span></code>,
+<p>If a send stream contains properties, as per <code class="docutils literal notranslate"><span class="pre">send.send_properties</span></code> or <code class="docutils literal notranslate"><span class="pre">send.backup_properties</span></code>,
 the default ZFS behavior is to use those properties on the receiving side, verbatim.</p>
 <p>In many use cases for zrepl, this can have devastating consequences.
 For example, when backing up a filesystem that has <code class="docutils literal notranslate"><span class="pre">mountpoint=/</span></code> to a storage server,
@@ -326,6 +327,14 @@ and property replication is enabled, the receiver must <a class="reference inter
 <li><p><code class="docutils literal notranslate"><span class="pre">keylocation</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">keyformat</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">encryption</span></code></p></li>
+</ul>
+</section>
+<section id="sharing">
+<h3>Sharing<a class="headerlink" href="#sharing" title="Link to this heading"></a></h3>
+<p>You may not want the replicated filesystem shared in the same way as the source is.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sharenfs</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sharesmb</span></code></p></li>
 </ul>
 </section>
 </section>

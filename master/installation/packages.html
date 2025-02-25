@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Debian / Ubuntu APT repositories" href="apt-repos.html" />
-    <link rel="prev" title="User Privileges" href="user-privileges.html" /> 
+    <link rel="prev" title="Installation" href="../installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,11 +48,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../installation.html">Installation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="user-privileges.html">User Privileges</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apt-repos.html">Debian / Ubuntu APT repositories</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rpm-repos.html">RPM repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compile-from-source.html">Compile From Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-privileges.html">User Privileges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="freebsd-jail-with-iocage.html">FreeBSD Jail With iocage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="what-next.html">What next?</a></li>
 </ul>
@@ -116,43 +115,47 @@ The following list may be incomplete, feel free to submit a PR with an update:</
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>FreeBSD</p></td>
+<tr class="row-even"><td><p>any</p></td>
+<td><p>Statically linked binaries.</p></td>
+<td><p><a class="reference external" href="https://github.com/zrepl/zrepl/releases">Official GitHub releases</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>FreeBSD</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pkg</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></p></td>
 <td><p><a class="reference external" href="https://www.freshports.org/sysutils/zrepl/">https://www.freshports.org/sysutils/zrepl/</a></p>
 <p><a class="reference internal" href="freebsd-jail-with-iocage.html#installation-freebsd-jail-with-iocage"><span class="std std-ref">FreeBSD Jail With iocage</span></a></p>
 </td>
 </tr>
-<tr class="row-odd"><td><p>FreeNAS</p></td>
+<tr class="row-even"><td><p>FreeNAS</p></td>
 <td></td>
 <td><p><a class="reference internal" href="freebsd-jail-with-iocage.html#installation-freebsd-jail-with-iocage"><span class="std std-ref">FreeBSD Jail With iocage</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p>MacOS</p></td>
+<tr class="row-odd"><td><p>MacOS</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></p></td>
 <td><p>Available on <a class="reference external" href="https://brew.sh">homebrew</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Arch Linux</p></td>
+<tr class="row-even"><td><p>Arch Linux</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">yay</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></p></td>
 <td><p>Available on <a class="reference external" href="https://aur.archlinux.org/packages/zrepl">AUR</a></p></td>
 </tr>
-<tr class="row-even"><td><p>Fedora, CentOS, RHEL, OpenSUSE</p></td>
+<tr class="row-odd"><td><p>Fedora / RHEL / OpenSUSE</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dnf</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></p></td>
 <td><p><a class="reference internal" href="rpm-repos.html#installation-rpm-repos"><span class="std std-ref">RPM repository config</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Debian + Ubuntu</p></td>
+<tr class="row-even"><td><p>Debian + Ubuntu</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></p></td>
 <td><p><a class="reference internal" href="apt-repos.html#installation-apt-repos"><span class="std std-ref">APT repository config</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p>OmniOS</p></td>
+<tr class="row-odd"><td><p>OmniOS</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pkg</span> <span class="pre">install</span> <span class="pre">zrepl</span></code></p></td>
 <td><p>Available since <a class="reference external" href="https://pkg.omniosce.org/r151030/extra/en/search.shtml?token=zrepl&amp;action=Search">r151030</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Void Linux</p></td>
+<tr class="row-even"><td><p>Void Linux</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">xbps-install</span> <span class="pre">zrepl</span></code></p></td>
 <td><p>Available since <a class="reference external" href="https://github.com/void-linux/void-packages/commit/a88a2a4d7bf56072dadf61ab56b8424e39155890">a88a2a4</a></p></td>
 </tr>
-<tr class="row-even"><td><p>Others</p></td>
-<td></td>
-<td><p>Use <a class="reference external" href="https://github.com/zrepl/zrepl/releases">binary releases</a> or build from source.</p></td>
+<tr class="row-odd"><td><p>any</p></td>
+<td><p>Build from source</p></td>
+<td><p><a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/README.md">README.md</a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -163,7 +166,7 @@ The following list may be incomplete, feel free to submit a PR with an update:</
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="user-privileges.html" class="btn btn-neutral float-left" title="User Privileges" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="apt-repos.html" class="btn btn-neutral float-right" title="Debian / Ubuntu APT repositories" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -177,6 +177,13 @@ Make sure to actually add the necessary <code class="docutils literal notranslat
 It only makes sense to specify this rule for the <code class="docutils literal notranslate"><span class="pre">keep_sender</span></code>.
 The reason is that, by definition, all snapshots on the receiver have already been replicated to there from the sender.
 To determine whether a sender-side snapshot has already been replicated, zrepl uses the <a class="reference internal" href="overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> which corresponds to the most recent successfully replicated snapshot.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> in your pruning rules, make sure to <a class="reference internal" href="monitoring.html#monitoring"><span class="std std-ref">monitor</span></a> replication.
+If your replication gets stuck then <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> causes snapshots to pile uip on the sender.
+ZFS and especially the <code class="docutils literal notranslate"><span class="pre">zfs</span></code> management command are known to degrade in performance with a lot of snapshots.
+Such degradation impacts zrepl, any other scripts, and human ability to manage your zpool.</p>
+</div>
 </section>
 <section id="policy-grid">
 <span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Link to this heading"></a></h2>
