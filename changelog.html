@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Changelog &mdash; zrepl  documentation</title>
+  <title>Changelog &mdash; zrepl latest documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/banner.css" type="text/css" />
@@ -14,8 +14,8 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/documentation_options.js?v=c6e86fd7"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -36,6 +36,9 @@
             zrepl
               <img src="_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                latest
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -53,6 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#next-release">Next Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unreleased">0.7.0 (unreleased)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">0.6.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">0.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">0.5</a></li>
@@ -99,8 +103,6 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-
-
   <section id="changelog">
 <span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
 <p>The changelog summarizes bugfixes that are deemed relevant for users and package maintainers.
@@ -127,6 +129,17 @@ as it will likely be more predictable.</p></li>
 <p>Those changes will likely come with some breakage in the config.
 However, I want to avoid breaking <strong>use cases</strong> that are satisfied by the current design.
 There will be beta/RC releases to give users a chance to evaluate.</p>
+</section>
+<section id="unreleased">
+<h2>0.7.0 (unreleased)<a class="headerlink" href="#unreleased" title="Link to this heading"></a></h2>
+<p>INCOMPLETE LIST OF CHANGES</p>
+<ul class="simple">
+<li><p>[MAINT] Update to Go 1.25 toolchain with Go 1.24 language level.</p></li>
+<li><p>[MAINT] Fix deprecations exposed by the toolchain update.</p></li>
+<li><p>[MAINT] Long-overdue update of all our dependencies &amp; address deprecations.</p></li>
+<li><p>[MAINT] Publish docs from <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, retire <code class="docutils literal notranslate"><span class="pre">stable</span></code> branch.</p></li>
+<li><p>[MAINT] The <cite>make release-docker</cite> in CircleCI produces executables that are bit-identical to my personal machine.</p></li>
+</ul>
 </section>
 <section id="id2">
 <h2>0.6.1<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
@@ -507,7 +520,6 @@ For the changelog of previous releases, use the version selection in the hosted 
 </section>
 
 
-
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
@@ -518,7 +530,7 @@ For the changelog of previous releases, use the version selection in the hosted 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
+    <p>&#169; Copyright 2017-2026, Christian Schwarz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -531,27 +543,27 @@ For the changelog of previous releases, use the version selection in the hosted 
       </div>
     </section>
   </div>
-  
-<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable
+    v: latest
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>Tags</dt>
-      <dd><a href="v0.6.1/changelog.html">v0.6.1</a></dd>
-      <dd><a href="v0.5.0/changelog.html">v0.5.0</a></dd>
-      <dd><a href="v0.4.0/changelog.html">v0.4.0</a></dd>
-      <dd><a href="v0.3.1/changelog.html">v0.3.1</a></dd>
-      <dd><a href="v0.2.1/changelog.html">v0.2.1</a></dd>
-      <dd><a href="v0.1.1/changelog.html">v0.1.1</a></dd>
+      <dt>Releases</dt>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.6.1">v0.6.1</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.5.0">v0.5.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.4.0">v0.4.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases">All releases...</a></dd>
     </dl>
     <dl>
-      <dt>Branches</dt>
-      <dd><a href="changelog.html">stable</a></dd>
-      <dd><a href="master/changelog.html">master</a></dd>
+      <dt>Note</dt>
+      <dd style="white-space: normal;">
+        Release-specific docs are in the
+        <span style="font-family: monospace;">zrepl-noarch.tar</span>
+        asset on each GitHub release.
+      </dd>
     </dl>
   </div>
 </div><script>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview &amp; Terminology &mdash; zrepl  documentation</title>
+  <title>Overview &amp; Terminology &mdash; zrepl latest documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
@@ -14,8 +14,8 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,6 +36,9 @@
             zrepl
               <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                latest
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -50,7 +53,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../configuration.html">Configuration</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Overview &amp; Terminology</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#config-file-structure">Config File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-file-structure">Config File Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conf-d-including-config-files"><code class="docutils literal notranslate"><span class="pre">conf.d</span></code>: including config files</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#jobs-how-they-work-together">Jobs &amp; How They Work Together</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-the-active-side-works">How the Active Side Works</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-the-passive-side-works">How the Passive Side Works</a></li>
@@ -112,8 +118,6 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-
-
   <section id="overview-terminology">
 <h1>Overview &amp; Terminology<a class="headerlink" href="#overview-terminology" title="Link to this heading"></a></h1>
 <p>All work zrepl does is performed by the zrepl daemon which is configured in a single YAML configuration file loaded on startup.
@@ -126,7 +130,7 @@ The following paths are searched, in this order:</p>
 <p><code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">configcheck</span></code> can be used to validate the configuration.
 If the configuration is valid, it will output nothing and exit with code <code class="docutils literal notranslate"><span class="pre">0</span></code>.
 The error messages vary in quality and usefulness: please report confusing config errors to the tracking <a class="reference external" href="https://github.com/zrepl/zrepl/issues/155">issue #155</a>.</p>
-<p>Full example configs are available at <a class="reference internal" href="../quickstart.html#quickstart-toc"><span class="std std-ref">quick-start guides</span></a> and <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/">config/samples/</a>.
+<p>Full example configs are available at <a class="reference internal" href="../quickstart.html#quickstart-toc"><span class="std std-ref">quick-start guides</span></a> and <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/internal/config/samples/">internal/config/samples/</a>.
 However, copy-pasting examples is no substitute for reading documentation!</p>
 <section id="config-file-structure">
 <h2>Config File Structure<a class="headerlink" href="#config-file-structure" title="Link to this heading"></a></h2>
@@ -139,6 +143,37 @@ However, copy-pasting examples is no substitute for reading documentation!</p>
 </div>
 <p>A zrepl configuration file is divided in to two main sections: <code class="docutils literal notranslate"><span class="pre">global</span></code> and <code class="docutils literal notranslate"><span class="pre">jobs</span></code>.
 <code class="docutils literal notranslate"><span class="pre">global</span></code> has sensible defaults. It is covered in <a class="reference internal" href="logging.html#logging"><span class="std std-ref">logging</span></a>, <a class="reference internal" href="monitoring.html#monitoring"><span class="std std-ref">monitoring</span></a> &amp; <a class="reference internal" href="misc.html#miscellaneous"><span class="std std-ref">miscellaneous</span></a>.</p>
+<section id="conf-d-including-config-files">
+<h3><code class="docutils literal notranslate"><span class="pre">conf.d</span></code>: including config files<a class="headerlink" href="#conf-d-including-config-files" title="Link to this heading"></a></h3>
+<p>It is possible to distribute zrepl configurations over multiple YAML configuration
+files. This is achieved by using the <cite>include</cite> key which can only exist in the main
+configuration file.</p>
+<p>The list of included paths must point to either individual YAML files or directories.
+If the path points to a directory then all YAML files with a <cite>.yml</cite> extention in the
+directory will be included.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/zrepl/zrep.yml</span>
+<span class="nt">global</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="nt">include</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./jobs.d/</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt/some_job.yml</span>
+
+<span class="c1"># /etc/zrepl/jobs.d/backup.yml</span>
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">push</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="c1"># /opt/some_job.yml</span>
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">another_job</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>The paths are treated as absolute when starting with <cite>/</cite>, otherwise
+as a relative path to the main config file’s parent directory.</p>
+<p>Job names must be unique across all included configuration files.</p>
+</section>
 </section>
 <section id="jobs-how-they-work-together">
 <span id="job-overview"></span><h2>Jobs &amp; How They Work Together<a class="headerlink" href="#jobs-how-they-work-together" title="Link to this heading"></a></h2>
@@ -376,7 +411,11 @@ Otherwise, concurrently running jobs might interfere when operating on the same 
 <p>On your setup, ensure that</p>
 <ul class="simple">
 <li><p>all <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter specifications are disjoint</p></li>
-<li><p>no <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is a prefix or equal to another <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></p></li>
+<li><p>no <code class="docutils literal notranslate"><span class="pre">root_fs</span></code> is a prefix or equal to another <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></p>
+<ul>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">sink</span></code> jobs, consider all possible <code class="docutils literal notranslate"><span class="pre">root_fs/${client_identity}</span></code>.</p></li>
+</ul>
+</li>
 <li><p>no <code class="docutils literal notranslate"><span class="pre">filesystems</span></code> filter matches any <code class="docutils literal notranslate"><span class="pre">root_fs</span></code></p></li>
 </ul>
 <p><strong>Exceptions to the rule</strong>:</p>
@@ -441,7 +480,6 @@ This can break incremental replication to all other receive-sides after restore.
 </section>
 
 
-
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
@@ -452,7 +490,7 @@ This can break incremental replication to all other receive-sides after restore.
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
+    <p>&#169; Copyright 2017-2026, Christian Schwarz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -465,27 +503,27 @@ This can break incremental replication to all other receive-sides after restore.
       </div>
     </section>
   </div>
-  
-<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable
+    v: latest
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>Tags</dt>
-      <dd><a href="../v0.6.1/configuration/overview.html">v0.6.1</a></dd>
-      <dd><a href="../v0.5.0/configuration/overview.html">v0.5.0</a></dd>
-      <dd><a href="../v0.4.0/configuration/overview.html">v0.4.0</a></dd>
-      <dd><a href="../v0.3.1/configuration/overview.html">v0.3.1</a></dd>
-      <dd><a href="../v0.2.1/configuration/overview.html">v0.2.1</a></dd>
-      <dd><a href="../v0.1.1/index.html">v0.1.1</a></dd>
+      <dt>Releases</dt>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.6.1">v0.6.1</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.5.0">v0.5.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.4.0">v0.4.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases">All releases...</a></dd>
     </dl>
     <dl>
-      <dt>Branches</dt>
-      <dd><a href="overview.html">stable</a></dd>
-      <dd><a href="../master/configuration/overview.html">master</a></dd>
+      <dt>Note</dt>
+      <dd style="white-space: normal;">
+        Release-specific docs are in the
+        <span style="font-family: monospace;">zrepl-noarch.tar</span>
+        asset on each GitHub release.
+      </dd>
     </dl>
   </div>
 </div><script>

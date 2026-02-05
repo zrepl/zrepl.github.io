@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Job Types in Detail &mdash; zrepl  documentation</title>
+  <title>Job Types in Detail &mdash; zrepl latest documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
@@ -14,8 +14,8 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,6 +36,9 @@
             zrepl
               <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                latest
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -104,8 +107,6 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-
-
   <section id="job-types-in-detail">
 <span id="job"></span><h1>Job Types in Detail<a class="headerlink" href="#job-types-in-detail" title="Link to this heading"></a></h1>
 <section id="job-type-push">
@@ -150,7 +151,7 @@
 </tr>
 </tbody>
 </table>
-<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/push.yml">config/samples/push.yml</a></p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/internal/config/samples/push.yml">internal/config/samples/push.yml</a></p>
 </section>
 <section id="job-type-sink">
 <span id="job-sink"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">sink</span></code><a class="headerlink" href="#job-type-sink" title="Link to this heading"></a></h2>
@@ -180,7 +181,7 @@
 </tr>
 </tbody>
 </table>
-<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/sink.yml">config/samples/sink.yml</a></p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/internal/config/samples/sink.yml">internal/config/samples/sink.yml</a></p>
 </section>
 <section id="job-type-pull">
 <span id="job-pull"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">pull</span></code><a class="headerlink" href="#job-type-pull" title="Link to this heading"></a></h2>
@@ -226,7 +227,7 @@
 </tr>
 </tbody>
 </table>
-<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/pull.yml">config/samples/pull.yml</a></p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/internal/config/samples/pull.yml">internal/config/samples/pull.yml</a></p>
 </section>
 <section id="job-type-source">
 <span id="job-source"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">source</span></code><a class="headerlink" href="#job-type-source" title="Link to this heading"></a></h2>
@@ -261,12 +262,12 @@
 </tr>
 </tbody>
 </table>
-<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/source.yml">config/samples/source.yml</a></p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/internal/config/samples/source.yml">internal/config/samples/source.yml</a></p>
 </section>
 <section id="local-replication">
 <span id="replication-local"></span><h2>Local replication<a class="headerlink" href="#local-replication" title="Link to this heading"></a></h2>
 <p>If you have the need for local replication (most likely between two local storage pools), you can use the <a class="reference internal" href="transports.html#transport-local"><span class="std std-ref">local transport type</span></a> to connect a local push job to a local sink job.</p>
-<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/local.yml">config/samples/local.yml</a>.</p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/internal/config/samples/local.yml">internal/config/samples/local.yml</a>.</p>
 </section>
 <section id="job-type-snap-snapshot-prune-only">
 <span id="job-snap"></span><h2>Job Type <code class="docutils literal notranslate"><span class="pre">snap</span></code> (snapshot &amp; prune only)<a class="headerlink" href="#job-type-snap-snapshot-prune-only" title="Link to this heading"></a></h2>
@@ -299,10 +300,9 @@
 </tr>
 </tbody>
 </table>
-<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/config/samples/snap.yml">config/samples/snap.yml</a></p>
+<p>Example config: <a class="reference external" href="https://github.com/zrepl/zrepl/blob/master/internal/config/samples/snap.yml">internal/config/samples/snap.yml</a></p>
 </section>
 </section>
-
 
 
            </div>
@@ -315,7 +315,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
+    <p>&#169; Copyright 2017-2026, Christian Schwarz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -328,27 +328,27 @@
       </div>
     </section>
   </div>
-  
-<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable
+    v: latest
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>Tags</dt>
-      <dd><a href="../v0.6.1/configuration/jobs.html">v0.6.1</a></dd>
-      <dd><a href="../v0.5.0/configuration/jobs.html">v0.5.0</a></dd>
-      <dd><a href="../v0.4.0/configuration/jobs.html">v0.4.0</a></dd>
-      <dd><a href="../v0.3.1/configuration/jobs.html">v0.3.1</a></dd>
-      <dd><a href="../v0.2.1/configuration/jobs.html">v0.2.1</a></dd>
-      <dd><a href="../v0.1.1/configuration/jobs.html">v0.1.1</a></dd>
+      <dt>Releases</dt>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.6.1">v0.6.1</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.5.0">v0.5.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.4.0">v0.4.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases">All releases...</a></dd>
     </dl>
     <dl>
-      <dt>Branches</dt>
-      <dd><a href="jobs.html">stable</a></dd>
-      <dd><a href="../master/configuration/jobs.html">master</a></dd>
+      <dt>Note</dt>
+      <dd style="white-space: normal;">
+        Release-specific docs are in the
+        <span style="font-family: monospace;">zrepl-noarch.tar</span>
+        asset on each GitHub release.
+      </dd>
     </dl>
   </div>
 </div><script>

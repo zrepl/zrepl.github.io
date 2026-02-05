@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RPM repositories &mdash; zrepl  documentation</title>
+  <title>RPM repositories &mdash; zrepl latest documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
@@ -14,13 +14,13 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Compile From Source" href="compile-from-source.html" />
+    <link rel="next" title="User Privileges" href="user-privileges.html" />
     <link rel="prev" title="Debian / Ubuntu APT repositories" href="apt-repos.html" /> 
 </head>
 
@@ -36,6 +36,9 @@
             zrepl
               <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                latest
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -48,11 +51,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start by Use Case</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../installation.html">Installation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="user-privileges.html">User Privileges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="packages.html">Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apt-repos.html">Debian / Ubuntu APT repositories</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">RPM repositories</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compile-from-source.html">Compile From Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RPM repositories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fedora-almalinux-rocky-linux-rhel">Fedora / AlmaLinux / Rocky Linux / RHEL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#opensuse">openSUSE</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user-privileges.html">User Privileges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="freebsd-jail-with-iocage.html">FreeBSD Jail With iocage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="what-next.html">What next?</a></li>
 </ul>
@@ -91,47 +97,63 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-
-
   <section id="rpm-repositories">
 <span id="installation-rpm-repos"></span><h1>RPM repositories<a class="headerlink" href="#rpm-repositories" title="Link to this heading"></a></h1>
 <p>We provide a single RPM repository for all RPM-based Linux distros.
 The zrepl binary in the repo is the same as the one published to GitHub.
-Since Go binaries are statically linked, the RPM should work about everywhere.</p>
-<p>The fingerprint of the signing key is <code class="docutils literal notranslate"><span class="pre">F6F6</span> <span class="pre">E8EA</span> <span class="pre">6F2F</span> <span class="pre">1462</span> <span class="pre">2878</span> <span class="pre">B5DE</span> <span class="pre">50E3</span> <span class="pre">4417</span> <span class="pre">826E</span> <span class="pre">2CE6</span></code>.
-It is available at <a class="reference external" href="https://zrepl.cschwarz.com/rpm/rpm-key.asc">https://zrepl.cschwarz.com/rpm/rpm-key.asc</a> .
+Since Go binaries are statically linked, the RPM should work about everywhere.
 Please open an issue on GitHub if you encounter any issues with the repository.</p>
-<p>Copy-paste the following snippet into your shell to set up the zrepl repository.
-Then <code class="docutils literal notranslate"><span class="pre">dnf</span> <span class="pre">install</span> <span class="pre">zrepl</span></code> and make sure to confirm that the signing key matches the one shown above.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">yum</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">zrepl</span><span class="o">.</span><span class="n">repo</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span>
-<span class="p">[</span><span class="n">zrepl</span><span class="p">]</span>
-<span class="n">name</span> <span class="o">=</span> <span class="n">zrepl</span>
-<span class="n">baseurl</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">zrepl</span><span class="o">.</span><span class="n">cschwarz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">rpm</span><span class="o">/</span><span class="n">repo</span>
-<span class="n">gpgkey</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">zrepl</span><span class="o">.</span><span class="n">cschwarz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">rpm</span><span class="o">/</span><span class="n">rpm</span><span class="o">-</span><span class="n">key</span><span class="o">.</span><span class="n">asc</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
+<p>The fingerprint of the repo &amp; package signing key is:
+<code class="docutils literal notranslate"><span class="pre">F6F6</span> <span class="pre">E8EA</span> <span class="pre">6F2F</span> <span class="pre">1462</span> <span class="pre">2878</span> <span class="pre">B5DE</span> <span class="pre">50E3</span> <span class="pre">4417</span> <span class="pre">826E</span> <span class="pre">2CE6</span></code>.
+It is available at <a class="reference external" href="https://zrepl.cschwarz.com/rpm/rpm-key.asc">https://zrepl.cschwarz.com/rpm/rpm-key.asc</a> .</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Until zrepl reaches 1.0, the repository will be updated to the latest zrepl release immediately.
 This includes breaking changes between zrepl versions.
-If that bothers you, use the <a class="reference external" href="https://dnf-plugins-core.readthedocs.io/en/latest/versionlock.html">dnf versionlock plugin</a> to pin the version of zrepl on your system.</p>
+If that bothers you, use the <a class="reference external" href="https://dnf-plugins-core.readthedocs.io/en/latest/versionlock.html">dnf versionlock plugin</a> or <code class="docutils literal notranslate"><span class="pre">zypper</span> <span class="pre">addlock</span> <span class="pre">zrepl</span></code> to pin the version of zrepl on your system.</p>
+</div>
+<section id="fedora-almalinux-rocky-linux-rhel">
+<h2>Fedora / AlmaLinux / Rocky Linux / RHEL<a class="headerlink" href="#fedora-almalinux-rocky-linux-rhel" title="Link to this heading"></a></h2>
+<p>For <code class="docutils literal notranslate"><span class="pre">dnf</span></code>/<code class="docutils literal notranslate"><span class="pre">yum</span></code>-based distributions, copy-paste the following snippet:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rpmkeys<span class="w"> </span>--import<span class="w"> </span><span class="s1">&#39;https://zrepl.cschwarz.com/rpm/rpm-key.asc&#39;</span>
+cat<span class="w"> </span>&gt;<span class="w"> </span>/etc/yum.repos.d/zrepl.repo<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">[zrepl]</span>
+<span class="s">name = zrepl</span>
+<span class="s">baseurl = https://zrepl.cschwarz.com/rpm/repo</span>
+<span class="s">gpgkey = https://zrepl.cschwarz.com/rpm/rpm-key.asc</span>
+<span class="s">repo_gpgcheck = 1</span>
+<span class="s">EOF</span>
+dnf<span class="w"> </span>install<span class="w"> </span>zrepl
+<span class="c1"># Or if you&#39;re on an older system:</span>
+<span class="c1"># yum install zrepl</span>
+</pre></div>
+</div>
+<p>You will be asked by dnf to verify repository metadata (<code class="docutils literal notranslate"><span class="pre">repo_gpgcheck</span></code>).
+There is no way to automate that prompt.</p>
+</section>
+<section id="opensuse">
+<h2>openSUSE<a class="headerlink" href="#opensuse" title="Link to this heading"></a></h2>
+<p>For SUSE-based distributions that use <code class="docutils literal notranslate"><span class="pre">zypper</span></code>, copy-paste the following snippet:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rpmkeys<span class="w"> </span>--import<span class="w"> </span><span class="s1">&#39;https://zrepl.cschwarz.com/rpm/rpm-key.asc&#39;</span>
+zypper<span class="w"> </span>ar<span class="w"> </span>--check<span class="w"> </span>--gpgcheck-strict<span class="w"> </span>--refresh<span class="w"> </span>https://zrepl.cschwarz.com/rpm/repo<span class="w"> </span>zrepl
+zypper<span class="w"> </span>install<span class="w"> </span>zrepl
+</pre></div>
 </div>
 </section>
-
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="apt-repos.html" class="btn btn-neutral float-left" title="Debian / Ubuntu APT repositories" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="compile-from-source.html" class="btn btn-neutral float-right" title="Compile From Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="user-privileges.html" class="btn btn-neutral float-right" title="User Privileges" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
+    <p>&#169; Copyright 2017-2026, Christian Schwarz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -144,27 +166,27 @@ If that bothers you, use the <a class="reference external" href="https://dnf-plu
       </div>
     </section>
   </div>
-  
-<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable
+    v: latest
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>Tags</dt>
-      <dd><a href="../v0.6.1/installation/rpm-repos.html">v0.6.1</a></dd>
-      <dd><a href="../v0.5.0/installation/rpm-repos.html">v0.5.0</a></dd>
-      <dd><a href="../v0.4.0/installation/rpm-repos.html">v0.4.0</a></dd>
-      <dd><a href="../v0.3.1/installation/rpm-repos.html">v0.3.1</a></dd>
-      <dd><a href="../v0.2.1/index.html">v0.2.1</a></dd>
-      <dd><a href="../v0.1.1/index.html">v0.1.1</a></dd>
+      <dt>Releases</dt>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.6.1">v0.6.1</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.5.0">v0.5.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.4.0">v0.4.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases">All releases...</a></dd>
     </dl>
     <dl>
-      <dt>Branches</dt>
-      <dd><a href="rpm-repos.html">stable</a></dd>
-      <dd><a href="../master/installation/rpm-repos.html">master</a></dd>
+      <dt>Note</dt>
+      <dd style="white-space: normal;">
+        Release-specific docs are in the
+        <span style="font-family: monospace;">zrepl-noarch.tar</span>
+        asset on each GitHub release.
+      </dd>
     </dl>
   </div>
 </div><script>

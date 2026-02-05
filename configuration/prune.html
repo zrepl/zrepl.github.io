@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pruning Policies &mdash; zrepl  documentation</title>
+  <title>Pruning Policies &mdash; zrepl latest documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/banner.css" type="text/css" />
@@ -14,8 +14,8 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,6 +36,9 @@
             zrepl
               <img src="../_static/zrepl.svg" class="logo" alt="Logo"/>
           </a>
+              <div class="version">
+                latest
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -106,8 +109,6 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-
-
   <section id="pruning-policies">
 <span id="prune"></span><h1>Pruning Policies<a class="headerlink" href="#pruning-policies" title="Link to this heading"></a></h1>
 <p>In zrepl, <em>pruning</em> means <em>destroying snapshots</em>.
@@ -168,6 +169,13 @@ Make sure to actually add the necessary <code class="docutils literal notranslat
 It only makes sense to specify this rule for the <code class="docutils literal notranslate"><span class="pre">keep_sender</span></code>.
 The reason is that, by definition, all snapshots on the receiver have already been replicated to there from the sender.
 To determine whether a sender-side snapshot has already been replicated, zrepl uses the <a class="reference internal" href="overview.html#replication-cursor-and-last-received-hold"><span class="std std-ref">replication cursor bookmark</span></a> which corresponds to the most recent successfully replicated snapshot.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> in your pruning rules, make sure to <a class="reference internal" href="monitoring.html#monitoring"><span class="std std-ref">monitor</span></a> replication.
+If your replication gets stuck then <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> causes snapshots to pile uip on the sender.
+ZFS and especially the <code class="docutils literal notranslate"><span class="pre">zfs</span></code> management command are known to degrade in performance with a lot of snapshots.
+Such degradation impacts zrepl, any other scripts, and human ability to manage your zpool.</p>
+</div>
 </section>
 <section id="policy-grid">
 <span id="prune-keep-retention-grid"></span><h2>Policy <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#policy-grid" title="Link to this heading"></a></h2>
@@ -352,7 +360,6 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
 </section>
 
 
-
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
@@ -363,7 +370,7 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017-2023, Christian Schwarz.</p>
+    <p>&#169; Copyright 2017-2026, Christian Schwarz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -376,27 +383,27 @@ Symptoms of such race conditions are spurious replication and destroy errors.</p
       </div>
     </section>
   </div>
-  
-<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable
+    v: latest
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>Tags</dt>
-      <dd><a href="../v0.6.1/configuration/prune.html">v0.6.1</a></dd>
-      <dd><a href="../v0.5.0/configuration/prune.html">v0.5.0</a></dd>
-      <dd><a href="../v0.4.0/configuration/prune.html">v0.4.0</a></dd>
-      <dd><a href="../v0.3.1/configuration/prune.html">v0.3.1</a></dd>
-      <dd><a href="../v0.2.1/configuration/prune.html">v0.2.1</a></dd>
-      <dd><a href="../v0.1.1/configuration/prune.html">v0.1.1</a></dd>
+      <dt>Releases</dt>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.6.1">v0.6.1</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.5.0">v0.5.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases/tag/v0.4.0">v0.4.0</a></dd>
+      <dd><a href="https://github.com/zrepl/zrepl/releases">All releases...</a></dd>
     </dl>
     <dl>
-      <dt>Branches</dt>
-      <dd><a href="prune.html">stable</a></dd>
-      <dd><a href="../master/configuration/prune.html">master</a></dd>
+      <dt>Note</dt>
+      <dd style="white-space: normal;">
+        Release-specific docs are in the
+        <span style="font-family: monospace;">zrepl-noarch.tar</span>
+        asset on each GitHub release.
+      </dd>
     </dl>
   </div>
 </div><script>
