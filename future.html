@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Talks &amp; Presentations &mdash; zrepl latest documentation</title>
+  <title>Future &mdash; zrepl latest documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/banner.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Changelog" href="changelog.html" />
-    <link rel="prev" title="Migrating Sending Side" href="usage/runbooks/migrating_sending_side_to_new_zpool.html" /> 
+    <link rel="next" title="Supporters" href="supporters.html" />
+    <link rel="prev" title="Changelog" href="changelog.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,9 +53,9 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Talks &amp; Presentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="future.html">Future</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Future</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://matrix.to/#/#zrepl:matrix.org">Chat: Matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supporters.html">Supporters</a></li>
@@ -75,9 +75,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Talks &amp; Presentations</li>
+      <li class="breadcrumb-item active">Future</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/zrepl/zrepl/blob/master/docs/pr.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/zrepl/zrepl/blob/master/docs/future.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -85,33 +85,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="talks-presentations">
-<span id="pr-talks"></span><h1>Talks &amp; Presentations<a class="headerlink" href="#talks-presentations" title="Link to this heading"></a></h1>
+  <section id="future">
+<span id="id1"></span><h1>Future<a class="headerlink" href="#future" title="Link to this heading"></a></h1>
+<p>This page contains some notes about future plans for zrepl.
+Then again, Christian only has very limited time available for zrepl maintenance these days.
+So, don’t count on any of this happening in the near future.</p>
+<p>One big development that has happened in recent years is this fork of zrepl: <a class="reference external" href="https://github.com/dsh2dsh/zrepl">https://github.com/dsh2dsh/zrepl</a>
+We should figure out whether we can pull in features from there.</p>
+<p>The next major step in terms of new feature development for zrepl would be to revise snapshot management:</p>
 <ul class="simple">
-<li><p>Talk at OpenZFS Developer Summit 2018 of pre-release 0.1 (
-<a class="reference external" href="https://www.youtube.com/watch?v=U4TUPQzZzPk&amp;index=4&amp;list=PLaUVvul17xSe0pC6sCirlZXYqICP09Y8z&amp;t=0s">25min Recording</a> ,
-<a class="reference external" href="https://docs.google.com/presentation/d/1HXJ_9Q0kiHffeoQ7PlFn1qAfUcWyzedRgFlvL3nUlMU/edit?usp=sharing">Slides</a> ,
-<a class="reference external" href="http://www.open-zfs.org/wiki/OpenZFS_Developer_Summit_2018">Event</a>
-)</p></li>
-<li><p>Talk at EuroBSDCon2017 FreeBSD DevSummit with live demo of zrepl 0.0.3 (
-<a class="reference external" href="https://www.youtube.com/watch?v=c1LKeyP1mos&amp;t=2316s">55min Recording</a>,
-<a class="reference external" href="https://docs.google.com/presentation/d/1EmmeEvOXAWJHCVnOS9-TTsxswbcGKmeLWdY_6BH4w0Q/edit?usp=sharing">Slides</a>,
-<a class="reference external" href="https://wiki.freebsd.org/DevSummit/201709">Event</a>
-)</p>
-<ul>
-<li><p>Note: The remarks on <code class="docutils literal notranslate"><span class="pre">keep_bookmarks</span></code> are irrelevant as of zrepl 0.1 which introduced the zrepl-managed replication cursor bookmark.
-Read the <a class="reference external" href="overview-how-replication-works">Overview</a> section to learn more.</p></li>
+<li><p>Make it easy to decouple snapshot management (snapshotting, pruning) from replication.</p></li>
+<li><p>Ability to include/exclude snapshots from replication.
+This is useful for aforementioned decoupling, e.g., separate snapshot prefixes for local &amp; remote replication.
+Also, it makes explicit that by default, zrepl replicates all snapshots, and that
+replication has no concept of “zrepl-created snapshots”, which is a common misconception.</p></li>
+<li><p>Use of <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">snapshot</span></code> comma syntax or channel programs to take snapshots of multiple
+datasets atomically.</p></li>
+<li><p>Provide an alternative to the <code class="docutils literal notranslate"><span class="pre">grid</span></code> pruning policy.
+Most likely something based on hourly/daily/weekly/monthly “trains” plus a count.</p></li>
+<li><p>Ability to prune at the granularity of the <strong>group</strong> of snapshots created at a given
+time, as opposed to the individual snapshots within a dataset.
+Maybe this will be addressed by the alternative to the <code class="docutils literal notranslate"><span class="pre">grid</span></code> pruning policy,
+as it will likely be more predictable.</p></li>
 </ul>
-</li>
-</ul>
+<p>Those changes will likely come with some breakage in the config.
+However, I want to avoid breaking <strong>use cases</strong> that are satisfied by the current design.
+There will be beta/RC releases to give users a chance to evaluate.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage/runbooks/migrating_sending_side_to_new_zpool.html" class="btn btn-neutral float-left" title="Migrating Sending Side" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="changelog.html" class="btn btn-neutral float-left" title="Changelog" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="supporters.html" class="btn btn-neutral float-right" title="Supporters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

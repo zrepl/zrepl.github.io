@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Supporters" href="supporters.html" />
+    <link rel="next" title="Future" href="future.html" />
     <link rel="prev" title="Talks &amp; Presentations" href="pr.html" /> 
 </head>
 
@@ -55,18 +55,17 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pr.html">Talks &amp; Presentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#next-release">Next Release</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#unreleased">0.7.0 (unreleased)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">0.6.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">0.6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">0.5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">0.4.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.7.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">0.3.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-3">0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">0.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">0.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id11">0.1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id9">0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">0.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">0.1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#notes-to-package-maintainers">Notes to Package Maintainers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
 </ul>
@@ -74,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#previous-releases">Previous Releases</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="future.html">Future</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/zrepl/zrepl">GitHub Repository &amp; Issue Tracker</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://matrix.to/#/#zrepl:matrix.org">Chat: Matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supporters.html">Supporters</a></li>
@@ -105,55 +105,29 @@
              
   <section id="changelog">
 <span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
-<p>The changelog summarizes bugfixes that are deemed relevant for users and package maintainers.
-Developers should consult the git commit log or GitHub issue tracker.</p>
-<section id="next-release">
-<h2>Next Release<a class="headerlink" href="#next-release" title="Link to this heading"></a></h2>
-<p>The plan for the next release is to revisit how zrepl does snapshot management.
-High-level goals:</p>
-<ul class="simple">
-<li><p>Make it easy to decouple snapshot management (snapshotting, pruning) from replication.</p></li>
-<li><p>Ability to include/exclude snapshots from replication.
-This is useful for aforementioned decoupling, e.g., separate snapshot prefixes for local &amp; remote replication.
-Also, it makes explicit that by default, zrepl replicates all snapshots, and that
-replication has no concept of “zrepl-created snapshots”, which is a common misconception.</p></li>
-<li><p>Use of <code class="docutils literal notranslate"><span class="pre">zfs</span> <span class="pre">snapshot</span></code> comma syntax or channel programs to take snapshots of multiple
-datasets atomically.</p></li>
-<li><p>Provide an alternative to the <code class="docutils literal notranslate"><span class="pre">grid</span></code> pruning policy.
-Most likely something based on hourly/daily/weekly/monthly “trains” plus a count.</p></li>
-<li><p>Ability to prune at the granularity of the <strong>group</strong> of snapshots created at a given
-time, as opposed to the individual snapshots within a dataset.
-Maybe this will be addressed by the alternative to the <code class="docutils literal notranslate"><span class="pre">grid</span></code> pruning policy,
-as it will likely be more predictable.</p></li>
-</ul>
-<p>Those changes will likely come with some breakage in the config.
-However, I want to avoid breaking <strong>use cases</strong> that are satisfied by the current design.
-There will be beta/RC releases to give users a chance to evaluate.</p>
-</section>
-<section id="unreleased">
-<h2>0.7.0 (unreleased)<a class="headerlink" href="#unreleased" title="Link to this heading"></a></h2>
-<p>INCOMPLETE LIST OF CHANGES</p>
-<ul class="simple">
-<li><p>[MAINT] Update to Go 1.25 toolchain with Go 1.24 language level.</p></li>
-<li><p>[MAINT] Fix deprecations exposed by the toolchain update.</p></li>
-<li><p>[MAINT] Long-overdue update of all our dependencies &amp; address deprecations.</p></li>
-<li><p>[MAINT] Publish docs from <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, retire <code class="docutils literal notranslate"><span class="pre">stable</span></code> branch.</p></li>
-<li><p>[MAINT] The <cite>make release-docker</cite> in CircleCI produces executables that are bit-identical to my personal machine.</p></li>
-</ul>
-</section>
 <section id="id2">
-<h2>0.6.1<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<h2>0.7.0<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>[FEATURE] add metric to detect filesystems rules that don’t match any local dataset (thanks, <a class="reference external" href="https://github.com/gmekicaxcient">&#64;gmekicaxcient</a>).</p></li>
-<li><p>[BUG] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code>: hide progress bar once all filesystems reach terminal state (thanks, <a class="reference external" href="https://github.com/0x3333">&#64;0x3333</a>).</p></li>
-<li><p>[BUG] handling of tenative cursor presence if protection strategy doesn’t use it (<a class="reference external" href="https://github.com/zrepl/zrepl/issues/714">issue #714</a>).</p></li>
-<li><p>[DOCS] address setup with two or more external disks (thanks, <a class="reference external" href="https://github.com/se-jaeger">&#64;se-jaeger</a>).</p></li>
-<li><p>[DOCS] document <code class="docutils literal notranslate"><span class="pre">replication</span></code> and <code class="docutils literal notranslate"><span class="pre">conflict_resolution</span></code> options (thanks, <a class="reference external" href="https://github.com/InsanePrawn">&#64;InsanePrawn</a>).</p></li>
-<li><p>[DOCS] docs: talks: add note on keep_bookmarks option (thanks, <a class="reference external" href="https://github.com/skirmess">&#64;skirmess</a>).</p></li>
-<li><p>[MAINT] dist: add openrc service file (thanks, <a class="reference external" href="https://github.com/gramosg">&#64;gramosg</a>).</p></li>
-<li><p>[MAINT] grafana: update dashboard to Grafana 9.3.6.</p></li>
-<li><p>[MAINT] run platform tests as part of CI.</p></li>
-<li><p>[MAINT] build: upgrade to Go 1.21 and update golangci-lint; minimum Go version for builds is now 1.20</p></li>
+<li><p>[FEATURE] Config file inclusion using <code class="docutils literal notranslate"><span class="pre">include</span></code> directive.
+This allows distributing zrepl job definitions across multiple YAML files in a <code class="docutils literal notranslate"><span class="pre">conf.d</span></code> style directory.
+(<a class="reference external" href="https://github.com/zrepl/zrepl/commit/4d6583e">4d6583e</a>, thanks, <a class="reference external" href="https://github.com/zeyadtamimi">&#64;ZeyadTamimi</a>).</p></li>
+<li><p>[FEATURE] Add configurable timezone for snapshot name timestamps. The default remains UTC. (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/b9b9ad1">b9b9ad1</a>, thanks, <a class="reference external" href="https://github.com/mjasnik">&#64;mjasnik</a>).</p></li>
+<li><p>[FEATURE] Improve Grafana dashboard with additional panels and refinements (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/3f75127">3f75127</a>, thanks, <a class="reference external" href="https://github.com/deajan">&#64;deajan</a>).</p></li>
+<li><p>[BUG] Fix replication of placeholder filesystems (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/5615f49">5615f49</a>).</p></li>
+<li><p>[BUG] Avoid using the word “error” in info-level log lines about ZFS command execution (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/d3b2295">d3b2295</a>, thanks, <a class="reference external" href="https://github.com/bakhtiyarneyman">&#64;bakhtiyarneyman</a>).</p></li>
+<li><p>[BUG] Detect duplicate and internal job names at config parse time.
+zrepl will now refuse to load a config with duplicate or internally reserved job names, instead of failing later at daemon startup.
+(<a class="reference external" href="https://github.com/zrepl/zrepl/commit/860a9be">860a9be</a>).</p></li>
+<li><p>[DOCS] Add installation instructions for openSUSE (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/40c4827">40c4827</a>, thanks, <a class="reference external" href="https://github.com/findesgh">&#64;findesgh</a>).</p></li>
+<li><p>[DOCS] Improve documentation on <code class="docutils literal notranslate"><span class="pre">send_properties</span></code> configuration and NFS/SMB considerations (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/b5d8538">b5d8538</a>, thanks, <a class="reference external" href="https://github.com/Malvineous">&#64;Malvineous</a>).</p></li>
+<li><p>[DOCS] Warn more prominently about the risks of the <code class="docutils literal notranslate"><span class="pre">not_replicated</span></code> keep rule (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/affe00a">affe00a</a>, thanks, <a class="reference external" href="https://github.com/wxiaoguang">&#64;wxiaoguang</a>).</p></li>
+<li><p>[DOCS] Improve TLS/EasyRSA setup instructions (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/e524b60">e524b60</a>, thanks, <a class="reference external" href="https://github.com/alorimer">&#64;alorimer</a>).</p></li>
+<li><p>[DOCS] <code class="docutils literal notranslate"><span class="pre">zrepl.github.io</span></code>: auto-publish from <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, retire <code class="docutils literal notranslate"><span class="pre">stable</span></code> branch (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/4f950bb">4f950bb</a>).</p></li>
+<li><p>[MAINT] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code>: switch from the unmaintained <code class="docutils literal notranslate"><span class="pre">cview</span></code> fork back to the actively maintained <code class="docutils literal notranslate"><span class="pre">tview</span></code> library (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/d7ede3f">d7ede3f</a>).</p></li>
+<li><p>[MAINT] Update to Go 1.25 toolchain with Go 1.24 language level &amp; Go dependencies</p></li>
+<li><p>[MAINT] Debian packages: proper bash completion placement (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/2923009">2923009</a>)</p></li>
+<li><p>[MAINT] RPM packages: AlmaLinux 8 for RPM builds (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/27f4ad1">27f4ad1</a>).</p></li>
+<li><p>[MAINT] Improve build system &amp; CI setup</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -167,7 +141,22 @@ There will be beta/RC releases to give users a chance to evaluate.</p>
 </div>
 </section>
 <section id="id3">
-<h2>0.6<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<h2>0.6.1<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>[FEATURE] add metric to detect filesystems rules that don’t match any local dataset (thanks, <a class="reference external" href="https://github.com/gmekicaxcient">&#64;gmekicaxcient</a>).</p></li>
+<li><p>[BUG] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code>: hide progress bar once all filesystems reach terminal state (thanks, <a class="reference external" href="https://github.com/0x3333">&#64;0x3333</a>).</p></li>
+<li><p>[BUG] handling of tenative cursor presence if protection strategy doesn’t use it (<a class="reference external" href="https://github.com/zrepl/zrepl/issues/714">issue #714</a>).</p></li>
+<li><p>[DOCS] address setup with two or more external disks (thanks, <a class="reference external" href="https://github.com/se-jaeger">&#64;se-jaeger</a>).</p></li>
+<li><p>[DOCS] document <code class="docutils literal notranslate"><span class="pre">replication</span></code> and <code class="docutils literal notranslate"><span class="pre">conflict_resolution</span></code> options (thanks, <a class="reference external" href="https://github.com/InsanePrawn">&#64;InsanePrawn</a>).</p></li>
+<li><p>[DOCS] docs: talks: add note on keep_bookmarks option (thanks, <a class="reference external" href="https://github.com/skirmess">&#64;skirmess</a>).</p></li>
+<li><p>[MAINT] dist: add openrc service file (thanks, <a class="reference external" href="https://github.com/gramosg">&#64;gramosg</a>).</p></li>
+<li><p>[MAINT] grafana: update dashboard to Grafana 9.3.6.</p></li>
+<li><p>[MAINT] run platform tests as part of CI.</p></li>
+<li><p>[MAINT] build: upgrade to Go 1.21 and update golangci-lint; minimum Go version for builds is now 1.20</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>0.6<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>[FEATURE] <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-cron"><span class="std std-ref">Schedule-based snapshotting</span></a> using <code class="docutils literal notranslate"><span class="pre">cron</span></code> syntax instead of an interval.</p></li>
 <li><p>[FEATURE] Configurable initial replication policy.
@@ -203,14 +192,14 @@ This facilitates chaining of replication jobs. See <a class="reference external"
 <li><p>[BUG] workaround for Go/gRPC problem on Illumos where zrepl would
 crash when using the <code class="docutils literal notranslate"><span class="pre">local</span></code> transport type (<a class="reference external" href="https://github.com/zrepl/zrepl/issues/598">issue #598</a>).</p></li>
 <li><p>[BUG] fix active child tasks panic that cold occur during replication plannig (<a class="reference external" href="https://github.com/zrepl/zrepl/issues/193abbe">issue #193abbe</a>)</p></li>
-<li><p>[BUG] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> off-by-one error in display of completed step count (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/ce6701f">commit ce6701f</a>)</p></li>
-<li><p>[BUG] Allow using day &amp; week units for <code class="docutils literal notranslate"><span class="pre">snapshotting.interval</span></code> (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/ffb1d89">commit ffb1d89</a>)</p></li>
+<li><p>[BUG] <code class="docutils literal notranslate"><span class="pre">zrepl</span> <span class="pre">status</span></code> off-by-one error in display of completed step count (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/ce6701f">ce6701f</a>)</p></li>
+<li><p>[BUG] Allow using day &amp; week units for <code class="docutils literal notranslate"><span class="pre">snapshotting.interval</span></code> (<a class="reference external" href="https://github.com/zrepl/zrepl/commit/ffb1d89">ffb1d89</a>)</p></li>
 <li><p>[DOCS] <code class="docutils literal notranslate"><span class="pre">docs/overview</span></code> improvements (Thanks, <a class="reference external" href="https://github.com/jtagcat">&#64;jtagcat</a>).</p></li>
 <li><p>[MAINT] Update to Go 1.19.</p></li>
 </ul>
 </section>
-<section id="id4">
-<h2>0.5<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h2>0.5<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>[FEATURE] <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-recv-options-bandwidth-limit"><span class="std std-ref">Bandwidth limiting</span></a> (Thanks, Prominic.NET, Inc.)</p></li>
 <li><p>[FEATURE] zrepl status: use a <code class="docutils literal notranslate"><span class="pre">*</span></code> to indicate which filesystem is currently replicating</p></li>
@@ -241,8 +230,8 @@ crash when using the <code class="docutils literal notranslate"><span class="pre
 </ul>
 <p>Finally, I’d like to point you to the <a class="reference external" href="https://github.com/zrepl/zrepl/discussions/547">GitHub discussion</a> about which bugfixes and features should be prioritized in zrepl 0.6 and beyond!</p>
 </section>
-<section id="id5">
-<h2>0.4.0<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="id6">
+<h2>0.4.0<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>[FEATURE] support setting zfs send / recv flags in the config (send: <code class="docutils literal notranslate"><span class="pre">-wLcepbS</span></code> , recv: <code class="docutils literal notranslate"><span class="pre">-ox</span></code> ).
 Config docs <a class="reference internal" href="configuration/sendrecvoptions.html#job-send-options"><span class="std std-ref">here</span></a> and <a class="reference internal" href="configuration/sendrecvoptions.html#job-recv-options"><span class="std std-ref">here</span></a> .</p></li>
@@ -267,8 +256,8 @@ The following bugfix in 0.3.1 <a class="reference external" href="https://github
 <li><p>[BUG] pruning: <code class="docutils literal notranslate"><span class="pre">grid</span></code>:  add all snapshots that do not match the regex to the rule’s destroy list.</p></li>
 </ul>
 </section>
-<section id="id6">
-<h2>0.3.1<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="id7">
+<h2>0.3.1<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <p>Mostly a bugfix release for <a class="reference internal" href="#release-0-3"><span class="std std-ref">zrepl 0.3</span></a>.</p>
 <ul class="simple">
 <li><p>[FEATURE] pruning: add optional <code class="docutils literal notranslate"><span class="pre">regex</span></code> field to <code class="docutils literal notranslate"><span class="pre">last_n</span></code> rule</p></li>
@@ -286,7 +275,7 @@ This brings the implementation in line with the docs.</p></li>
 </ul>
 </section>
 <section id="release-0-3">
-<span id="id7"></span><h2>0.3<a class="headerlink" href="#release-0-3" title="Link to this heading"></a></h2>
+<span id="id8"></span><h2>0.3<a class="headerlink" href="#release-0-3" title="Link to this heading"></a></h2>
 <p>This is a big one! Headlining features:</p>
 <ul class="simple">
 <li><p><strong>Resumable Send &amp; Recv Support</strong>
@@ -348,19 +337,19 @@ that will not be snapshotted until the sync-up phase is over</p></li>
 <li><p><strong>[MAINTAINER NOTICE]</strong> Please add the shell completions to the zrepl packages.</p></li>
 </ul>
 </section>
-<section id="id8">
-<h2>0.2.1<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<section id="id9">
+<h2>0.2.1<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>[FEATURE] Illumos (and Solaris) compatibility and binary builds (thanks, <a class="reference external" href="https://mnx.io">MNX.io</a> )</p></li>
 <li><p>[FEATURE] 32bit binaries for Linux and FreeBSD (untested, though)</p></li>
 <li><p>[BUG] better error messages in <code class="docutils literal notranslate"><span class="pre">ssh+stdinserver</span></code> transport</p></li>
 <li><p>[BUG] systemd + <code class="docutils literal notranslate"><span class="pre">ssh+stdinserver</span></code>: automatically create <code class="docutils literal notranslate"><span class="pre">/var/run/zrepl/stdinserver</span></code></p></li>
 <li><p>[BUG] crash if Prometheus listening socket cannot be opened</p></li>
-<li><p>[MAINTAINER NOTICE] <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> refactoring, see <a class="reference external" href="https://github.com/zrepl/zrepl/commit/080f2c0">commit 080f2c0</a></p></li>
+<li><p>[MAINTAINER NOTICE] <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> refactoring, see commit <a class="reference external" href="https://github.com/zrepl/zrepl/commit/080f2c0">080f2c0</a></p></li>
 </ul>
 </section>
-<section id="id9">
-<h2>0.2<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="id10">
+<h2>0.2<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>[FEATURE] <a class="reference internal" href="configuration/snapshotting.html#job-snapshotting-hooks"><span class="std std-ref">Pre- and Post-Snapshot Hooks</span></a>
 with built-in support for MySQL and Postgres checkpointing
@@ -385,10 +374,10 @@ The pool name <code class="docutils literal notranslate"><span class="pre">zrepl
 Only run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">platformtest</span></code> on test systems, e.g. a FreeBSD VM image.</p></li>
 </ul>
 </section>
-<section id="id10">
-<h2>0.1.1<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<section id="id11">
+<h2>0.1.1<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/162">issue #162</a> <a class="reference external" href="https://github.com/zrepl/zrepl/commit/d6304f4">commit d6304f4</a> : fix I/O timeout errors on variable receive rate</p>
+<li><p>[BUG] <a class="reference external" href="https://github.com/zrepl/zrepl/issues/162">issue #162</a> commit <a class="reference external" href="https://github.com/zrepl/zrepl/commit/d6304f4">d6304f4</a> : fix I/O timeout errors on variable receive rate</p>
 <ul>
 <li><p>A significant reduction or sudden stall of the receive rate (e.g. recv pool has other I/O to do)
 would cause a <code class="docutils literal notranslate"><span class="pre">writev</span> <span class="pre">I/O</span> <span class="pre">timeout</span></code> error after approximately ten seconds.</p></li>
@@ -396,8 +385,8 @@ would cause a <code class="docutils literal notranslate"><span class="pre">write
 </li>
 </ul>
 </section>
-<section id="id11">
-<h2>0.1<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="id12">
+<h2>0.1<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
 <p>This release is a milestone for zrepl and required significant refactoring if not rewrites of substantial parts of the application.
 It breaks both configuration and transport format, and thus requires manual intervention and updates on both sides of a replication setup.</p>
 <div class="admonition danger">
@@ -524,7 +513,7 @@ For the changelog of previous releases, use the version selection in the hosted 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pr.html" class="btn btn-neutral float-left" title="Talks &amp; Presentations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="supporters.html" class="btn btn-neutral float-right" title="Supporters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="future.html" class="btn btn-neutral float-right" title="Future" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
